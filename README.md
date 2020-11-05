@@ -1,4 +1,4 @@
-# CDN-Video-Uploader
+# CDN Video Uploader
 
 A tool for converting and uploading videos to CDN network for HLS video streaming.
   - **Input**: video file (AVI, MKV, MP4, WMV) @ 1080p resolution
