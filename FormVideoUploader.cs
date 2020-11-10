@@ -5,6 +5,8 @@ using System.Windows.Forms;
 
 namespace CDN_Video_Uploader
 {
+    enum MsgType { Info, Error}
+
     public partial class FormVideoUploader : Form
     {
         public FtpClient FtpClient { get; set; }
@@ -12,6 +14,11 @@ namespace CDN_Video_Uploader
         public FormVideoUploader()
         {
             InitializeComponent();
+        }
+
+        private void FormVideoUploader_Shown(object sender, EventArgs e)
+        {
+            this.buttonFTPConnect.PerformClick();
         }
 
         private void buttonFTPConnect_Click(object sender, EventArgs e)
@@ -30,20 +37,20 @@ namespace CDN_Video_Uploader
                 this.FtpClient.Connect();
                 this.textBoxFTPPath.Text = "/";
                 Log($"Connected to FTP server: <b>{this.FtpClient.Host}</b>");
+
+                LoadFilesAndFoldersFromFTP();
             }
             catch (Exception ex)
             {
-                Log(ex.ToString());
+                LogError(ex.ToString());
             }
-
-            loadFilesAndFoldersFromFTP();
         }
 
-        private void loadFilesAndFoldersFromFTP()
+        private void LoadFilesAndFoldersFromFTP()
         {
             if (this.FtpClient == null || (! this.FtpClient.IsConnected))
             {
-                Log("Error: <b>not connected to the FTP server</b>.");
+                LogError("not connected to the FTP server");
                 return;
             }
 
@@ -67,13 +74,13 @@ namespace CDN_Video_Uploader
             }
             catch (Exception ex)
             {
-                Log(ex.ToString());
+                LogError(ex.ToString());
             }
         }
 
         private void buttonFTPGo_Click(object sender, EventArgs e)
         {
-            loadFilesAndFoldersFromFTP();
+            LoadFilesAndFoldersFromFTP();
         }
 
         private void buttonFTPUp_Click(object sender, EventArgs e)
@@ -85,31 +92,17 @@ namespace CDN_Video_Uploader
             if (lastSlashIndex >= 0)
             {
                 this.textBoxFTPPath.Text = path.Substring(0, lastSlashIndex + 1);
-                loadFilesAndFoldersFromFTP();
+                LoadFilesAndFoldersFromFTP();
             }
             else
             {
-                Log("Error: <b>no parent folder</b>.");
+                LogError("no parent folder");
             }
-        }
-
-        private void Log(string msg)
-        {
-            // Update the UI through the UI thread (thread safe)
-            this.webBrowserLogs.Invoke((MethodInvoker)delegate {
-                // Append the message to the logs
-                this.webBrowserLogs.Document.Write(msg);
-                // Append a new line
-                this.webBrowserLogs.Document.Write("<br>\n");
-                // Scroll to the document end
-                this.webBrowserLogs.Document.Body.ScrollTop =
-                    this.webBrowserLogs.Document.Body.ScrollRectangle.Height;
-            });
         }
 
         private void FormVideoUploader_Load(object sender, EventArgs e)
         {
-            this.clearLog();
+            ClearLog();
         }
 
         private void dataGridViewFTPFolders_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -119,16 +112,16 @@ namespace CDN_Video_Uploader
                 string folder = 
                     this.dataGridViewFTPFolders.Rows[e.RowIndex].Cells[0].Value.ToString();
                 this.textBoxFTPPath.Text += folder + "/";
-                loadFilesAndFoldersFromFTP();
+                LoadFilesAndFoldersFromFTP();
             }
         }
 
         private void buttonClearLog_Click(object sender, EventArgs e)
         {
-            clearLog();
+            ClearLog();
         }
 
-        private void clearLog()
+        private void ClearLog()
         {
             this.webBrowserLogs.Navigated += browserNavigated;
             this.webBrowserLogs.Navigate("about:blank");
@@ -141,9 +134,39 @@ namespace CDN_Video_Uploader
             }
         }
 
-        private void FormVideoUploader_Shown(object sender, EventArgs e)
+        private void LogError(string errMsg)
         {
-            this.buttonFTPConnect.PerformClick();
+            Log(errMsg, MsgType.Error);
+        }
+ 
+        private void Log(string msg, MsgType msgType = MsgType.Info)
+        {
+            if (msgType == MsgType.Error)
+            {
+                msg = $"<span style='color:#922'>Error:<b>{msg}</b></span>";
+            }
+            // Update the UI through the UI thread (thread safe)
+            this.webBrowserLogs.Invoke((MethodInvoker)delegate {
+                // Append the dateand time to the logs
+                string date = DateTime.Now.ToString("d-MMM-yyyy HH:mm:ss");
+                this.webBrowserLogs.Document.Write($"<span style='color:#999'>[{date}]</span> ");
+                // Append the message to the logs
+                this.webBrowserLogs.Document.Write(msg);
+                // Append a new line
+                this.webBrowserLogs.Document.Write("<br>\n");
+                // Scroll to the document end
+                this.webBrowserLogs.Document.Body.ScrollTop =
+                    this.webBrowserLogs.Document.Body.ScrollRectangle.Height;
+            });
+        }
+
+        private void textBoxFTPPath_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == '\r')
+            {
+                e.Handled = true;
+                this.buttonFTPGo.PerformClick();
+            }
         }
     }
 }

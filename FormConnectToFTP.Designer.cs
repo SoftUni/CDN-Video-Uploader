@@ -51,7 +51,7 @@
             // textBoxHostname
             // 
             this.textBoxHostname.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBoxHostname.Location = new System.Drawing.Point(103, 16);
+            this.textBoxHostname.Location = new System.Drawing.Point(111, 16);
             this.textBoxHostname.Name = "textBoxHostname";
             this.textBoxHostname.Size = new System.Drawing.Size(176, 27);
             this.textBoxHostname.TabIndex = 1;
@@ -59,7 +59,7 @@
             // textBoxUsername
             // 
             this.textBoxUsername.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBoxUsername.Location = new System.Drawing.Point(103, 57);
+            this.textBoxUsername.Location = new System.Drawing.Point(111, 57);
             this.textBoxUsername.Name = "textBoxUsername";
             this.textBoxUsername.Size = new System.Drawing.Size(176, 27);
             this.textBoxUsername.TabIndex = 3;
@@ -77,7 +77,7 @@
             // textBoxPassword
             // 
             this.textBoxPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBoxPassword.Location = new System.Drawing.Point(103, 97);
+            this.textBoxPassword.Location = new System.Drawing.Point(111, 97);
             this.textBoxPassword.Name = "textBoxPassword";
             this.textBoxPassword.PasswordChar = '*';
             this.textBoxPassword.Size = new System.Drawing.Size(176, 27);
@@ -99,7 +99,7 @@
             this.buttonConnect.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.buttonConnect.Location = new System.Drawing.Point(12, 140);
             this.buttonConnect.Name = "buttonConnect";
-            this.buttonConnect.Size = new System.Drawing.Size(132, 44);
+            this.buttonConnect.Size = new System.Drawing.Size(137, 44);
             this.buttonConnect.TabIndex = 6;
             this.buttonConnect.Text = "Connect";
             this.buttonConnect.UseVisualStyleBackColor = true;
@@ -109,7 +109,7 @@
             // 
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.buttonCancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonCancel.Location = new System.Drawing.Point(163, 140);
+            this.buttonCancel.Location = new System.Drawing.Point(171, 140);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(116, 44);
             this.buttonCancel.TabIndex = 7;
@@ -122,7 +122,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(297, 196);
+            this.ClientSize = new System.Drawing.Size(303, 196);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonConnect);
             this.Controls.Add(this.textBoxPassword);
