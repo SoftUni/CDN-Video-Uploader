@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace CDN_Video_Uploader
 {
-    static class Program
+    static class CDNVideoUploaderApp
     {
         /// <summary>
         ///  The main entry point for the application.
