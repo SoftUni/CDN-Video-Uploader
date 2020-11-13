@@ -1,19 +1,58 @@
-﻿using FluentFTP;
+﻿using CDN_Video_Uploader.Jobs;
+using CDN_Video_Uploader.Properties;
+using FluentFTP;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CDN_Video_Uploader
 {
-    enum MsgType { Info, Error}
+    enum MsgType { Info, Error }
 
     public partial class FormVideoUploader : Form
     {
-        public FtpClient FtpClient { get; set; }
+        const string AllowedVideoFilesExtensions = "*.avi;*.mp4;*.mpg;*.mpeg;*.mov;*.mkv;*.webm;*.wmv";
+
+        // Crate a working directory (temp folder) for the transcoded videos
+        private readonly string workDir = 
+            Path.GetTempPath() + "CDN-Video-Uploader";
+
+        private FtpClient ftpClient;
+        private List<Job> activeJobsQueue = new List<Job>();
+        private List<Job> completedJobs = new List<Job>();
+        private Task activeJobsProcessor;
 
         public FormVideoUploader()
         {
             InitializeComponent();
+            this.dataGridViewActiveJobs.AutoGenerateColumns = false;
+            this.dataGridViewCompletedJobs.AutoGenerateColumns = false;
+        }
+
+        private void FormVideoUploader_Load(object sender, EventArgs e)
+        {
+            ClearLog();
+            StartJobProcessor();
+        }
+
+        private void StartJobProcessor()
+        {
+            // Create a background task to continously process the active jobs
+            this.activeJobsProcessor = new Task(() =>
+            {
+                // At certain time interval (1 second), check the status of the currrent job.
+                // If the job is completed -> move it the to completed jobs queue.
+                while (true)
+                {
+                    Thread.Sleep(1000);
+                    ProcessJobsQueue();
+                }
+            });
+            this.activeJobsProcessor.Start();
         }
 
         private void FormVideoUploader_Shown(object sender, EventArgs e)
@@ -28,15 +67,15 @@ namespace CDN_Video_Uploader
                 var ftpConnectForm = new FormConnectToFTP();
                 if (ftpConnectForm.ShowDialog() != DialogResult.OK)
                     return;
-                this.FtpClient = new FtpClient(
+                this.ftpClient = new FtpClient(
                     host: ftpConnectForm.Hostname,
                     user: ftpConnectForm.Username,
                     pass: ftpConnectForm.Password
                 );
-                FtpClient.SocketKeepAlive = true;
-                this.FtpClient.Connect();
+                ftpClient.SocketKeepAlive = true;
+                this.ftpClient.Connect();
                 this.textBoxFTPPath.Text = "/";
-                Log($"Connected to FTP server: <b>{this.FtpClient.Host}</b>");
+                Log($"Connected to FTP server: <b>{this.ftpClient.Host}</b>");
 
                 LoadFilesAndFoldersFromFTP();
             }
@@ -48,7 +87,7 @@ namespace CDN_Video_Uploader
 
         private void LoadFilesAndFoldersFromFTP()
         {
-            if (this.FtpClient == null || (! this.FtpClient.IsConnected))
+            if (this.ftpClient == null || (! this.ftpClient.IsConnected))
             {
                 LogError("not connected to the FTP server");
                 return;
@@ -56,7 +95,7 @@ namespace CDN_Video_Uploader
 
             try
             {
-                FtpListItem[] ftpItems = this.FtpClient.GetListing(this.textBoxFTPPath.Text);
+                FtpListItem[] ftpItems = this.ftpClient.GetListing(this.textBoxFTPPath.Text);
 
                 var folders = ftpItems
                     .Where(item => item.Type == FtpFileSystemObjectType.Directory)
@@ -100,17 +139,12 @@ namespace CDN_Video_Uploader
             }
         }
 
-        private void FormVideoUploader_Load(object sender, EventArgs e)
-        {
-            ClearLog();
-        }
-
         private void dataGridViewFTPFolders_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
             {
                 string folder = 
-                    this.dataGridViewFTPFolders.Rows[e.RowIndex].Cells[0].Value.ToString();
+                    this.dataGridViewFTPFolders.Rows[e.RowIndex].Cells[0].Value?.ToString();
                 this.textBoxFTPPath.Text += folder + "/";
                 LoadFilesAndFoldersFromFTP();
             }
@@ -166,6 +200,158 @@ namespace CDN_Video_Uploader
             {
                 e.Handled = true;
                 this.buttonFTPGo.PerformClick();
+            }
+        }
+
+        private void buttonChooseFilesToUpload_Click(object sender, EventArgs e)
+        {
+            var selectFileDialog = new OpenFileDialog() {
+                Filter = "Video files" + "|" + AllowedVideoFilesExtensions,
+                Title = "Select a video file to upload",
+                Multiselect = true
+            };
+            if (selectFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                foreach (string fileName in selectFileDialog.FileNames)
+                {
+                    AppendFileForProcessing(fileName);
+                }
+            }
+        }
+
+        private void AppendFileForProcessing(string fileName)
+        {
+            var fileInfo = new FileInfo(fileName);
+            var fileExt = fileInfo.Extension.ToLower();
+            if (fileExt == "" || AllowedVideoFilesExtensions.IndexOf(fileExt) == -1)
+            {
+                LogError("invalid file: " + fileInfo.Name);
+                return;
+            }
+
+            string fileSizeAsText = GetFileSizeAsText(fileInfo);
+
+            List<ExecutableAction> actions = CreateActionsForFile(fileInfo);
+            var task = new Job()
+            {
+                Description = fileInfo.Name + " (" + fileSizeAsText + ")",
+                PercentsDone = 0,
+                SourceFileName = fileName,
+                Actions = actions,
+                ActiveActionIndex = 0,
+            };
+            this.activeJobsQueue.Add(task);
+
+            RefreshActiveJobsUI();
+        }
+
+        /// <summary>
+        /// Refresh the "active jobs" data grid UI control to display the jobs queue
+        /// </summary>
+        private void RefreshActiveJobsUI()
+        {
+            this.dataGridViewActiveJobs.DataSource = null;
+            this.dataGridViewActiveJobs.DataSource = this.activeJobsQueue;
+        }
+
+        /// <summary>
+        /// Refresh the "completed jobs" data grid UI control to display the completed jobs
+        /// </summary>
+        private void RefreshCompletedJobsUI()
+        {
+            this.dataGridViewCompletedJobs.DataSource = null;
+            this.dataGridViewCompletedJobs.DataSource = this.completedJobs;
+        }
+
+
+        private List<ExecutableAction> CreateActionsForFile(FileInfo fileInfo)
+        {
+            var actions = new List<ExecutableAction>();
+            foreach (string profile in AppSettings.Default.TranscodingProfiles)
+            {
+                var profileParts = profile.Split('|');
+                string profileName = profileParts[0].Trim();
+                string profileCommand = profileParts[1].Trim();
+
+                string outputFileNameShort =
+                    Path.GetFileNameWithoutExtension(fileInfo.Name) +
+                    "-" + profileName + ".mp4";
+                string outputFileNameFull = this.workDir + "\\" + outputFileNameShort;
+
+                TranscodeAction transcodeAction = new TranscodeAction()
+                {
+                    Description = $"Transcoding {fileInfo.Name} to {profileName}",
+                    InputFile = fileInfo.FullName,
+                    TranscodingCommand = profileCommand
+                        .Replace("{input}", '"' + fileInfo.FullName + '"')
+                        .Replace("{output}", '"' + outputFileNameFull + '"'),
+                    OutputFile = outputFileNameFull
+                };
+                actions.Add(transcodeAction);
+
+                string ftpPath = this.textBoxFTPPath.Text;
+                UploadAction uploadAction = new UploadAction()
+                {
+                    Description = $"Uploading {outputFileNameShort} to FTP folder {ftpPath}",
+                    InputFile = outputFileNameFull,
+                    PathAtFTP = ftpPath,
+                };
+                actions.Add(uploadAction);
+            }
+
+            return actions;
+        }
+
+        private string GetFileSizeAsText(FileInfo fileInfo)
+        {
+            double sizeKB = fileInfo.Length / 1024.0;
+            double sizeMB = sizeKB / 1024.0;
+            double sizeGB = sizeMB / 1024.0;
+            if (sizeGB >= 1)
+                return Math.Round(sizeGB, 2) + " GB";
+            if (sizeMB >= 1)
+                return Math.Round(sizeMB, 2) + " MB";
+            return Math.Round(sizeKB, 2) + " KB";
+        }
+
+        private void panelUploadBox_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effect = DragDropEffects.Copy;
+        }
+
+        private void panelUploadBox_DragDrop(object sender, DragEventArgs e)
+        {
+            string[] fileNames = (string[])e.Data.GetData(DataFormats.FileDrop);
+            foreach (string fileName in fileNames)
+                AppendFileForProcessing(fileName);
+        }
+
+        private void ProcessJobsQueue()
+        {
+            if (this.activeJobsQueue.Count > 0)
+            {
+                Job activeJob = this.activeJobsQueue[0];
+                if (activeJob.ExecutionState == ExecutionState.NotStarted)
+                {
+                    activeJob.Start();
+                    this.Log("Started job: " + activeJob.Description);
+                }
+                activeJob.UpdateState();
+                if (activeJob.IsFinished)
+                {
+                    // Move the current job to the "completed jobs" list
+                    this.activeJobsQueue.RemoveAt(0);
+                    
+                    this.completedJobs.Add(activeJob);
+                    this.RefreshCompletedJobsUI();
+                    this.Log("Completed job: " + activeJob.Description);
+
+                    // Start immediately the next job
+                    ProcessJobsQueue(); 
+                }
+
+                this.RefreshActiveJobsUI();
             }
         }
     }

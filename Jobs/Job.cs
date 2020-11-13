@@ -1,0 +1,90 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace CDN_Video_Uploader.Jobs
+{
+    class Job : ExecutableAction
+    {
+        public string SourceFileName { get; set; }
+        public List<ExecutableAction> Actions { get; set; }
+        public int ActiveActionIndex { get; set; }
+
+        public string StateAsText
+        {
+            get
+            {
+                if (this.ExecutionState == ExecutionState.NotStarted)
+                    return "Waiting to start";
+                if (this.ExecutionState == ExecutionState.Running)
+                    return this.ActiveAction.Description;
+                if (this.ExecutionState == ExecutionState.CompletedSuccessfully)
+                    return "Completed successfully";
+                if (this.ExecutionState == ExecutionState.Failed)
+                    return "Failed to execute";
+                if (this.ExecutionState == ExecutionState.Canceled)
+                    return "Canceled by user";
+                return "Unknown";
+            }
+        }
+
+        public string Progress
+        {
+            get => "" + Math.Round(this.PercentsDone, 0) + "% done";
+        }
+
+        public ExecutableAction ActiveAction
+        {
+            get
+            {
+                if (this.Actions.Count == 0)
+                    throw new InvalidOperationException("Please first define actions in the job");
+
+                return this.Actions[this.ActiveActionIndex];
+            }
+        }
+
+        public string VideoURL
+        {
+            get => "https://TODO";
+        }
+
+        public override void Start()
+        {
+            // Begin from the first action in the actions list
+            this.ActiveActionIndex = 0;
+
+            // Start the first action
+            this.ActiveAction.Start();
+        }
+
+        public override void Cancel()
+        {
+
+        }
+
+        public override void UpdateState()
+        {
+            if (this.IsFinished)
+                return;
+
+            var currentAction = this.ActiveAction;
+            currentAction.UpdateState();
+            this.ExecutionState = currentAction.ExecutionState;
+            
+            if (currentAction.IsFinished)
+            {
+                // Proceed to the next action (when the current action is successful)
+                bool hasNextAction = this.ActiveActionIndex < this.Actions.Count - 1;
+                if (hasNextAction && currentAction.ExecutionState == ExecutionState.CompletedSuccessfully)
+                {
+                    this.ActiveActionIndex++;
+                    ActiveAction.Start();
+                    this.ExecutionState = ExecutionState.Running;
+                }
+            }
+
+            this.PercentsDone = this.Actions.Average(a => a.PercentsDone);
+        }
+    }
+}
