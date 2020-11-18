@@ -46,7 +46,12 @@ namespace CDN_Video_Uploader.Jobs
 
         public string VideoURL
         {
-            get => "https://TODO";
+            get
+            {
+                if (this.ExecutionState == ExecutionState.CompletedSuccessfully) 
+                    return "https://TODO";
+                return null;
+            }
         }
 
         public override void Start()
@@ -60,7 +65,14 @@ namespace CDN_Video_Uploader.Jobs
 
         public override void Cancel()
         {
-
+            foreach (var action in this.Actions)
+            {
+                if (action.ExecutionState == ExecutionState.Running)
+                {
+                    action.Cancel();
+                }
+            }
+            this.ExecutionState = ExecutionState.Canceled;
         }
 
         public override void UpdateState()

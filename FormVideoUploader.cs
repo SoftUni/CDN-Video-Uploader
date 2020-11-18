@@ -1,30 +1,27 @@
 ﻿using CDN_Video_Uploader.Jobs;
 using CDN_Video_Uploader.Properties;
-using FluentFTP;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using FluentFTP;
+using System.Diagnostics;
 
 namespace CDN_Video_Uploader
 {
-    enum MsgType { Info, Error }
-
     public partial class FormVideoUploader : Form
     {
         const string AllowedVideoFilesExtensions = "*.avi;*.mp4;*.mpg;*.mpeg;*.mov;*.mkv;*.webm;*.wmv";
 
-        // Crate a working directory (temp folder) for the transcoded videos
+        // Create a working directory (temp folder) for the transcoded videos
         private readonly string workDir = 
             Path.GetTempPath() + "CDN-Video-Uploader";
 
         private FtpClient ftpClient;
         private List<Job> activeJobsQueue = new List<Job>();
         private List<Job> completedJobs = new List<Job>();
-        private Task activeJobsProcessor;
+        private Timer activeJobsProcessor;
 
         public FormVideoUploader()
         {
@@ -36,23 +33,49 @@ namespace CDN_Video_Uploader
         private void FormVideoUploader_Load(object sender, EventArgs e)
         {
             ClearLog();
+            CreateWorkingDirectory();
+            AppDomain.CurrentDomain.ProcessExit += new EventHandler(Application_ProcessExit);
+            this.webBrowserLogs.ObjectForScripting = this;
             StartJobProcessor();
         }
 
+        private void CreateWorkingDirectory()
+        {
+            try
+            {
+                Directory.CreateDirectory(this.workDir);
+                string escapedWorkDir = this.workDir.Replace(@"\", @"\\");
+                this.Log($"Created temporary working directory for transcoding: <a href='#' onclick='window.external.OpenFolder(\"{escapedWorkDir}\"); return false;' style='cursor:pointer'><code>{this.workDir}</code></a>.");
+            }
+            catch (Exception ex) 
+            {
+                this.LogError($"cannot create temporary working directory: <code>{this.workDir}</code>. {ex.Message}");
+            }
+        }
+
+        public void OpenFolder(string folderName)
+        {
+            Process.Start(folderName);
+        }
+
+        /// <summary>
+        /// Creates a background timer to continously process the active jobs ([er 1 second)
+        /// </summary>
         private void StartJobProcessor()
         {
-            // Create a background task to continously process the active jobs
-            this.activeJobsProcessor = new Task(() =>
+            this.activeJobsProcessor = new System.Windows.Forms.Timer();
+            this.activeJobsProcessor.Interval = 1000;
+            this.activeJobsProcessor.Tick += (sender, args) => 
             {
-                // At certain time interval (1 second), check the status of the currrent job.
-                // If the job is completed -> move it the to completed jobs queue.
-                while (true)
-                {
-                    Thread.Sleep(1000);
-                    ProcessJobsQueue();
-                }
-            });
+                ProcessJobsQueue();
+            };
             this.activeJobsProcessor.Start();
+        }
+
+        private void Application_ProcessExit(object sender, EventArgs e)
+        {
+            // Delete all temp files on app exit
+            Directory.Delete(this.workDir, true);
         }
 
         private void FormVideoUploader_Shown(object sender, EventArgs e)
@@ -81,7 +104,7 @@ namespace CDN_Video_Uploader
             }
             catch (Exception ex)
             {
-                LogError(ex.ToString());
+                this.LogError(ex.Message);
             }
         }
 
@@ -113,7 +136,7 @@ namespace CDN_Video_Uploader
             }
             catch (Exception ex)
             {
-                LogError(ex.ToString());
+                this.LogError($"FTP navigation failed. {ex.Message}");
             }
         }
 
@@ -162,36 +185,16 @@ namespace CDN_Video_Uploader
 
             void browserNavigated(object sender, WebBrowserNavigatedEventArgs e)
             {
-                this.webBrowserLogs.Document.Write("<p style='font-family:arial;font-size=9pt'>\n");
+                // Initialize the CSS styles for the logger Web browser control
+                this.webBrowserLogs.Document.Write(@"
+                    <style>
+                        body {font-family:arial; font-size:9pt}
+                        code {display:inline-block; font-family:consolas; background:#eee; padding:1px 4px; border-radius:4px}
+                    </style>                
+                ");
                 this.webBrowserLogs.Navigated -= browserNavigated;
                 this.Log("Welcome to the <b>CDN Video Transcoder and Uploader</b> tool.");
             }
-        }
-
-        private void LogError(string errMsg)
-        {
-            Log(errMsg, MsgType.Error);
-        }
- 
-        private void Log(string msg, MsgType msgType = MsgType.Info)
-        {
-            if (msgType == MsgType.Error)
-            {
-                msg = $"<span style='color:#922'>Error:<b>{msg}</b></span>";
-            }
-            // Update the UI through the UI thread (thread safe)
-            this.webBrowserLogs.Invoke((MethodInvoker)delegate {
-                // Append the dateand time to the logs
-                string date = DateTime.Now.ToString("d-MMM-yyyy HH:mm:ss");
-                this.webBrowserLogs.Document.Write($"<span style='color:#999'>[{date}]</span> ");
-                // Append the message to the logs
-                this.webBrowserLogs.Document.Write(msg);
-                // Append a new line
-                this.webBrowserLogs.Document.Write("<br>\n");
-                // Scroll to the document end
-                this.webBrowserLogs.Document.Body.ScrollTop =
-                    this.webBrowserLogs.Document.Body.ScrollRectangle.Height;
-            });
         }
 
         private void textBoxFTPPath_KeyPress(object sender, KeyPressEventArgs e)
@@ -263,7 +266,6 @@ namespace CDN_Video_Uploader
             this.dataGridViewCompletedJobs.DataSource = this.completedJobs;
         }
 
-
         private List<ExecutableAction> CreateActionsForFile(FileInfo fileInfo)
         {
             var actions = new List<ExecutableAction>();
@@ -287,19 +289,66 @@ namespace CDN_Video_Uploader
                         .Replace("{output}", '"' + outputFileNameFull + '"'),
                     OutputFile = outputFileNameFull
                 };
+                transcodeAction.ExecutionStateChanged += TranscodeAction_ExecutionStateChanged;
+                transcodeAction.ErrorOccurred += TranscodeAction_ErrorOccurred;
                 actions.Add(transcodeAction);
 
                 string ftpPath = this.textBoxFTPPath.Text;
+                if (!ftpPath.EndsWith("/"))
+                    ftpPath = ftpPath + "/";
                 UploadAction uploadAction = new UploadAction()
                 {
                     Description = $"Uploading {outputFileNameShort} to FTP folder {ftpPath}",
                     InputFile = outputFileNameFull,
-                    PathAtFTP = ftpPath,
+                    FtpClient = this.ftpClient,
+                    PathAtFTP = ftpPath + outputFileNameShort,
                 };
+                uploadAction.ExecutionStateChanged += UploadAction_ExecutionStateChanged;
+                uploadAction.ErrorOccurred += UploadAction_ErrorOccurred;
                 actions.Add(uploadAction);
             }
 
             return actions;
+        }
+
+        private void TranscodeAction_ExecutionStateChanged(object sender, EventArgs e)
+        {
+            TranscodeAction action = sender as TranscodeAction;
+            if (action.ExecutionState == ExecutionState.Running)
+                this.Log($"Transcoding <b>started</b>: <code>{action.Description}</code>", indentTabs: 1);
+            else if (action.ExecutionState == ExecutionState.CompletedSuccessfully)
+                this.Log($"Transcoding <b>successful</b>: <code>{action.Description}</code>", indentTabs: 1);
+            else if (action.ExecutionState == ExecutionState.Failed)
+                this.Log($"Transcoding <b>failed</b>: <code>{action.Description}</code>", indentTabs: 1);
+        }
+
+        private void TranscodeAction_ErrorOccurred(object sender, UnhandledExceptionEventArgs e)
+        {
+            string errorMsg = "unknown error";
+            Exception ex = e.ExceptionObject as Exception;
+            if (ex != null)
+                errorMsg = ex.Message;
+            this.LogError(errTitle: "Transcoding error", errMsg: errorMsg, indentTabs: 1);
+        }
+
+        private void UploadAction_ExecutionStateChanged(object sender, EventArgs e)
+        {
+            UploadAction action = sender as UploadAction;
+            if (action.ExecutionState == ExecutionState.Running)
+                this.Log($"FTP upload <b>started</b>: <code>{action.Description}</code>", indentTabs: 1);
+            else if (action.ExecutionState == ExecutionState.CompletedSuccessfully)
+                this.Log($"FTP upload <b>successful</b>: <code>{action.Description}</code>", indentTabs: 1);
+            else if (action.ExecutionState == ExecutionState.Failed)
+                this.Log($"FTP upload <b>failed</b>: <code>{action.Description}</code>", indentTabs: 1);
+        }
+
+        private void UploadAction_ErrorOccurred(object sender, UnhandledExceptionEventArgs e)
+        {
+            string errorMsg = "unknown error";
+            Exception ex = e.ExceptionObject as Exception;
+            if (ex != null)
+                errorMsg = ex.Message;
+            this.LogError(errTitle: "FTP upload error", errMsg: errorMsg, indentTabs: 1);
         }
 
         private string GetFileSizeAsText(FileInfo fileInfo)
@@ -334,18 +383,37 @@ namespace CDN_Video_Uploader
                 Job activeJob = this.activeJobsQueue[0];
                 if (activeJob.ExecutionState == ExecutionState.NotStarted)
                 {
-                    activeJob.Start();
-                    this.Log("Started job: " + activeJob.Description);
+                    try
+                    {
+                        this.Log($"Job <b>started</b>: <code>{activeJob.Description}</code>");
+                        activeJob.Start();
+                    }
+                    catch (Exception ex)
+                    {
+                        this.LogError($"failed to start job <code>{activeJob.Description}</code>");
+                        this.LogError(ex.Message);
+                    }
                 }
-                activeJob.UpdateState();
+
+                try
+                {
+                    activeJob.UpdateState();
+                }
+                catch (Exception ex)
+                {
+                    this.LogError($"failed to start job <code>{activeJob.Description}</code>");
+                    this.LogError(ex.Message);
+                }
+
                 if (activeJob.IsFinished)
                 {
+
                     // Move the current job to the "completed jobs" list
                     this.activeJobsQueue.RemoveAt(0);
                     
                     this.completedJobs.Add(activeJob);
                     this.RefreshCompletedJobsUI();
-                    this.Log("Completed job: " + activeJob.Description);
+                    this.Log($"Job <code>{activeJob.Description}</code> finished: <b>{activeJob.StateAsText.ToLower()}</b>");
 
                     // Start immediately the next job
                     ProcessJobsQueue(); 
@@ -353,6 +421,33 @@ namespace CDN_Video_Uploader
 
                 this.RefreshActiveJobsUI();
             }
+        }
+
+        private void Log(string msg, int indentTabs = 0)
+        {
+            if (indentTabs > 0) 
+                msg = $"<span style='padding-left:{indentTabs * 10}px'>{msg}</span>";
+
+            // Update the UI through the main UI thread (thread safe)
+            this.webBrowserLogs.Invoke((MethodInvoker)delegate {
+                // Append the dateand time to the logs
+                string date = DateTime.Now.ToString("d-MMM-yyyy HH:mm:ss");
+                this.webBrowserLogs.Document.Write($"<span style='color:#999'>[{date}]</span> ");
+                // Append the message to the logs
+                this.webBrowserLogs.Document.Write(msg);
+                // Append a new line
+                this.webBrowserLogs.Document.Write("<br>\n");
+                // Scroll to the document end
+                this.webBrowserLogs.Document.Body.ScrollTop =
+                    this.webBrowserLogs.Document.Body.ScrollRectangle.Height;
+            });
+        }
+
+        private void LogError(string errMsg, string errTitle = "Error", int indentTabs = 0)
+        {
+            string formattedErrMsg = 
+                $"<span style='color:#922'>{errTitle}: <b>{errMsg}</b></span>";
+            Log(formattedErrMsg, indentTabs);
         }
     }
 }

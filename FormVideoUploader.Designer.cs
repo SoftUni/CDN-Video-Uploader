@@ -57,12 +57,13 @@
             this.webBrowserLogs = new System.Windows.Forms.WebBrowser();
             this.buttonClearLog = new System.Windows.Forms.Button();
             this.dataGridViewActiveJobs = new System.Windows.Forms.DataGridView();
-            this.dataGridViewCompletedJobs = new System.Windows.Forms.DataGridView();
-            this.ColumnCompletedJob = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnVideoURL = new System.Windows.Forms.DataGridViewLinkColumn();
             this.ColumnJob = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnState = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnProgress = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewCompletedJobs = new System.Windows.Forms.DataGridView();
+            this.ColumnCompletedJob = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnResult = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnVideoURL = new System.Windows.Forms.DataGridViewLinkColumn();
             pictureBoxUploadImage = new System.Windows.Forms.PictureBox();
             labelDragAndDropFiles = new System.Windows.Forms.Label();
             labelOr = new System.Windows.Forms.Label();
@@ -384,58 +385,6 @@
             this.dataGridViewActiveJobs.TabIndex = 12;
             this.dataGridViewActiveJobs.Text = "dataGridView1";
             // 
-            // dataGridViewCompletedJobs
-            // 
-            this.dataGridViewCompletedJobs.AllowUserToDeleteRows = false;
-            this.dataGridViewCompletedJobs.AllowUserToOrderColumns = true;
-            this.dataGridViewCompletedJobs.AllowUserToResizeRows = false;
-            this.dataGridViewCompletedJobs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridViewCompletedJobs.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridViewCompletedJobs.BackgroundColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewCompletedJobs.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
-            this.dataGridViewCompletedJobs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewCompletedJobs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.ColumnCompletedJob,
-            this.ColumnVideoURL});
-            this.dataGridViewCompletedJobs.EnableHeadersVisualStyles = false;
-            this.dataGridViewCompletedJobs.Location = new System.Drawing.Point(739, 310);
-            this.dataGridViewCompletedJobs.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.dataGridViewCompletedJobs.MultiSelect = false;
-            this.dataGridViewCompletedJobs.Name = "dataGridViewCompletedJobs";
-            this.dataGridViewCompletedJobs.RowHeadersVisible = false;
-            this.dataGridViewCompletedJobs.RowHeadersWidth = 51;
-            this.dataGridViewCompletedJobs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewCompletedJobs.Size = new System.Drawing.Size(626, 181);
-            this.dataGridViewCompletedJobs.TabIndex = 13;
-            this.dataGridViewCompletedJobs.Text = "dataGridView1";
-            // 
-            // ColumnCompletedJob
-            // 
-            this.ColumnCompletedJob.DataPropertyName = "Description";
-            this.ColumnCompletedJob.FillWeight = 191.2675F;
-            this.ColumnCompletedJob.HeaderText = "Completed Job";
-            this.ColumnCompletedJob.MinimumWidth = 6;
-            this.ColumnCompletedJob.Name = "ColumnCompletedJob";
-            this.ColumnCompletedJob.ReadOnly = true;
-            // 
-            // ColumnVideoURL
-            // 
-            this.ColumnVideoURL.DataPropertyName = "Progress";
-            this.ColumnVideoURL.FillWeight = 58.81188F;
-            this.ColumnVideoURL.HeaderText = "Video URL";
-            this.ColumnVideoURL.MinimumWidth = 6;
-            this.ColumnVideoURL.Name = "ColumnVideoURL";
-            this.ColumnVideoURL.ReadOnly = true;
-            this.ColumnVideoURL.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.ColumnVideoURL.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
             // ColumnJob
             // 
             this.ColumnJob.DataPropertyName = "Description";
@@ -462,6 +411,66 @@
             this.ColumnProgress.MinimumWidth = 6;
             this.ColumnProgress.Name = "ColumnProgress";
             this.ColumnProgress.ReadOnly = true;
+            // 
+            // dataGridViewCompletedJobs
+            // 
+            this.dataGridViewCompletedJobs.AllowUserToDeleteRows = false;
+            this.dataGridViewCompletedJobs.AllowUserToOrderColumns = true;
+            this.dataGridViewCompletedJobs.AllowUserToResizeRows = false;
+            this.dataGridViewCompletedJobs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridViewCompletedJobs.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridViewCompletedJobs.BackgroundColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewCompletedJobs.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            this.dataGridViewCompletedJobs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewCompletedJobs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ColumnCompletedJob,
+            this.ColumnResult,
+            this.ColumnVideoURL});
+            this.dataGridViewCompletedJobs.EnableHeadersVisualStyles = false;
+            this.dataGridViewCompletedJobs.Location = new System.Drawing.Point(739, 310);
+            this.dataGridViewCompletedJobs.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.dataGridViewCompletedJobs.MultiSelect = false;
+            this.dataGridViewCompletedJobs.Name = "dataGridViewCompletedJobs";
+            this.dataGridViewCompletedJobs.RowHeadersVisible = false;
+            this.dataGridViewCompletedJobs.RowHeadersWidth = 51;
+            this.dataGridViewCompletedJobs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridViewCompletedJobs.Size = new System.Drawing.Size(626, 181);
+            this.dataGridViewCompletedJobs.TabIndex = 13;
+            this.dataGridViewCompletedJobs.Text = "dataGridView1";
+            // 
+            // ColumnCompletedJob
+            // 
+            this.ColumnCompletedJob.DataPropertyName = "Description";
+            this.ColumnCompletedJob.FillWeight = 191.2675F;
+            this.ColumnCompletedJob.HeaderText = "Completed Job";
+            this.ColumnCompletedJob.MinimumWidth = 6;
+            this.ColumnCompletedJob.Name = "ColumnCompletedJob";
+            this.ColumnCompletedJob.ReadOnly = true;
+            // 
+            // ColumnResult
+            // 
+            this.ColumnResult.DataPropertyName = "StateAsText";
+            this.ColumnResult.HeaderText = "Result";
+            this.ColumnResult.MinimumWidth = 6;
+            this.ColumnResult.Name = "ColumnResult";
+            // 
+            // ColumnVideoURL
+            // 
+            this.ColumnVideoURL.DataPropertyName = "VideoURL";
+            this.ColumnVideoURL.FillWeight = 58.81188F;
+            this.ColumnVideoURL.HeaderText = "Video URL";
+            this.ColumnVideoURL.MinimumWidth = 6;
+            this.ColumnVideoURL.Name = "ColumnVideoURL";
+            this.ColumnVideoURL.ReadOnly = true;
+            this.ColumnVideoURL.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.ColumnVideoURL.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
             // FormVideoUploader
             // 
@@ -521,11 +530,12 @@
         private System.Windows.Forms.Button buttonChooseFilesToUpload;
         private System.Windows.Forms.DataGridView dataGridViewActiveJobs;
         private System.Windows.Forms.DataGridView dataGridViewCompletedJobs;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnCompletedJob;
-        private System.Windows.Forms.DataGridViewLinkColumn ColumnVideoURL;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnJob;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnState;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnProgress;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnCompletedJob;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnResult;
+        private System.Windows.Forms.DataGridViewLinkColumn ColumnVideoURL;
     }
 }
 

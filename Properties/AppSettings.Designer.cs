@@ -63,7 +63,7 @@ namespace CDN_Video_Uploader.Properties {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
 <ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
-  <string>1080p | ffmpeg.exe -i {input} -c copy {output}-1080p.mp4</string>
+  <string>1080p | ffmpeg.exe -i {input} -c copy {output}</string>
   <string>720p | ffmpeg.exe -i {input} -vcodec libx264 -crf 27 -preset veryfast -c:a copy -s 1280x720 {output}</string>
   <string>480p | ffmpeg.exe -i {input} -vcodec libx264 -crf 27 -preset veryfast -c:a copy -s 854x480 {output}</string>
   <string>240p | ffmpeg.exe -i {input} -vcodec libx264 -crf 27 -preset veryfast -c:a copy -s 426x240 {output}</string>
