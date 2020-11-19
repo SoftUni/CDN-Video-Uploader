@@ -14,10 +14,17 @@
     <Setting Name="TranscodingProfiles" Type="System.Collections.Specialized.StringCollection" Scope="Application">
       <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;string&gt;1080p | ffmpeg.exe -i {input} -c copy {output}&lt;/string&gt;
+  &lt;string&gt;1080p | ffmpeg.exe -i {input} -vcodec libx264 -crf 27 -preset veryfast -c:a copy -s 1920x1080 {output}&lt;/string&gt;
   &lt;string&gt;720p | ffmpeg.exe -i {input} -vcodec libx264 -crf 27 -preset veryfast -c:a copy -s 1280x720 {output}&lt;/string&gt;
   &lt;string&gt;480p | ffmpeg.exe -i {input} -vcodec libx264 -crf 27 -preset veryfast -c:a copy -s 854x480 {output}&lt;/string&gt;
   &lt;string&gt;240p | ffmpeg.exe -i {input} -vcodec libx264 -crf 27 -preset veryfast -c:a copy -s 426x240 {output}&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
+    </Setting>
+    <Setting Name="VideoUrlPatterns" Type="System.Collections.Specialized.StringCollection" Scope="Application">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;string&gt;/videos-bg/ | https://11461-1.b.cdn12.com/hls/{input}-{profiles}.mp4/urlset/master.m3u8&lt;/string&gt;
+  &lt;string&gt;/videos-org/ |https://11461-2.b.cdn12.com/hls/{input}-{profiles}.mp4/urlset/master.m3u8&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
     </Setting>
   </Settings>

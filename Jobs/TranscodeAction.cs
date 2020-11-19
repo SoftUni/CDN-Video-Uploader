@@ -14,6 +14,19 @@ namespace CDN_Video_Uploader.Jobs
 
         public override void Start()
         {
+            try
+            {
+                if (File.Exists(this.OutputFile))
+                    File.Delete(this.OutputFile);
+            }
+            catch (Exception ex)
+            {
+                this.ExecutionState = ExecutionState.Failed;
+                this.OnErrorOccurred(new InvalidOperationException(
+                    $"Output file <code>{this.OutputFile}</code> already exists and cannot be deleted. {ex.Message}"));
+                return;
+            }
+
             Match cmdParts = Regex.Match(this.TranscodingCommand, @"(\S+)\s+(.*)");
             if (cmdParts.Groups.Count != 3)
             {
@@ -43,8 +56,8 @@ namespace CDN_Video_Uploader.Jobs
                     Arguments = cmdParams,
                     UseShellExecute = false,
                     CreateNoWindow = false,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
+                    RedirectStandardOutput = false,
+                    RedirectStandardError = false,
                 }
             };
             this.AppendToLog( 
@@ -115,10 +128,11 @@ namespace CDN_Video_Uploader.Jobs
 
         private void UpdateLogFromProcessOutput()
         {
-            this.ExecutionLog +=
-                this.transcodeProcess.StandardOutput.ReadToEnd();
-            this.ExecutionLog +=
-                this.transcodeProcess.StandardError.ReadToEnd();
+            
+            //this.ExecutionLog +=
+            //    this.transcodeProcess.StandardOutput.ReadToEnd();
+            //this.ExecutionLog +=
+            //    this.transcodeProcess.StandardError.ReadToEnd();
         }
     }
 }

@@ -96,6 +96,7 @@ namespace CDN_Video_Uploader
                     pass: ftpConnectForm.Password
                 );
                 ftpClient.SocketKeepAlive = true;
+                ftpClient.DataConnectionType = FtpDataConnectionType.PASV;
                 this.ftpClient.Connect();
                 this.textBoxFTPPath.Text = "/";
                 Log($"Connected to FTP server: <b>{this.ftpClient.Host}</b>");
@@ -128,7 +129,11 @@ namespace CDN_Video_Uploader
 
                 var files = ftpItems
                     .Where(item => item.Type == FtpFileSystemObjectType.File)
-                    .Select(item => new { item.Name, item.Size, Date = item.Modified.ToString() })
+                    .Select(item => new { 
+                        item.Name,
+                        SizeAsText = $"{this.GetFileSizeAsText(item.Size)} ({item.Size})",
+                        Date = item.Modified.ToString() 
+                    })
                     .ToList();
                 this.dataGridViewFTPFiles.DataSource = files;
 
@@ -228,13 +233,20 @@ namespace CDN_Video_Uploader
             var fileExt = fileInfo.Extension.ToLower();
             if (fileExt == "" || AllowedVideoFilesExtensions.IndexOf(fileExt) == -1)
             {
-                LogError("invalid file: " + fileInfo.Name);
+                LogError($"invalid file: <code>{fileInfo.Name}</code>");
                 return;
             }
 
-            string fileSizeAsText = GetFileSizeAsText(fileInfo);
+            string ftpPath = this.textBoxFTPPath.Text;
+            string hlsVideoURL = GetVideoUrl(ftpPath, fileInfo.Name);
+            if (hlsVideoURL == null)
+            {
+                LogError($"Cannot find video URL pattern at the CDN for the current FTP path <code>{ftpPath}</code>. Choose an FTP folder first.");
+                return;
+            }
 
             List<ExecutableAction> actions = CreateActionsForFile(fileInfo);
+            string fileSizeAsText = GetFileSizeAsText(fileInfo);
             var task = new Job()
             {
                 Description = fileInfo.Name + " (" + fileSizeAsText + ")",
@@ -242,28 +254,34 @@ namespace CDN_Video_Uploader
                 SourceFileName = fileName,
                 Actions = actions,
                 ActiveActionIndex = 0,
+                VideoURL = hlsVideoURL
             };
             this.activeJobsQueue.Add(task);
 
             RefreshActiveJobsUI();
         }
 
-        /// <summary>
-        /// Refresh the "active jobs" data grid UI control to display the jobs queue
-        /// </summary>
-        private void RefreshActiveJobsUI()
+        private string GetVideoUrl(string ftpPath, string shortFileName)
         {
-            this.dataGridViewActiveJobs.DataSource = null;
-            this.dataGridViewActiveJobs.DataSource = this.activeJobsQueue;
-        }
-
-        /// <summary>
-        /// Refresh the "completed jobs" data grid UI control to display the completed jobs
-        /// </summary>
-        private void RefreshCompletedJobsUI()
-        {
-            this.dataGridViewCompletedJobs.DataSource = null;
-            this.dataGridViewCompletedJobs.DataSource = this.completedJobs;
+            if (!ftpPath.EndsWith("/"))
+                ftpPath += "/";
+            foreach (string pattern in AppSettings.Default.VideoUrlPatterns)
+            {
+                var patternParts = pattern.Split('|');
+                string ftpRootFolder = patternParts[0].Trim();
+                string videoUrlPattern = patternParts[1].Trim();
+                if (ftpPath.StartsWith(ftpRootFolder))
+                {
+                    string ftpPathWithoutRoot = ftpPath.Remove(0, ftpRootFolder.Length);
+                    string fileNameWithoutExt = Path.GetFileNameWithoutExtension(shortFileName);
+                    string profilesList = "," + GetVideoProfileNames().Join(",") + ",";
+                    string hlsVideoURL = videoUrlPattern
+                        .Replace("{input}", ftpPathWithoutRoot + fileNameWithoutExt)
+                        .Replace("{profiles}", profilesList);
+                    return hlsVideoURL;
+                }
+            }
+            return null;
         }
 
         private List<ExecutableAction> CreateActionsForFile(FileInfo fileInfo)
@@ -324,10 +342,7 @@ namespace CDN_Video_Uploader
 
         private void TranscodeAction_ErrorOccurred(object sender, UnhandledExceptionEventArgs e)
         {
-            string errorMsg = "unknown error";
-            Exception ex = e.ExceptionObject as Exception;
-            if (ex != null)
-                errorMsg = ex.Message;
+            string errorMsg = CollectErrorsFromException(e);
             this.LogError(errTitle: "Transcoding error", errMsg: errorMsg, indentTabs: 1);
         }
 
@@ -344,16 +359,57 @@ namespace CDN_Video_Uploader
 
         private void UploadAction_ErrorOccurred(object sender, UnhandledExceptionEventArgs e)
         {
-            string errorMsg = "unknown error";
-            Exception ex = e.ExceptionObject as Exception;
-            if (ex != null)
-                errorMsg = ex.Message;
+            string errorMsg = CollectErrorsFromException(e);
             this.LogError(errTitle: "FTP upload error", errMsg: errorMsg, indentTabs: 1);
         }
 
-        private string GetFileSizeAsText(FileInfo fileInfo)
+        private List<string> GetVideoProfileNames()
         {
-            double sizeKB = fileInfo.Length / 1024.0;
+            List<string> profileNames = new List<string>();
+            foreach (string profile in AppSettings.Default.TranscodingProfiles)
+            {
+                var profileParts = profile.Split('|');
+                string profileName = profileParts[0].Trim();
+                profileNames.Add(profileName);
+            }
+            return profileNames;
+        }
+
+        /// <summary>
+        /// Refresh the "active jobs" data grid UI control to display the jobs queue
+        /// </summary>
+        private void RefreshActiveJobsUI()
+        {
+            this.dataGridViewActiveJobs.DataSource = null;
+            this.dataGridViewActiveJobs.DataSource = this.activeJobsQueue;
+        }
+
+        /// <summary>
+        /// Refresh the "completed jobs" data grid UI control to display the completed jobs
+        /// </summary>
+        private void RefreshCompletedJobsUI()
+        {
+            this.dataGridViewCompletedJobs.DataSource = null;
+            this.dataGridViewCompletedJobs.DataSource = this.completedJobs;
+        }
+
+        private static string CollectErrorsFromException(UnhandledExceptionEventArgs e)
+        {
+            Exception ex = e.ExceptionObject as Exception;
+            if (ex == null)
+                return "unknown error";
+            string errorMsg = ex.Message;
+            while (ex.InnerException != null)
+            {
+                ex = ex.InnerException;
+                errorMsg += " --> " + ex.Message;
+            }
+            return errorMsg;
+        }
+
+        private string GetFileSizeAsText(long fileSize)
+        {
+            double sizeKB = fileSize / 1024.0;
             double sizeMB = sizeKB / 1024.0;
             double sizeGB = sizeMB / 1024.0;
             if (sizeGB >= 1)
@@ -361,6 +417,12 @@ namespace CDN_Video_Uploader
             if (sizeMB >= 1)
                 return Math.Round(sizeMB, 2) + " MB";
             return Math.Round(sizeKB, 2) + " KB";
+        }
+
+        private string GetFileSizeAsText(FileInfo fileInfo)
+        {
+            string result = GetFileSizeAsText(fileInfo.Length);
+            return result;
         }
 
         private void panelUploadBox_DragEnter(object sender, DragEventArgs e)
@@ -448,6 +510,16 @@ namespace CDN_Video_Uploader
             string formattedErrMsg = 
                 $"<span style='color:#922'>{errTitle}: <b>{errMsg}</b></span>";
             Log(formattedErrMsg, indentTabs);
+        }
+
+        private void dataGridViewCompletedJobs_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                string hlsVideoURL = this.completedJobs[e.RowIndex].VideoURL;
+                Clipboard.SetText(hlsVideoURL);
+                this.Log($"HLS video URL copied to clipboard: <code>{hlsVideoURL}</code>");
+            }
         }
     }
 }

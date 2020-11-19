@@ -63,6 +63,7 @@ namespace CDN_Video_Uploader.Jobs
             }
             else if (this.uploadTask.Status == TaskStatus.Faulted)
             {
+                this.OnErrorOccurred(this.uploadTask.Exception);
                 this.ExecutionState = ExecutionState.Failed;
             }
             else if (this.uploadTask.Status == TaskStatus.Canceled)

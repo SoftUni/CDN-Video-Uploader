@@ -28,9 +28,9 @@ namespace CDN_Video_Uploader.Jobs
             }
         }
 
-        public string Progress
+        public string ProgressAsText
         {
-            get => "" + Math.Round(this.PercentsDone, 0) + "% done";
+            get => "" + Math.Round(this.PercentsDone, 1) + "% done";
         }
 
         public ExecutableAction ActiveAction
@@ -44,13 +44,19 @@ namespace CDN_Video_Uploader.Jobs
             }
         }
 
+        private string videoURL;
+
         public string VideoURL
         {
             get
             {
                 if (this.ExecutionState == ExecutionState.CompletedSuccessfully) 
-                    return "https://TODO";
+                    return this.videoURL;
                 return null;
+            }
+            set
+            {
+                this.videoURL = value;
             }
         }
 
