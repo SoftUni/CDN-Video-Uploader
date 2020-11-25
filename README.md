@@ -1,12 +1,13 @@
 # CDN Video Uploader
 
 A tool for **transcoding** and **uploading** videos to a CDN network for **HLS video streaming**.
-  - **Input**: video file (AVI, MKV, MP4, WMV) @ 1080p resolution
+  - **Input**: video file (AVI, MKV, MP4, WMV) @ 1080p (or higher) resolution
   - **Output**: video file converted to streamable MP4 video at several bitrates: 
-    - MP4 @ `1080p` (~ 5 mbps bitrate, original)
-    - MP4 @ `720p` (~ 2 mbps bitrate)
-    - MP4 @ `480p` (~ 1 mbps bitrate)
-    - MP4 @ `240p` (~ 0.5 mbps bitrate)
+    - MP4 @ `1080p` (~ 1800 mbps bitrate)
+    - MP4 @ `720p` (~ 1024 mbps bitrate)
+    - MP4 @ `480p` (~ 600 kbps bitrate)
+    - MP4 @ `360p` (~ 276 kbps bitrate)
+    - MP4 @ `240p` (~ 150 kbps bitrate)
   - **Upload**: the files are uploaded through to FTP to the target CDN network
 
 ![CDN-Video-Uploader-screenshot](https://user-images.githubusercontent.com/1689586/99668721-c5ebbb00-2a76-11eb-8cd9-dfbfbd7ef9c4.png)
