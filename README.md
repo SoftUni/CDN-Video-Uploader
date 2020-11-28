@@ -3,10 +3,10 @@
 A tool for **transcoding** and **uploading** videos to a CDN network for **HLS video streaming**.
   - **Input**: video file (AVI, MKV, MP4, WMV) @ 1080p (or higher) resolution
   - **Output**: video file converted to streamable MP4 video at several bitrates: 
-    - MP4 @ `1080p` (~ 1800 mbps bitrate)
-    - MP4 @ `720p` (~ 1024 mbps bitrate)
-    - MP4 @ `480p` (~ 600 kbps bitrate)
-    - MP4 @ `360p` (~ 276 kbps bitrate)
+    - MP4 @ `1080p` (~ 1100 mbps bitrate)
+    - MP4 @ `720p` (~ 650 mbps bitrate)
+    - MP4 @ `480p` (~ 400 kbps bitrate)
+    - MP4 @ `360p` (~ 250 kbps bitrate)
     - MP4 @ `240p` (~ 150 kbps bitrate)
   - **Upload**: the files are uploaded through to FTP to the target CDN network
 
@@ -14,12 +14,22 @@ A tool for **transcoding** and **uploading** videos to a CDN network for **HLS v
 
 ## Video Transcoding 
 
-The tool uses internally [`ffmpeg`](https://ffmpeg.org):
+The tool uses internally [`ffmpeg`](https://ffmpeg.org) with the following default parameters:
 ```
-ffmpeg.exe -i input.mkv -vcodec libx264 -crf 27 -preset veryfast -c:a copy -s 1920x1080 sample-1080p.mp4
-ffmpeg.exe -i input.mkv -vcodec libx264 -crf 27 -preset veryfast -c:a copy -s 1280x720 sample-720p.mp4
-ffmpeg.exe -i input.mkv -vcodec libx264 -crf 27 -preset veryfast -c:a copy -s 854x480 sample-480p.mp4
-ffmpeg.exe -i input.mkv -vcodec libx264 -crf 27 -preset veryfast -c:a copy -s 426x240 sample-240p.mp4
+1080p (1000-1200kbps)
+ffmpeg.exe -i input.mkv  -c:v libx264 -s 1920x1080 -r 30 -x264opts keyint=60:no-scenecut -crf 25 -maxrate 1500k -bufsize 3000k  -c:a aac -b:a 192k  -y sample-1080p.mp4
+
+720p (600-800 kbps)
+ffmpeg.exe -i input.mkv  -c:v libx264 -s 1280x720 -r 30 -x264opts keyint=60:no-scenecut -crf 24 -maxrate 1000k -bufsize 2000k  -c:a aac -b:a 128k  -y sample-720p.mp4
+
+480p (350-450 kbps)
+ffmpeg.exe -i input.mkv  -c:v libx264 -s 854x480 -r 25 -x264opts keyint=60:no-scenecut -crf 23 -maxrate 600k -bufsize 1200k  -c:a aac -b:a 96k  -y sample-480p.mp4
+
+360p (200-300 kbps)
+ffmpeg.exe -i input.mkv  -c:v libx264 -s 640x360 -r 24 -x264opts keyint=60:no-scenecut -crf 24 -maxrate 400k -bufsize 800k  -c:a aac -b:a 64k  -y sample-360p.mp4
+
+240p (100-200 kbps)
+ffmpeg.exe -i input.mkv  -c:v libx264 -s 426x240 -r 24 -x264opts keyint=60:no-scenecut -crf 25 -maxrate 250k -bufsize 500k  -c:a aac -b:a 48k  -y sample-240p.mp4
 ```
 
 The tool generates **HLS adaptable bitrate stream**, using the standard API from UCDN.
