@@ -23,13 +23,13 @@ ffmpeg.exe -i input.mkv  -c:v libx264 -s 1920x1080 -r 30 -x264opts keyint=60:no-
 ffmpeg.exe -i input.mkv  -c:v libx264 -s 1280x720 -r 30 -x264opts keyint=60:no-scenecut -crf 24 -maxrate 1000k -bufsize 2000k  -c:a aac -b:a 128k  -y sample-720p.mp4
 
 480p (350-450 kbps)
-ffmpeg.exe -i input.mkv  -c:v libx264 -s 854x480 -r 25 -x264opts keyint=60:no-scenecut -crf 23 -maxrate 600k -bufsize 1200k  -c:a aac -b:a 96k  -y sample-480p.mp4
+ffmpeg.exe -i input.mkv  -c:v libx264 -s 854x480 -r 25 -x264opts keyint=50:no-scenecut -crf 23 -maxrate 600k -bufsize 1200k  -c:a aac -b:a 96k  -y sample-480p.mp4
 
 360p (200-300 kbps)
-ffmpeg.exe -i input.mkv  -c:v libx264 -s 640x360 -r 24 -x264opts keyint=60:no-scenecut -crf 24 -maxrate 400k -bufsize 800k  -c:a aac -b:a 64k  -y sample-360p.mp4
+ffmpeg.exe -i input.mkv  -c:v libx264 -s 640x360 -r 24 -x264opts keyint=48:no-scenecut -crf 24 -maxrate 400k -bufsize 800k  -c:a aac -b:a 64k  -y sample-360p.mp4
 
 240p (100-200 kbps)
-ffmpeg.exe -i input.mkv  -c:v libx264 -s 426x240 -r 24 -x264opts keyint=60:no-scenecut -crf 25 -maxrate 250k -bufsize 500k  -c:a aac -b:a 48k  -y sample-240p.mp4
+ffmpeg.exe -i input.mkv  -c:v libx264 -s 426x240 -r 24 -x264opts keyint=48:no-scenecut -crf 25 -maxrate 250k -bufsize 500k  -c:a aac -b:a 48k  -y sample-240p.mp4
 ```
 
 The tool generates **HLS adaptable bitrate stream**, using the standard API from UCDN.
