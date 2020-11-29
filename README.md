@@ -86,6 +86,7 @@ https://11461-1.b.cdn12.com/hls/sample-,240,360,720,1080,p.mp4/urlset/master.m3u
 ## Requirements
   - Windows OS with .NET Framework
   - `ffmpeg`, locally installed and configured in the system PATH
+  - NVidia graphics card + latest drivers (if you use hardware encoding)
  
 ## Technology Stack
   - C#, Windows Forms, .NET Framework, Visual Studio
