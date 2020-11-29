@@ -32,6 +32,29 @@ ffmpeg.exe -i input.mkv  -c:v libx264 -s 640x360 -r 24 -x264opts keyint=48:no-sc
 ffmpeg.exe -i input.mkv  -c:v libx264 -s 426x240 -r 24 -x264opts keyint=48:no-scenecut -crf 25 -maxrate 250k -bufsize 500k  -c:a aac -b:a 48k  -y sample-240p.mp4
 ```
 
+## Hardware Accelerated Video Transcoding (NVidia)
+
+These are the `ffmpeg` settings for similar results, using the hardware acccelerated video encoding:
+
+```
+1080p (1000-1200kbps)
+ffmpeg.exe -i input.mp4  -c:v h264_nvenc -s 1920x1080 -r 30 -force_key_frames expr:gte(t,n_forced*2) -rc vbr -cq 36  -c:a aac -b:a 192k  -y sample-1080p.mp4
+
+720p (600-800 kbps)
+ffmpeg.exe -i input.mp4  -c:v h264_nvenc -s 1280x720 -r 30 -force_key_frames expr:gte(t,n_forced*2) -rc vbr -cq 35  -c:a aac -b:a 128k  -y sample-720p.mp4
+
+480p (350-450 kbps)
+ffmpeg.exe -i input.mp4  -c:v h264_nvenc -s 854x480 -r 25 -force_key_frames expr:gte(t,n_forced*2) -rc vbr -cq 33  -c:a aac -b:a 96k  -y sample-480p.mp4
+
+360p (200-300 kbps)
+ffmpeg.exe -i input.mp4  -c:v h264_nvenc -s 640x360 -r 24 -force_key_frames expr:gte(t,n_forced*2) -rc vbr_hq -cq 33   -c:a aac -b:a 64k  -y sample-360p.mp4
+
+240p (100-200 kbps)
+ffmpeg.exe -i input.mp4  -c:v h264_nvenc -s 426x240 -r 24 -force_key_frames expr:gte(t,n_forced*2) -rc vbr_hq -cq 35  -c:a aac -b:a 48k  -y sample-240p.mp4
+```
+
+
+
 The tool generates **HLS adaptable bitrate stream**, using the standard API from UCDN.
 The generated URL looks like this:
 ```
