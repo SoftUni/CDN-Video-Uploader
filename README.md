@@ -17,43 +17,65 @@ A tool for **transcoding** and **uploading** videos to a CDN network for **HLS v
 The tool uses internally [`ffmpeg`](https://ffmpeg.org) with the following default parameters:
 ```
 1080p (1000-1200kbps)
-ffmpeg.exe -i input.mkv  -c:v libx264 -s 1920x1080 -r 30 -x264opts keyint=60:no-scenecut -crf 25 -maxrate 1500k -bufsize 3000k  -c:a aac -b:a 192k  -y sample-1080p.mp4
+ffmpeg.exe  -i input.mp4  -c:v libx264 -s 1920x1080 -r 30 -g 60 -crf 25 -maxrate 1500k -bufsize 3000k  -c:a aac -b:a 192k  -y sample-1080p.mp4
 
 720p (600-800 kbps)
-ffmpeg.exe -i input.mkv  -c:v libx264 -s 1280x720 -r 30 -x264opts keyint=60:no-scenecut -crf 24 -maxrate 1000k -bufsize 2000k  -c:a aac -b:a 128k  -y sample-720p.mp4
+ffmpeg.exe  -i input.mp4  -c:v libx264 -s 1280x720 -r 30 -g 60 -crf 24 -maxrate 1000k -bufsize 2000k  -c:a aac -b:a 128k  -y sample-720p.mp4
 
 480p (350-450 kbps)
-ffmpeg.exe -i input.mkv  -c:v libx264 -s 854x480 -r 25 -x264opts keyint=50:no-scenecut -crf 23 -maxrate 600k -bufsize 1200k  -c:a aac -b:a 96k  -y sample-480p.mp4
+ffmpeg.exe  -i input.mp4  -c:v libx264 -s 854x480 -r 25 -g 50 -crf 23 -maxrate 600k -bufsize 1200k  -c:a aac -b:a 96k  -y sample-480p.mp4
 
 360p (200-300 kbps)
-ffmpeg.exe -i input.mkv  -c:v libx264 -s 640x360 -r 24 -x264opts keyint=48:no-scenecut -crf 24 -maxrate 400k -bufsize 800k  -c:a aac -b:a 64k  -y sample-360p.mp4
+ffmpeg.exe  -i input.mp4  -c:v libx264 -s 640x360 -r 24 -g 48 -crf 24 -maxrate 400k -bufsize 800k  -c:a aac -b:a 64k  -y sample-360p.mp4
 
 240p (100-200 kbps)
-ffmpeg.exe -i input.mkv  -c:v libx264 -s 426x240 -r 24 -x264opts keyint=48:no-scenecut -crf 25 -maxrate 250k -bufsize 500k  -c:a aac -b:a 48k  -y sample-240p.mp4
+ffmpeg.exe  -i input.mp4  -c:v libx264 -s 426x240 -r 15 -g 30 -crf 25 -maxrate 250k -bufsize 500k  -c:a aac -b:a 48k  -y sample-240p.mp4
 ```
+
+Notes:
+  - The above commands use CPU-based transcoding --> it is slow
+  - 30 fps with 2 secs for hi-res streams (15-25 fps for low-res streams)
+  - The audio is also resampled: 128-192 kbps for his-res streams (48-96 kbps for low-res streams)
+
+Links:
+ - https://slhck.info/video/2017/03/01/rate-control.html
+ - https://developers.google.com/media/vp9/settings/vod
 
 ## Hardware Accelerated Video Transcoding (NVidia)
 
-These are the `ffmpeg` settings to achieve similar results (for less encoding time), using the hardware acccelerated video encoding:
+These are the `ffmpeg` settings to achieve similar results (for less encoding time), using the **hardware acccelerated video encoding**:
 
 ```
 1080p (1000-1200kbps)
-ffmpeg.exe -i input.mp4  -c:v h264_nvenc -s 1920x1080 -r 30 -force_key_frames expr:gte(t,n_forced*2) -rc vbr -cq 36  -c:a aac -b:a 192k  -y sample-1080p.mp4
+ffmpeg.exe  -hwaccel cuvid -hwaccel_output_format cuda -c:v h264_cuvid –resize 1920x1080 -i input.mp4  -c:v h264_nvenc -r 30 -g 60 -rc vbr -cq 34  -c:a aac -b:a 192k  -y sample-1080p.mp4
 
 720p (600-800 kbps)
-ffmpeg.exe -i input.mp4  -c:v h264_nvenc -s 1280x720 -r 30 -force_key_frames expr:gte(t,n_forced*2) -rc vbr -cq 35  -c:a aac -b:a 128k  -y sample-720p.mp4
+ffmpeg.exe  -hwaccel cuvid -hwaccel_output_format cuda -c:v h264_cuvid -resize 1280x720 -i input.mp4  -c:v h264_nvenc -r 30 -g 60 -rc vbr -multipass fullres -cq 34  -c:a aac -b:a 128k  -y sample-720p.mp4
 
 480p (350-450 kbps)
-ffmpeg.exe -i input.mp4  -c:v h264_nvenc -s 854x480 -r 25 -force_key_frames expr:gte(t,n_forced*2) -rc vbr -cq 33  -c:a aac -b:a 96k  -y sample-480p.mp4
+ffmpeg.exe  -hwaccel cuvid -hwaccel_output_format cuda -c:v h264_cuvid -resize 854x480 -i input.mp4  -c:v h264_nvenc -r 25 -g 50 -rc vbr -multipass fullres -cq 32  -c:a aac -b:a 96k  -y sample-480p.mp4
 
 360p (200-300 kbps)
-ffmpeg.exe -i input.mp4  -c:v h264_nvenc -s 640x360 -r 24 -force_key_frames expr:gte(t,n_forced*2) -rc vbr_hq -cq 33   -c:a aac -b:a 64k  -y sample-360p.mp4
+ffmpeg.exe  -hwaccel cuvid -hwaccel_output_format cuda -c:v h264_cuvid -resize 854x480 -i input.mp4  -c:v h264_nvenc -r 24 -g 48 -rc vbr -multipass fullres -cq 37   -c:a aac -b:a 64k  -y sample-360p.mp4
 
 240p (100-200 kbps)
-ffmpeg.exe -i input.mp4  -c:v h264_nvenc -s 426x240 -r 24 -force_key_frames expr:gte(t,n_forced*2) -rc vbr_hq -cq 35  -c:a aac -b:a 48k  -y sample-240p.mp4
+ffmpeg.exe  -hwaccel cuvid -hwaccel_output_format cuda -c:v h264_cuvid -resize 426x240 -i input.mp4  -c:v h264_nvenc -r 15 -g 30 -rc vbr -multipass fullres -cq 32  -c:a aac -b:a 48k  -y sample-240p.mp4
 ```
 
+Notes:
+  - These commands are designed to run in Windows machine, with NVidia graphics card, which supports video encode / decode
+  - Require the latest NVidia drivers
+  - Require the latest `ffmpeg` for Windows (from Nov 2020 or later)
 
+Tested with `ffmpeg version 2020-11-29-git-f194cedfe6-full_build-www.gyan.dev`:
+ - https://www.gyan.dev/ffmpeg/builds/packages/ffmpeg-2020-11-29-git-f194cedfe6-full_build.7z
+
+Links:
+  - https://developer.nvidia.com/blog/nvidia-ffmpeg-transcoding-guide/
+  - https://docs.nvidia.com/video-technologies/video-codec-sdk/ffmpeg-with-nvidia-gpu/
+  - https://gist.github.com/nakov/63375816c9d3201c499b15b110ca6136
+
+## HLS Stream on UCDN
 
 The tool generates **HLS adaptable bitrate stream**, using the standard API from UCDN.
 The generated URL looks like this:
