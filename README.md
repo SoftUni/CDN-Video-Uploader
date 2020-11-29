@@ -14,7 +14,7 @@ A tool for **transcoding** and **uploading** videos to a CDN network for **HLS v
 
 ## Video Transcoding 
 
-The tool uses internally [`ffmpeg`](https://ffmpeg.org) with the following default parameters:
+The tool uses internally [`ffmpeg`](https://ffmpeg.org) with the following default parameters for VoD streaming:
 ```
 1080p (1000-1200kbps)
 ffmpeg.exe  -i input.mp4  -c:v libx264 -s 1920x1080 -r 30 -g 60 -crf 25 -maxrate 1500k -bufsize 3000k  -c:a aac -b:a 192k  -y sample-1080p.mp4
