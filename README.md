@@ -34,7 +34,7 @@ ffmpeg.exe -i input.mkv  -c:v libx264 -s 426x240 -r 24 -x264opts keyint=48:no-sc
 
 ## Hardware Accelerated Video Transcoding (NVidia)
 
-These are the `ffmpeg` settings for similar results, using the hardware acccelerated video encoding:
+These are the `ffmpeg` settings to achieve similar results (for less encoding time), using the hardware acccelerated video encoding:
 
 ```
 1080p (1000-1200kbps)
