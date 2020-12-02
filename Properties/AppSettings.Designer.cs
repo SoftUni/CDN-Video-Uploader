@@ -63,7 +63,7 @@ namespace CDN_Video_Uploader.Properties {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
 <ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
-  <string>1080p | ffmpeg.exe  -hwaccel cuvid -hwaccel_output_format cuda -c:v h264_cuvid –resize 1920x1080 -i {input} -c:v h264_nvenc -r 30 -g 60 -rc vbr -cq 34  -c:a aac -b:a 192k  -y {output}</string>
+  <string>1080p | ffmpeg.exe  -hwaccel cuvid -hwaccel_output_format cuda -c:v h264_cuvid -resize 1920x1080 -i {input} -c:v h264_nvenc -r 30 -g 60 -rc vbr -cq 34  -c:a aac -b:a 192k  -y {output}</string>
   <string>720p | ffmpeg.exe  -hwaccel cuvid -hwaccel_output_format cuda -c:v h264_cuvid -resize 1280x720 -i {input}  -c:v h264_nvenc -r 30 -g 60 -rc vbr -multipass fullres -cq 34  -c:a aac -b:a 128k  -y {output}</string>
   <string>480p | ffmpeg.exe  -hwaccel cuvid -hwaccel_output_format cuda -c:v h264_cuvid -resize 854x480 -i {input}  -c:v h264_nvenc -r 25 -g 50 -rc vbr -multipass fullres -cq 32  -c:a aac -b:a 96k  -y {output}</string>
   <string>360p | ffmpeg.exe  -hwaccel cuvid -hwaccel_output_format cuda -c:v h264_cuvid -resize 854x480 -i {input}  -c:v h264_nvenc -r 24 -g 48 -rc vbr -multipass fullres -cq 37   -c:a aac -b:a 64k  -y {output}</string>
