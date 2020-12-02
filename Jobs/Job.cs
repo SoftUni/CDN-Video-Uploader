@@ -6,7 +6,6 @@ namespace CDN_Video_Uploader.Jobs
 {
     class Job : ExecutableAction
     {
-        public string SourceFileName { get; set; }
         public List<ExecutableAction> Actions { get; set; }
         public int ActiveActionIndex { get; set; }
 

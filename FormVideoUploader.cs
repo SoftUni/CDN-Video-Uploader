@@ -249,9 +249,8 @@ namespace CDN_Video_Uploader
             string fileSizeAsText = GetFileSizeAsText(fileInfo);
             var task = new Job()
             {
-                Description = fileInfo.Name + " (" + fileSizeAsText + ")",
+                Description = ftpPath + fileInfo.Name + " (" + fileSizeAsText + ")",
                 PercentsDone = 0,
-                SourceFileName = fileName,
                 Actions = actions,
                 ActiveActionIndex = 0,
                 VideoURL = hlsVideoURL
