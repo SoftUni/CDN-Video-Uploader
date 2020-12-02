@@ -47,7 +47,7 @@ These are the `ffmpeg` settings to achieve similar results (for less encoding ti
 
 ```
 1080p (1000-1200kbps)
-ffmpeg.exe  -hwaccel cuvid -hwaccel_output_format cuda -c:v h264_cuvid –resize 1920x1080 -i input.mp4  -c:v h264_nvenc -r 30 -g 60 -rc vbr -cq 34  -c:a aac -b:a 192k  -y sample-1080p.mp4
+ffmpeg.exe  -hwaccel cuvid -hwaccel_output_format cuda -c:v h264_cuvid -resize 1920x1080 -i input.mp4  -c:v h264_nvenc -r 30 -g 60 -rc vbr -cq 34  -c:a aac -b:a 192k  -y sample-1080p.mp4
 
 720p (600-800 kbps)
 ffmpeg.exe  -hwaccel cuvid -hwaccel_output_format cuda -c:v h264_cuvid -resize 1280x720 -i input.mp4  -c:v h264_nvenc -r 30 -g 60 -rc vbr -multipass fullres -cq 34  -c:a aac -b:a 128k  -y sample-720p.mp4
