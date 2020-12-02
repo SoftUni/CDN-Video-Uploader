@@ -45,6 +45,8 @@ namespace CDN_Video_Uploader.Jobs
         public string ExecutionLog { get; protected set; } = "";
         protected void AppendToLog(string text)
         {
+            if (String.IsNullOrEmpty(text))
+                return;
             this.ExecutionLog += Environment.NewLine + text + Environment.NewLine;
         }
 
