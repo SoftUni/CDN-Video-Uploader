@@ -54,13 +54,16 @@ namespace CDN_Video_Uploader.Jobs
                 {
                     FileName = cmdExecutable,
                     Arguments = cmdParams,
-                    UseShellExecute = false,
+                    UseShellExecute = true,
                     CreateNoWindow = false,
                     RedirectStandardOutput = false,
                     RedirectStandardError = false,
+                    WindowStyle = ProcessWindowStyle.Minimized
                 }
             };
-            this.AppendToLog( 
+            this.transcodeProcess.OutputDataReceived += TranscodeProcess_OutputDataReceived;
+            this.transcodeProcess.ErrorDataReceived += TranscodeProcess_ErrorDataReceived;
+            this.AppendToLog(
                 cmdExecutable + " " + cmdParams + Environment.NewLine + Environment.NewLine);
             try
             {
@@ -72,7 +75,16 @@ namespace CDN_Video_Uploader.Jobs
                 this.ExecutionState = ExecutionState.Failed;
                 this.OnErrorOccurred(ex);
             }
-            this.UpdateLogFromProcessOutput();
+        }
+
+        private void TranscodeProcess_ErrorDataReceived(object sender, DataReceivedEventArgs e)
+        {
+            this.AppendToLog(e.Data);
+        }
+
+        private void TranscodeProcess_OutputDataReceived(object sender, DataReceivedEventArgs e)
+        {
+            this.AppendToLog(e.Data);
         }
 
         private static string FindExecutableInSystemPath(string exeFileName)
@@ -95,10 +107,9 @@ namespace CDN_Video_Uploader.Jobs
             if (this.ExecutionState != ExecutionState.Running)
                 return;
 
-            this.UpdateLogFromProcessOutput();
-
             if (this.transcodeProcess.HasExited)
             {
+                this.UpdateLogFromProcessOutput();
                 this.PercentsDone = 100;
                 if (this.transcodeProcess.ExitCode == 0)
                     this.ExecutionState = ExecutionState.CompletedSuccessfully;
@@ -109,6 +120,20 @@ namespace CDN_Video_Uploader.Jobs
             {
                 // TODO: update the progress (PercentsDone)
                 this.PercentsDone += 0.1f;
+            }
+        }
+
+        private void UpdateLogFromProcessOutput()
+        {
+            if (this.transcodeProcess.StartInfo.RedirectStandardOutput)
+            {
+                string outputData = this.transcodeProcess.StandardOutput.ReadToEnd();
+                this.AppendToLog(outputData);
+            }
+            if (this.transcodeProcess.StartInfo.RedirectStandardError)
+            {
+                string errorData = this.transcodeProcess.StandardError.ReadToEnd();
+                this.AppendToLog(errorData);
             }
         }
 
@@ -124,15 +149,6 @@ namespace CDN_Video_Uploader.Jobs
                 OnErrorOccurred(new InvalidOperationException(
                     $"Failed to stop process #{this.transcodeProcess.Id}: {ex}"));
             }
-        }
-
-        private void UpdateLogFromProcessOutput()
-        {
-            
-            //this.ExecutionLog +=
-            //    this.transcodeProcess.StandardOutput.ReadToEnd();
-            //this.ExecutionLog +=
-            //    this.transcodeProcess.StandardError.ReadToEnd();
         }
     }
 }
