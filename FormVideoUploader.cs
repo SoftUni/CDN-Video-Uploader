@@ -516,8 +516,11 @@ namespace CDN_Video_Uploader
             if (e.RowIndex >= 0)
             {
                 string hlsVideoURL = this.completedJobs[e.RowIndex].VideoURL;
-                Clipboard.SetText(hlsVideoURL);
-                this.Log($"HLS video URL copied to clipboard: <code>{hlsVideoURL}</code>");
+                if (hlsVideoURL != null)
+                {
+                    Clipboard.SetText(hlsVideoURL);
+                    this.Log($"HLS video URL copied to clipboard: <code>{hlsVideoURL}</code>");
+                }
             }
         }
     }
