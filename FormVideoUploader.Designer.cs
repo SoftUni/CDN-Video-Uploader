@@ -47,20 +47,20 @@
             this.panelUploadBox = new System.Windows.Forms.Panel();
             this.buttonChooseFilesToUpload = new System.Windows.Forms.Button();
             this.dataGridViewFTPFolders = new System.Windows.Forms.DataGridView();
-            this.ColumnFolderName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnFolderDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewFTPFiles = new System.Windows.Forms.DataGridView();
             this.buttonFTPGo = new System.Windows.Forms.Button();
             this.webBrowserLogs = new System.Windows.Forms.WebBrowser();
             this.buttonClearLog = new System.Windows.Forms.Button();
             this.dataGridViewActiveJobs = new System.Windows.Forms.DataGridView();
+            this.ColumnJob = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnState = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnProgress = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewCompletedJobs = new System.Windows.Forms.DataGridView();
             this.ColumnCompletedJob = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnResult = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnVideoURL = new System.Windows.Forms.DataGridViewLinkColumn();
-            this.ColumnJob = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnState = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnProgress = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnFolderName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnFolderDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnFileName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnFileSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnFileDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -120,8 +120,6 @@
             // 
             // textBoxFTPPath
             // 
-            this.textBoxFTPPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxFTPPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.textBoxFTPPath.Location = new System.Drawing.Point(6, 34);
             this.textBoxFTPPath.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -144,7 +142,6 @@
             // 
             // buttonFTPUp
             // 
-            this.buttonFTPUp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonFTPUp.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.buttonFTPUp.Location = new System.Drawing.Point(692, 33);
             this.buttonFTPUp.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -169,7 +166,6 @@
             // 
             // labelQueue
             // 
-            this.labelQueue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelQueue.AutoSize = true;
             this.labelQueue.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.labelQueue.Location = new System.Drawing.Point(735, 11);
@@ -181,7 +177,8 @@
             // panelUploadBox
             // 
             this.panelUploadBox.AllowDrop = true;
-            this.panelUploadBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelUploadBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panelUploadBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelUploadBox.Controls.Add(labelOr);
             this.panelUploadBox.Controls.Add(this.buttonChooseFilesToUpload);
@@ -211,8 +208,6 @@
             this.dataGridViewFTPFolders.AllowUserToDeleteRows = false;
             this.dataGridViewFTPFolders.AllowUserToOrderColumns = true;
             this.dataGridViewFTPFolders.AllowUserToResizeRows = false;
-            this.dataGridViewFTPFolders.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewFTPFolders.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridViewFTPFolders.BackgroundColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -240,31 +235,11 @@
             this.dataGridViewFTPFolders.Text = "dataGridView1";
             this.dataGridViewFTPFolders.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewFTPFolders_CellClick);
             // 
-            // ColumnFolderName
-            // 
-            this.ColumnFolderName.DataPropertyName = "Name";
-            this.ColumnFolderName.HeaderText = "Folder Name";
-            this.ColumnFolderName.MinimumWidth = 6;
-            this.ColumnFolderName.Name = "ColumnFolderName";
-            this.ColumnFolderName.ReadOnly = true;
-            this.ColumnFolderName.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            // 
-            // ColumnFolderDate
-            // 
-            this.ColumnFolderDate.DataPropertyName = "Date";
-            this.ColumnFolderDate.HeaderText = "Last Modified";
-            this.ColumnFolderDate.MinimumWidth = 6;
-            this.ColumnFolderDate.Name = "ColumnFolderDate";
-            this.ColumnFolderDate.ReadOnly = true;
-            this.ColumnFolderDate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            // 
             // dataGridViewFTPFiles
             // 
             this.dataGridViewFTPFiles.AllowUserToDeleteRows = false;
             this.dataGridViewFTPFiles.AllowUserToOrderColumns = true;
             this.dataGridViewFTPFiles.AllowUserToResizeRows = false;
-            this.dataGridViewFTPFiles.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewFTPFiles.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridViewFTPFiles.BackgroundColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -293,7 +268,6 @@
             // 
             // buttonFTPGo
             // 
-            this.buttonFTPGo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonFTPGo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.buttonFTPGo.Location = new System.Drawing.Point(646, 33);
             this.buttonFTPGo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -332,7 +306,8 @@
             this.dataGridViewActiveJobs.AllowUserToDeleteRows = false;
             this.dataGridViewActiveJobs.AllowUserToOrderColumns = true;
             this.dataGridViewActiveJobs.AllowUserToResizeRows = false;
-            this.dataGridViewActiveJobs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridViewActiveJobs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewActiveJobs.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridViewActiveJobs.BackgroundColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -360,12 +335,40 @@
             this.dataGridViewActiveJobs.TabIndex = 12;
             this.dataGridViewActiveJobs.Text = "dataGridView1";
             // 
+            // ColumnJob
+            // 
+            this.ColumnJob.DataPropertyName = "Description";
+            this.ColumnJob.FillWeight = 191.2675F;
+            this.ColumnJob.HeaderText = "Job";
+            this.ColumnJob.MinimumWidth = 6;
+            this.ColumnJob.Name = "ColumnJob";
+            this.ColumnJob.ReadOnly = true;
+            // 
+            // ColumnState
+            // 
+            this.ColumnState.DataPropertyName = "StateAsText";
+            this.ColumnState.FillWeight = 191.2675F;
+            this.ColumnState.HeaderText = "State";
+            this.ColumnState.MinimumWidth = 6;
+            this.ColumnState.Name = "ColumnState";
+            this.ColumnState.ReadOnly = true;
+            // 
+            // ColumnProgress
+            // 
+            this.ColumnProgress.DataPropertyName = "ProgressAsText";
+            this.ColumnProgress.FillWeight = 58.81188F;
+            this.ColumnProgress.HeaderText = "Progress";
+            this.ColumnProgress.MinimumWidth = 6;
+            this.ColumnProgress.Name = "ColumnProgress";
+            this.ColumnProgress.ReadOnly = true;
+            // 
             // dataGridViewCompletedJobs
             // 
             this.dataGridViewCompletedJobs.AllowUserToDeleteRows = false;
             this.dataGridViewCompletedJobs.AllowUserToOrderColumns = true;
             this.dataGridViewCompletedJobs.AllowUserToResizeRows = false;
-            this.dataGridViewCompletedJobs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridViewCompletedJobs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewCompletedJobs.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridViewCompletedJobs.BackgroundColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -421,36 +424,30 @@
             this.ColumnVideoURL.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.ColumnVideoURL.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
-            // ColumnJob
+            // ColumnFolderName
             // 
-            this.ColumnJob.DataPropertyName = "Description";
-            this.ColumnJob.FillWeight = 191.2675F;
-            this.ColumnJob.HeaderText = "Job";
-            this.ColumnJob.MinimumWidth = 6;
-            this.ColumnJob.Name = "ColumnJob";
-            this.ColumnJob.ReadOnly = true;
+            this.ColumnFolderName.DataPropertyName = "Name";
+            this.ColumnFolderName.FillWeight = 70F;
+            this.ColumnFolderName.HeaderText = "Folder Name";
+            this.ColumnFolderName.MinimumWidth = 6;
+            this.ColumnFolderName.Name = "ColumnFolderName";
+            this.ColumnFolderName.ReadOnly = true;
+            this.ColumnFolderName.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             // 
-            // ColumnState
+            // ColumnFolderDate
             // 
-            this.ColumnState.DataPropertyName = "StateAsText";
-            this.ColumnState.FillWeight = 191.2675F;
-            this.ColumnState.HeaderText = "State";
-            this.ColumnState.MinimumWidth = 6;
-            this.ColumnState.Name = "ColumnState";
-            this.ColumnState.ReadOnly = true;
-            // 
-            // ColumnProgress
-            // 
-            this.ColumnProgress.DataPropertyName = "ProgressAsText";
-            this.ColumnProgress.FillWeight = 58.81188F;
-            this.ColumnProgress.HeaderText = "Progress";
-            this.ColumnProgress.MinimumWidth = 6;
-            this.ColumnProgress.Name = "ColumnProgress";
-            this.ColumnProgress.ReadOnly = true;
+            this.ColumnFolderDate.DataPropertyName = "Date";
+            this.ColumnFolderDate.FillWeight = 30F;
+            this.ColumnFolderDate.HeaderText = "Last Modified";
+            this.ColumnFolderDate.MinimumWidth = 6;
+            this.ColumnFolderDate.Name = "ColumnFolderDate";
+            this.ColumnFolderDate.ReadOnly = true;
+            this.ColumnFolderDate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             // 
             // ColumnFileName
             // 
             this.ColumnFileName.DataPropertyName = "Name";
+            this.ColumnFileName.FillWeight = 63F;
             this.ColumnFileName.HeaderText = "File Name";
             this.ColumnFileName.MinimumWidth = 6;
             this.ColumnFileName.Name = "ColumnFileName";
@@ -459,7 +456,8 @@
             // ColumnFileSize
             // 
             this.ColumnFileSize.DataPropertyName = "SizeAsText";
-            this.ColumnFileSize.HeaderText = "FileSize";
+            this.ColumnFileSize.FillWeight = 20F;
+            this.ColumnFileSize.HeaderText = "File Size";
             this.ColumnFileSize.MinimumWidth = 6;
             this.ColumnFileSize.Name = "ColumnFileSize";
             this.ColumnFileSize.ReadOnly = true;
@@ -467,6 +465,7 @@
             // ColumnFileDate
             // 
             this.ColumnFileDate.DataPropertyName = "Date";
+            this.ColumnFileDate.FillWeight = 17F;
             this.ColumnFileDate.HeaderText = "Last Modified";
             this.ColumnFileDate.MinimumWidth = 6;
             this.ColumnFileDate.Name = "ColumnFileDate";
@@ -520,8 +519,6 @@
         private System.Windows.Forms.DataGridView dataGridViewFTPFiles;
         private System.Windows.Forms.Button buttonFTPGo;
         private System.Windows.Forms.WebBrowser webBrowserLogs;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnFolderName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnFolderDate;
         private System.Windows.Forms.DataGridView dataGridViewFTPFolders;
         private System.Windows.Forms.Button buttonClearLog;
         private System.Windows.Forms.Button buttonChooseFilesToUpload;
@@ -533,6 +530,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnJob;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnState;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnProgress;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnFolderName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnFolderDate;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnFileName;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnFileSize;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnFileDate;
