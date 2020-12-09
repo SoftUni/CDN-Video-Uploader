@@ -80,7 +80,8 @@ namespace CDN_Video_Uploader.Properties {
         [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
 <ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
   <string>/videos-bg/ | https://videos.softuni.bg/hls/{input}-{profiles}.mp4/urlset/master.m3u8</string>
-  <string>/videos-org/ |https://videos.softuni.org/hls/{input}-{profiles}.mp4/urlset/master.m3u8</string>
+  <string>/videos-org/ | https://videos.softuni.org/hls/{input}-{profiles}.mp4/urlset/master.m3u8</string>
+  <string>/testvideos/ | https://testvideos.softuni.org/hls/{input}-{profiles}.mp4/urlset/master.m3u8</string>
 </ArrayOfString>")]
         public global::System.Collections.Specialized.StringCollection VideoUrlPatterns {
             get {
