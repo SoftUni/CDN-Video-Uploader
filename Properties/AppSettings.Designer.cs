@@ -25,6 +25,18 @@ namespace CDN_Video_Uploader.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SaveFTPCredentials {
+            get {
+                return ((bool)(this["SaveFTPCredentials"]));
+            }
+            set {
+                this["SaveFTPCredentials"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string FtpHostname {
             get {
@@ -83,9 +95,9 @@ namespace CDN_Video_Uploader.Properties {
   <string>/videos-org/ | https://videos.softuni.org/hls/{input}-{profiles}.mp4/urlset/master.m3u8</string>
   <string>/testvideos/ | https://testvideos.softuni.org/hls/{input}-{profiles}.mp4/urlset/master.m3u8</string>
 </ArrayOfString>")]
-        public global::System.Collections.Specialized.StringCollection VideoUrlPatterns {
+        public global::System.Collections.Specialized.StringCollection VideoUrlPatternsAtCDN {
             get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["VideoUrlPatterns"]));
+                return ((global::System.Collections.Specialized.StringCollection)(this["VideoUrlPatternsAtCDN"]));
             }
         }
     }

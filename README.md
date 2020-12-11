@@ -1,4 +1,4 @@
-# CDN Video Uploader
+# CDN Video Transcoder & Uploader Tool
 
 A tool for **transcoding** and **uploading** videos to a CDN network for **HLS video streaming**.
   - **Input**: video file (AVI, MKV, MP4, WMV) @ 1080p (or higher) resolution

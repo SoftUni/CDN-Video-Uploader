@@ -37,6 +37,7 @@ namespace CDN_Video_Uploader
             AppDomain.CurrentDomain.ProcessExit += new EventHandler(Application_ProcessExit);
             this.webBrowserLogs.ObjectForScripting = this;
             StartJobProcessor();
+            this.ActiveControl = this.dataGridViewFTPFolders;
         }
 
         private void CreateWorkingDirectory()
@@ -264,7 +265,7 @@ namespace CDN_Video_Uploader
         {
             if (!ftpPath.EndsWith("/"))
                 ftpPath += "/";
-            foreach (string pattern in AppSettings.Default.VideoUrlPatterns)
+            foreach (string pattern in AppSettings.Default.VideoUrlPatternsAtCDN)
             {
                 var patternParts = pattern.Split('|');
                 string ftpRootFolder = patternParts[0].Trim();

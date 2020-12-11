@@ -53,7 +53,7 @@
             this.textBoxHostname.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.textBoxHostname.Location = new System.Drawing.Point(111, 16);
             this.textBoxHostname.Name = "textBoxHostname";
-            this.textBoxHostname.Size = new System.Drawing.Size(176, 27);
+            this.textBoxHostname.Size = new System.Drawing.Size(325, 27);
             this.textBoxHostname.TabIndex = 1;
             // 
             // textBoxUsername
@@ -61,7 +61,7 @@
             this.textBoxUsername.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.textBoxUsername.Location = new System.Drawing.Point(111, 57);
             this.textBoxUsername.Name = "textBoxUsername";
-            this.textBoxUsername.Size = new System.Drawing.Size(176, 27);
+            this.textBoxUsername.Size = new System.Drawing.Size(325, 27);
             this.textBoxUsername.TabIndex = 3;
             // 
             // labelUsername
@@ -80,7 +80,7 @@
             this.textBoxPassword.Location = new System.Drawing.Point(111, 97);
             this.textBoxPassword.Name = "textBoxPassword";
             this.textBoxPassword.PasswordChar = '*';
-            this.textBoxPassword.Size = new System.Drawing.Size(176, 27);
+            this.textBoxPassword.Size = new System.Drawing.Size(325, 27);
             this.textBoxPassword.TabIndex = 5;
             // 
             // labelPassword
@@ -97,11 +97,14 @@
             // 
             this.buttonConnect.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.buttonConnect.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonConnect.Location = new System.Drawing.Point(12, 140);
+            this.buttonConnect.Image = global::CDN_Video_Uploader.Properties.Resources.connect_icon;
+            this.buttonConnect.Location = new System.Drawing.Point(111, 143);
             this.buttonConnect.Name = "buttonConnect";
-            this.buttonConnect.Size = new System.Drawing.Size(137, 44);
+            this.buttonConnect.Size = new System.Drawing.Size(167, 44);
             this.buttonConnect.TabIndex = 6;
-            this.buttonConnect.Text = "Connect";
+            this.buttonConnect.Text = " Connect";
+            this.buttonConnect.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.buttonConnect.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.buttonConnect.UseVisualStyleBackColor = true;
             this.buttonConnect.Click += new System.EventHandler(this.buttonConnect_Click);
             // 
@@ -109,12 +112,16 @@
             // 
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.buttonCancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonCancel.Location = new System.Drawing.Point(171, 140);
+            this.buttonCancel.Image = global::CDN_Video_Uploader.Properties.Resources.cancel_button_icon;
+            this.buttonCancel.Location = new System.Drawing.Point(297, 143);
             this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(116, 44);
+            this.buttonCancel.Size = new System.Drawing.Size(139, 44);
             this.buttonCancel.TabIndex = 7;
-            this.buttonCancel.Text = "Cancel";
+            this.buttonCancel.Text = " Cancel";
+            this.buttonCancel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.buttonCancel.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.buttonCancel.UseVisualStyleBackColor = true;
+            this.buttonCancel.UseWaitCursor = true;
             // 
             // FormConnectToFTP
             // 
@@ -122,7 +129,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(303, 196);
+            this.ClientSize = new System.Drawing.Size(452, 202);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonConnect);
             this.Controls.Add(this.textBoxPassword);

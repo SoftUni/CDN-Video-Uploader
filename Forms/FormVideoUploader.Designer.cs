@@ -28,18 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.PictureBox pictureBoxUploadImage;
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormVideoUploader));
             System.Windows.Forms.Label labelDragAndDropFiles;
             System.Windows.Forms.Label labelOr;
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.PictureBox pictureBoxUploadImage;
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle37 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle38 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle39 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle40 = new System.Windows.Forms.DataGridViewCellStyle();
             this.labelFTP = new System.Windows.Forms.Label();
             this.textBoxFTPPath = new System.Windows.Forms.TextBox();
-            this.buttonFTPConnect = new System.Windows.Forms.Button();
-            this.buttonFTPUp = new System.Windows.Forms.Button();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -47,8 +44,12 @@
             this.panelUploadBox = new System.Windows.Forms.Panel();
             this.buttonChooseFilesToUpload = new System.Windows.Forms.Button();
             this.dataGridViewFTPFolders = new System.Windows.Forms.DataGridView();
+            this.ColumnFolderName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnFolderDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewFTPFiles = new System.Windows.Forms.DataGridView();
-            this.buttonFTPGo = new System.Windows.Forms.Button();
+            this.ColumnFileName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnFileSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnFileDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.webBrowserLogs = new System.Windows.Forms.WebBrowser();
             this.buttonClearLog = new System.Windows.Forms.Button();
             this.dataGridViewActiveJobs = new System.Windows.Forms.DataGridView();
@@ -59,14 +60,12 @@
             this.ColumnCompletedJob = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnResult = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnVideoURL = new System.Windows.Forms.DataGridViewLinkColumn();
-            this.ColumnFolderName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnFolderDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnFileName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnFileSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnFileDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            pictureBoxUploadImage = new System.Windows.Forms.PictureBox();
+            this.buttonFTPGo = new System.Windows.Forms.Button();
+            this.buttonFTPUp = new System.Windows.Forms.Button();
+            this.buttonFTPConnect = new System.Windows.Forms.Button();
             labelDragAndDropFiles = new System.Windows.Forms.Label();
             labelOr = new System.Windows.Forms.Label();
+            pictureBoxUploadImage = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(pictureBoxUploadImage)).BeginInit();
             this.panelUploadBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFTPFolders)).BeginInit();
@@ -75,23 +74,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCompletedJobs)).BeginInit();
             this.SuspendLayout();
             // 
-            // pictureBoxUploadImage
-            // 
-            pictureBoxUploadImage.ErrorImage = null;
-            pictureBoxUploadImage.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxUploadImage.Image")));
-            pictureBoxUploadImage.InitialImage = null;
-            pictureBoxUploadImage.Location = new System.Drawing.Point(12, 12);
-            pictureBoxUploadImage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            pictureBoxUploadImage.Name = "pictureBoxUploadImage";
-            pictureBoxUploadImage.Size = new System.Drawing.Size(77, 72);
-            pictureBoxUploadImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            pictureBoxUploadImage.TabIndex = 1;
-            pictureBoxUploadImage.TabStop = false;
-            // 
             // labelDragAndDropFiles
             // 
-            labelDragAndDropFiles.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            labelDragAndDropFiles.Location = new System.Drawing.Point(95, 12);
+            labelDragAndDropFiles.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            labelDragAndDropFiles.Location = new System.Drawing.Point(95, 11);
             labelDragAndDropFiles.Name = "labelDragAndDropFiles";
             labelDragAndDropFiles.Size = new System.Drawing.Size(524, 23);
             labelDragAndDropFiles.TabIndex = 0;
@@ -100,13 +86,26 @@
             // 
             // labelOr
             // 
-            labelOr.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            labelOr.Location = new System.Drawing.Point(244, 45);
+            labelOr.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            labelOr.Location = new System.Drawing.Point(218, 45);
             labelOr.Name = "labelOr";
             labelOr.Size = new System.Drawing.Size(29, 33);
             labelOr.TabIndex = 3;
             labelOr.Text = "or";
             labelOr.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // pictureBoxUploadImage
+            // 
+            pictureBoxUploadImage.ErrorImage = null;
+            pictureBoxUploadImage.Image = global::CDN_Video_Uploader.Properties.Resources.upload_icon;
+            pictureBoxUploadImage.InitialImage = null;
+            pictureBoxUploadImage.Location = new System.Drawing.Point(12, 12);
+            pictureBoxUploadImage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            pictureBoxUploadImage.Name = "pictureBoxUploadImage";
+            pictureBoxUploadImage.Size = new System.Drawing.Size(77, 72);
+            pictureBoxUploadImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            pictureBoxUploadImage.TabIndex = 1;
+            pictureBoxUploadImage.TabStop = false;
             // 
             // labelFTP
             // 
@@ -123,34 +122,11 @@
             this.textBoxFTPPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.textBoxFTPPath.Location = new System.Drawing.Point(6, 34);
             this.textBoxFTPPath.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.textBoxFTPPath.MinimumSize = new System.Drawing.Size(0, 25);
             this.textBoxFTPPath.Name = "textBoxFTPPath";
-            this.textBoxFTPPath.Size = new System.Drawing.Size(634, 24);
+            this.textBoxFTPPath.Size = new System.Drawing.Size(650, 24);
             this.textBoxFTPPath.TabIndex = 1;
             this.textBoxFTPPath.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxFTPPath_KeyPress);
-            // 
-            // buttonFTPConnect
-            // 
-            this.buttonFTPConnect.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonFTPConnect.Location = new System.Drawing.Point(210, 4);
-            this.buttonFTPConnect.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.buttonFTPConnect.Name = "buttonFTPConnect";
-            this.buttonFTPConnect.Size = new System.Drawing.Size(115, 26);
-            this.buttonFTPConnect.TabIndex = 3;
-            this.buttonFTPConnect.Text = "FTP Connect";
-            this.buttonFTPConnect.UseVisualStyleBackColor = true;
-            this.buttonFTPConnect.Click += new System.EventHandler(this.buttonFTPConnect_Click);
-            // 
-            // buttonFTPUp
-            // 
-            this.buttonFTPUp.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonFTPUp.Location = new System.Drawing.Point(692, 33);
-            this.buttonFTPUp.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.buttonFTPUp.Name = "buttonFTPUp";
-            this.buttonFTPUp.Size = new System.Drawing.Size(40, 27);
-            this.buttonFTPUp.TabIndex = 4;
-            this.buttonFTPUp.Text = "Up";
-            this.buttonFTPUp.UseVisualStyleBackColor = true;
-            this.buttonFTPUp.Click += new System.EventHandler(this.buttonFTPUp_Click);
             // 
             // columnHeader1
             // 
@@ -195,11 +171,14 @@
             // buttonChooseFilesToUpload
             // 
             this.buttonChooseFilesToUpload.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonChooseFilesToUpload.Location = new System.Drawing.Point(279, 45);
+            this.buttonChooseFilesToUpload.Image = global::CDN_Video_Uploader.Properties.Resources.browse_icon_20px;
+            this.buttonChooseFilesToUpload.Location = new System.Drawing.Point(253, 43);
             this.buttonChooseFilesToUpload.Name = "buttonChooseFilesToUpload";
-            this.buttonChooseFilesToUpload.Size = new System.Drawing.Size(192, 33);
+            this.buttonChooseFilesToUpload.Size = new System.Drawing.Size(220, 40);
             this.buttonChooseFilesToUpload.TabIndex = 2;
-            this.buttonChooseFilesToUpload.Text = "Choose Files to Upload ...";
+            this.buttonChooseFilesToUpload.Text = " Choose Files to Upload ...";
+            this.buttonChooseFilesToUpload.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.buttonChooseFilesToUpload.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.buttonChooseFilesToUpload.UseVisualStyleBackColor = true;
             this.buttonChooseFilesToUpload.Click += new System.EventHandler(this.buttonChooseFilesToUpload_Click);
             // 
@@ -210,14 +189,14 @@
             this.dataGridViewFTPFolders.AllowUserToResizeRows = false;
             this.dataGridViewFTPFolders.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridViewFTPFolders.BackgroundColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewFTPFolders.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle37.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle37.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle37.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle37.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle37.SelectionBackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle37.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle37.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewFTPFolders.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle37;
             this.dataGridViewFTPFolders.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewFTPFolders.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnFolderName,
@@ -235,6 +214,26 @@
             this.dataGridViewFTPFolders.Text = "dataGridView1";
             this.dataGridViewFTPFolders.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewFTPFolders_CellClick);
             // 
+            // ColumnFolderName
+            // 
+            this.ColumnFolderName.DataPropertyName = "Name";
+            this.ColumnFolderName.FillWeight = 70F;
+            this.ColumnFolderName.HeaderText = "Folder Name";
+            this.ColumnFolderName.MinimumWidth = 6;
+            this.ColumnFolderName.Name = "ColumnFolderName";
+            this.ColumnFolderName.ReadOnly = true;
+            this.ColumnFolderName.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
+            // ColumnFolderDate
+            // 
+            this.ColumnFolderDate.DataPropertyName = "Date";
+            this.ColumnFolderDate.FillWeight = 30F;
+            this.ColumnFolderDate.HeaderText = "Last Modified";
+            this.ColumnFolderDate.MinimumWidth = 6;
+            this.ColumnFolderDate.Name = "ColumnFolderDate";
+            this.ColumnFolderDate.ReadOnly = true;
+            this.ColumnFolderDate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
             // dataGridViewFTPFiles
             // 
             this.dataGridViewFTPFiles.AllowUserToDeleteRows = false;
@@ -242,14 +241,14 @@
             this.dataGridViewFTPFiles.AllowUserToResizeRows = false;
             this.dataGridViewFTPFiles.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridViewFTPFiles.BackgroundColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewFTPFiles.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle38.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle38.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle38.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle38.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle38.SelectionBackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle38.SelectionForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle38.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewFTPFiles.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle38;
             this.dataGridViewFTPFiles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewFTPFiles.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnFileName,
@@ -266,17 +265,32 @@
             this.dataGridViewFTPFiles.TabIndex = 7;
             this.dataGridViewFTPFiles.Text = "dataGridView1";
             // 
-            // buttonFTPGo
+            // ColumnFileName
             // 
-            this.buttonFTPGo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonFTPGo.Location = new System.Drawing.Point(646, 33);
-            this.buttonFTPGo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.buttonFTPGo.Name = "buttonFTPGo";
-            this.buttonFTPGo.Size = new System.Drawing.Size(40, 27);
-            this.buttonFTPGo.TabIndex = 4;
-            this.buttonFTPGo.Text = "Go";
-            this.buttonFTPGo.UseVisualStyleBackColor = true;
-            this.buttonFTPGo.Click += new System.EventHandler(this.buttonFTPGo_Click);
+            this.ColumnFileName.DataPropertyName = "Name";
+            this.ColumnFileName.FillWeight = 63F;
+            this.ColumnFileName.HeaderText = "File Name";
+            this.ColumnFileName.MinimumWidth = 6;
+            this.ColumnFileName.Name = "ColumnFileName";
+            this.ColumnFileName.ReadOnly = true;
+            // 
+            // ColumnFileSize
+            // 
+            this.ColumnFileSize.DataPropertyName = "SizeAsText";
+            this.ColumnFileSize.FillWeight = 20F;
+            this.ColumnFileSize.HeaderText = "File Size";
+            this.ColumnFileSize.MinimumWidth = 6;
+            this.ColumnFileSize.Name = "ColumnFileSize";
+            this.ColumnFileSize.ReadOnly = true;
+            // 
+            // ColumnFileDate
+            // 
+            this.ColumnFileDate.DataPropertyName = "Date";
+            this.ColumnFileDate.FillWeight = 17F;
+            this.ColumnFileDate.HeaderText = "Last Modified";
+            this.ColumnFileDate.MinimumWidth = 6;
+            this.ColumnFileDate.Name = "ColumnFileDate";
+            this.ColumnFileDate.ReadOnly = true;
             // 
             // webBrowserLogs
             // 
@@ -310,14 +324,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewActiveJobs.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridViewActiveJobs.BackgroundColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewActiveJobs.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle39.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle39.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle39.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle39.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle39.SelectionBackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle39.SelectionForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle39.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewActiveJobs.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle39;
             this.dataGridViewActiveJobs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewActiveJobs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnJob,
@@ -371,14 +385,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewCompletedJobs.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridViewCompletedJobs.BackgroundColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewCompletedJobs.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle40.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle40.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle40.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle40.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle40.SelectionBackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle40.SelectionForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle40.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewCompletedJobs.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle40;
             this.dataGridViewCompletedJobs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewCompletedJobs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnCompletedJob,
@@ -424,52 +438,46 @@
             this.ColumnVideoURL.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.ColumnVideoURL.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
-            // ColumnFolderName
+            // buttonFTPGo
             // 
-            this.ColumnFolderName.DataPropertyName = "Name";
-            this.ColumnFolderName.FillWeight = 70F;
-            this.ColumnFolderName.HeaderText = "Folder Name";
-            this.ColumnFolderName.MinimumWidth = 6;
-            this.ColumnFolderName.Name = "ColumnFolderName";
-            this.ColumnFolderName.ReadOnly = true;
-            this.ColumnFolderName.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.buttonFTPGo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonFTPGo.Image = global::CDN_Video_Uploader.Properties.Resources.refresh_icon_14px;
+            this.buttonFTPGo.Location = new System.Drawing.Point(662, 33);
+            this.buttonFTPGo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.buttonFTPGo.Name = "buttonFTPGo";
+            this.buttonFTPGo.Size = new System.Drawing.Size(33, 27);
+            this.buttonFTPGo.TabIndex = 4;
+            this.buttonFTPGo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.buttonFTPGo.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.buttonFTPGo.UseVisualStyleBackColor = true;
+            this.buttonFTPGo.Click += new System.EventHandler(this.buttonFTPGo_Click);
             // 
-            // ColumnFolderDate
+            // buttonFTPUp
             // 
-            this.ColumnFolderDate.DataPropertyName = "Date";
-            this.ColumnFolderDate.FillWeight = 30F;
-            this.ColumnFolderDate.HeaderText = "Last Modified";
-            this.ColumnFolderDate.MinimumWidth = 6;
-            this.ColumnFolderDate.Name = "ColumnFolderDate";
-            this.ColumnFolderDate.ReadOnly = true;
-            this.ColumnFolderDate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.buttonFTPUp.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonFTPUp.Image = global::CDN_Video_Uploader.Properties.Resources.arrow_up_icon_14px;
+            this.buttonFTPUp.Location = new System.Drawing.Point(701, 33);
+            this.buttonFTPUp.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.buttonFTPUp.Name = "buttonFTPUp";
+            this.buttonFTPUp.Size = new System.Drawing.Size(31, 27);
+            this.buttonFTPUp.TabIndex = 4;
+            this.buttonFTPUp.UseVisualStyleBackColor = true;
+            this.buttonFTPUp.Click += new System.EventHandler(this.buttonFTPUp_Click);
             // 
-            // ColumnFileName
+            // buttonFTPConnect
             // 
-            this.ColumnFileName.DataPropertyName = "Name";
-            this.ColumnFileName.FillWeight = 63F;
-            this.ColumnFileName.HeaderText = "File Name";
-            this.ColumnFileName.MinimumWidth = 6;
-            this.ColumnFileName.Name = "ColumnFileName";
-            this.ColumnFileName.ReadOnly = true;
-            // 
-            // ColumnFileSize
-            // 
-            this.ColumnFileSize.DataPropertyName = "SizeAsText";
-            this.ColumnFileSize.FillWeight = 20F;
-            this.ColumnFileSize.HeaderText = "File Size";
-            this.ColumnFileSize.MinimumWidth = 6;
-            this.ColumnFileSize.Name = "ColumnFileSize";
-            this.ColumnFileSize.ReadOnly = true;
-            // 
-            // ColumnFileDate
-            // 
-            this.ColumnFileDate.DataPropertyName = "Date";
-            this.ColumnFileDate.FillWeight = 17F;
-            this.ColumnFileDate.HeaderText = "Last Modified";
-            this.ColumnFileDate.MinimumWidth = 6;
-            this.ColumnFileDate.Name = "ColumnFileDate";
-            this.ColumnFileDate.ReadOnly = true;
+            this.buttonFTPConnect.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonFTPConnect.Image = global::CDN_Video_Uploader.Properties.Resources.connect_icon_16px;
+            this.buttonFTPConnect.Location = new System.Drawing.Point(210, 4);
+            this.buttonFTPConnect.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.buttonFTPConnect.Name = "buttonFTPConnect";
+            this.buttonFTPConnect.Size = new System.Drawing.Size(133, 26);
+            this.buttonFTPConnect.TabIndex = 3;
+            this.buttonFTPConnect.Text = " FTP Connect";
+            this.buttonFTPConnect.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.buttonFTPConnect.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.buttonFTPConnect.UseVisualStyleBackColor = true;
+            this.buttonFTPConnect.Click += new System.EventHandler(this.buttonFTPConnect_Click);
             // 
             // FormVideoUploader
             // 
