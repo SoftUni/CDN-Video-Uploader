@@ -110,7 +110,6 @@
             // 
             // buttonCancel
             // 
-            this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.buttonCancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.buttonCancel.Image = global::CDN_Video_Uploader.Properties.Resources.cancel_button_icon;
             this.buttonCancel.Location = new System.Drawing.Point(297, 143);
@@ -121,7 +120,6 @@
             this.buttonCancel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.buttonCancel.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.buttonCancel.UseVisualStyleBackColor = true;
-            this.buttonCancel.UseWaitCursor = true;
             // 
             // FormConnectToFTP
             // 

@@ -23,13 +23,13 @@ namespace CDN_Video_Uploader
 
         private void buttonConnect_Click(object sender, System.EventArgs e)
         {
+            AppSettings.Default.FtpHostname = this.textBoxHostname.Text;
+            AppSettings.Default.FtpUsername = this.textBoxUsername.Text;
             if (AppSettings.Default.SaveFTPCredentials)
             {
-                AppSettings.Default.FtpHostname = this.textBoxHostname.Text;
-                AppSettings.Default.FtpUsername = this.textBoxUsername.Text;
                 AppSettings.Default.FtpPassword = this.textBoxPassword.Text;
-                AppSettings.Default.Save();
             }
+            AppSettings.Default.Save();
         }
     }
 }
