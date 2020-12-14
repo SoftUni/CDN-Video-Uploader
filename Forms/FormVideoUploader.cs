@@ -7,6 +7,7 @@ using System.Linq;
 using System.Windows.Forms;
 using FluentFTP;
 using System.Diagnostics;
+using CDN_Video_Uploader.Forms;
 
 namespace CDN_Video_Uploader
 {
@@ -523,6 +524,12 @@ namespace CDN_Video_Uploader
                     this.Log($"HLS video URL copied to clipboard: <code>{hlsVideoURL}</code>");
                 }
             }
+        }
+
+        private void buttonSettings_Click(object sender, EventArgs e)
+        {
+            FormAppSettings formSettings = new FormAppSettings();
+            formSettings.ShowDialog();
         }
     }
 }

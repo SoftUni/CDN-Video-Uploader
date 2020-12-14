@@ -35,8 +35,8 @@ namespace CDN_Video_Uploader.Forms
             this.textBoxTranscodingProfiles = new System.Windows.Forms.TextBox();
             this.textBoxVideoUrlPatterns = new System.Windows.Forms.TextBox();
             this.groupBoxVideoUrlPatterns = new System.Windows.Forms.GroupBox();
-            this.buttonSave = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
+            this.buttonSave = new System.Windows.Forms.Button();
             this.groupBoxFTPCredentials.SuspendLayout();
             this.groupBoxTranscodingProfiles.SuspendLayout();
             this.groupBoxVideoUrlPatterns.SuspendLayout();
@@ -54,70 +54,70 @@ namespace CDN_Video_Uploader.Forms
             // 
             // groupBoxFTPCredentials
             // 
+            this.groupBoxFTPCredentials.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBoxFTPCredentials.Controls.Add(this.checkBoxSaveFTPCredentials);
             this.groupBoxFTPCredentials.Location = new System.Drawing.Point(12, 12);
             this.groupBoxFTPCredentials.Name = "groupBoxFTPCredentials";
-            this.groupBoxFTPCredentials.Size = new System.Drawing.Size(776, 59);
+            this.groupBoxFTPCredentials.Size = new System.Drawing.Size(1353, 59);
             this.groupBoxFTPCredentials.TabIndex = 3;
             this.groupBoxFTPCredentials.TabStop = false;
             this.groupBoxFTPCredentials.Text = "FTP Credentials";
             // 
             // groupBoxTranscodingProfiles
             // 
+            this.groupBoxTranscodingProfiles.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBoxTranscodingProfiles.Controls.Add(this.textBoxTranscodingProfiles);
             this.groupBoxTranscodingProfiles.Location = new System.Drawing.Point(12, 77);
             this.groupBoxTranscodingProfiles.Name = "groupBoxTranscodingProfiles";
-            this.groupBoxTranscodingProfiles.Size = new System.Drawing.Size(776, 176);
+            this.groupBoxTranscodingProfiles.Size = new System.Drawing.Size(1353, 235);
             this.groupBoxTranscodingProfiles.TabIndex = 4;
             this.groupBoxTranscodingProfiles.TabStop = false;
             this.groupBoxTranscodingProfiles.Text = "Video Transcoding Profiles";
             // 
             // textBoxTranscodingProfiles
             // 
+            this.textBoxTranscodingProfiles.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxTranscodingProfiles.Location = new System.Drawing.Point(7, 22);
             this.textBoxTranscodingProfiles.Multiline = true;
             this.textBoxTranscodingProfiles.Name = "textBoxTranscodingProfiles";
-            this.textBoxTranscodingProfiles.Size = new System.Drawing.Size(763, 148);
+            this.textBoxTranscodingProfiles.Size = new System.Drawing.Size(1340, 207);
             this.textBoxTranscodingProfiles.TabIndex = 0;
             // 
             // textBoxVideoUrlPatterns
             // 
+            this.textBoxVideoUrlPatterns.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxVideoUrlPatterns.Location = new System.Drawing.Point(7, 22);
             this.textBoxVideoUrlPatterns.Multiline = true;
             this.textBoxVideoUrlPatterns.Name = "textBoxVideoUrlPatterns";
-            this.textBoxVideoUrlPatterns.Size = new System.Drawing.Size(763, 148);
+            this.textBoxVideoUrlPatterns.Size = new System.Drawing.Size(1340, 148);
             this.textBoxVideoUrlPatterns.TabIndex = 0;
             // 
             // groupBoxVideoUrlPatterns
             // 
+            this.groupBoxVideoUrlPatterns.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBoxVideoUrlPatterns.Controls.Add(this.textBoxVideoUrlPatterns);
-            this.groupBoxVideoUrlPatterns.Location = new System.Drawing.Point(12, 262);
+            this.groupBoxVideoUrlPatterns.Location = new System.Drawing.Point(12, 321);
             this.groupBoxVideoUrlPatterns.Name = "groupBoxVideoUrlPatterns";
-            this.groupBoxVideoUrlPatterns.Size = new System.Drawing.Size(776, 176);
+            this.groupBoxVideoUrlPatterns.Size = new System.Drawing.Size(1353, 176);
             this.groupBoxVideoUrlPatterns.TabIndex = 5;
             this.groupBoxVideoUrlPatterns.TabStop = false;
             this.groupBoxVideoUrlPatterns.Text = "Video URL Patterns at the CDN";
             // 
-            // buttonSave
-            // 
-            this.buttonSave.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.buttonSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonSave.Image = global::CDN_Video_Uploader.Properties.Resources.save_icon;
-            this.buttonSave.Location = new System.Drawing.Point(466, 445);
-            this.buttonSave.Name = "buttonSave";
-            this.buttonSave.Size = new System.Drawing.Size(140, 44);
-            this.buttonSave.TabIndex = 8;
-            this.buttonSave.Text = " Save";
-            this.buttonSave.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.buttonSave.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.buttonSave.UseVisualStyleBackColor = true;
-            // 
             // buttonCancel
             // 
+            this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.buttonCancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.buttonCancel.Image = global::CDN_Video_Uploader.Properties.Resources.cancel_button_icon;
-            this.buttonCancel.Location = new System.Drawing.Point(634, 445);
+            this.buttonCancel.Location = new System.Drawing.Point(1211, 504);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(148, 44);
             this.buttonCancel.TabIndex = 9;
@@ -125,19 +125,36 @@ namespace CDN_Video_Uploader.Forms
             this.buttonCancel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.buttonCancel.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.buttonCancel.UseVisualStyleBackColor = true;
+            this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
+            // 
+            // buttonSave
+            // 
+            this.buttonSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonSave.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.buttonSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonSave.Image = global::CDN_Video_Uploader.Properties.Resources.save_icon;
+            this.buttonSave.Location = new System.Drawing.Point(1043, 504);
+            this.buttonSave.Name = "buttonSave";
+            this.buttonSave.Size = new System.Drawing.Size(140, 44);
+            this.buttonSave.TabIndex = 8;
+            this.buttonSave.Text = " Save";
+            this.buttonSave.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.buttonSave.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.buttonSave.UseVisualStyleBackColor = true;
+            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
             // FormAppSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 504);
+            this.ClientSize = new System.Drawing.Size(1377, 563);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.groupBoxVideoUrlPatterns);
             this.Controls.Add(this.groupBoxTranscodingProfiles);
             this.Controls.Add(this.groupBoxFTPCredentials);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "FormAppSettings";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Settings";
             this.Load += new System.EventHandler(this.FormAppSettings_Load);
             this.groupBoxFTPCredentials.ResumeLayout(false);

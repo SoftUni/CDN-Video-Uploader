@@ -133,6 +133,16 @@ namespace CDN_Video_Uploader.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap settings_icon_16px {
+            get {
+                object obj = ResourceManager.GetObject("settings_icon_16px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap upload_icon {
             get {
                 object obj = ResourceManager.GetObject("upload_icon", resourceCulture);
