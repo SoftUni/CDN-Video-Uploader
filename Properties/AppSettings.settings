@@ -32,5 +32,8 @@
   &lt;string&gt;/testvideos/ | https://testvideos.softuni.org/hls/{input}-{profiles}.mp4/urlset/master.m3u8&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
     </Setting>
+    <Setting Name="MaxParallelTranscodings" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">2</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

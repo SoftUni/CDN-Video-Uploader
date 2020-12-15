@@ -16,15 +16,17 @@ namespace CDN_Video_Uploader.Jobs
             {
                 if (value != this.executionState)
                 {
+                    ExecutionState previousExecutionState = this.executionState;
                     this.executionState = value;
-                    OnExecutionStateChanged();
+                    OnExecutionStateChanged(previousExecutionState);
                 }
-            } 
+            }
         }
 
         public event EventHandler ExecutionStateChanged;
 
-        protected virtual void OnExecutionStateChanged()
+        protected virtual void OnExecutionStateChanged(
+            ExecutionState previousExecutionState)
         {
             if (this.ExecutionStateChanged != null)
             {

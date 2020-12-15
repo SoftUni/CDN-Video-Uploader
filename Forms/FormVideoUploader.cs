@@ -321,6 +321,7 @@ namespace CDN_Video_Uploader
                     InputFile = outputFileNameFull,
                     FtpClient = this.ftpClient,
                     PathAtFTP = ftpPath + outputFileNameShort,
+                    DependsOnAction = transcodeAction
                 };
                 uploadAction.ExecutionStateChanged += UploadAction_ExecutionStateChanged;
                 uploadAction.ErrorOccurred += UploadAction_ErrorOccurred;

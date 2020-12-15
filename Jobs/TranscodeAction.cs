@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace CDN_Video_Uploader.Jobs
 {
@@ -11,6 +12,9 @@ namespace CDN_Video_Uploader.Jobs
         public string TranscodingCommand { get; set; }
         public string OutputFile { get; set; }
         private Process transcodeProcess;
+
+        private static object ActiveTranscodingActionsLock = new object();
+        public static int ActiveTranscodingActions { get; private set; }
 
         public override void Start()
         {
@@ -149,6 +153,24 @@ namespace CDN_Video_Uploader.Jobs
                 OnErrorOccurred(new InvalidOperationException(
                     $"Failed to stop process #{this.transcodeProcess.Id}: {ex}"));
             }
+        }
+
+        protected override void OnExecutionStateChanged(
+            ExecutionState previousExecutionState)
+        {
+            if (this.ExecutionState == ExecutionState.Running)
+            {
+                // A new transcoding action has just started
+                lock (TranscodeAction.ActiveTranscodingActionsLock)
+                    ActiveTranscodingActions++;
+            }
+            if (previousExecutionState == ExecutionState.Running)
+            {
+                // The current transcoding action has just stopped
+                lock (TranscodeAction.ActiveTranscodingActionsLock)
+                    ActiveTranscodingActions--;
+            }
+            base.OnExecutionStateChanged(previousExecutionState);
         }
     }
 }

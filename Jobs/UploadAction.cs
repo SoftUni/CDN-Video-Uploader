@@ -11,6 +11,7 @@ namespace CDN_Video_Uploader.Jobs
         public string InputFile { get; set; }
         public string PathAtFTP { get; set; }
         public FtpClient FtpClient { get; set; }
+        public ExecutableAction DependsOnAction { get; set; }
         private FileStream inputFileStream;
         private Task uploadTask;
         private CancellationTokenSource uploadTaskCancelationTokenSource;

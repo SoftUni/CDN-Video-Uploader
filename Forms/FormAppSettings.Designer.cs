@@ -37,9 +37,14 @@ namespace CDN_Video_Uploader.Forms
             this.groupBoxVideoUrlPatterns = new System.Windows.Forms.GroupBox();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonSave = new System.Windows.Forms.Button();
+            this.groupBoxTranscodingActionsSettings = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.numericUpDownMaxParalelTranscodings = new System.Windows.Forms.NumericUpDown();
             this.groupBoxFTPCredentials.SuspendLayout();
             this.groupBoxTranscodingProfiles.SuspendLayout();
             this.groupBoxVideoUrlPatterns.SuspendLayout();
+            this.groupBoxTranscodingActionsSettings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxParalelTranscodings)).BeginInit();
             this.SuspendLayout();
             // 
             // checkBoxSaveFTPCredentials
@@ -54,12 +59,10 @@ namespace CDN_Video_Uploader.Forms
             // 
             // groupBoxFTPCredentials
             // 
-            this.groupBoxFTPCredentials.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBoxFTPCredentials.Controls.Add(this.checkBoxSaveFTPCredentials);
             this.groupBoxFTPCredentials.Location = new System.Drawing.Point(12, 12);
             this.groupBoxFTPCredentials.Name = "groupBoxFTPCredentials";
-            this.groupBoxFTPCredentials.Size = new System.Drawing.Size(1353, 59);
+            this.groupBoxFTPCredentials.Size = new System.Drawing.Size(669, 59);
             this.groupBoxFTPCredentials.TabIndex = 3;
             this.groupBoxFTPCredentials.TabStop = false;
             this.groupBoxFTPCredentials.Text = "FTP Credentials";
@@ -125,7 +128,6 @@ namespace CDN_Video_Uploader.Forms
             this.buttonCancel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.buttonCancel.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.buttonCancel.UseVisualStyleBackColor = true;
-            this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
             // buttonSave
             // 
@@ -143,26 +145,76 @@ namespace CDN_Video_Uploader.Forms
             this.buttonSave.UseVisualStyleBackColor = true;
             this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
+            // groupBoxTranscodingActionsSettings
+            // 
+            this.groupBoxTranscodingActionsSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBoxTranscodingActionsSettings.Controls.Add(this.label1);
+            this.groupBoxTranscodingActionsSettings.Controls.Add(this.numericUpDownMaxParalelTranscodings);
+            this.groupBoxTranscodingActionsSettings.Location = new System.Drawing.Point(696, 12);
+            this.groupBoxTranscodingActionsSettings.Name = "groupBoxTranscodingActionsSettings";
+            this.groupBoxTranscodingActionsSettings.Size = new System.Drawing.Size(669, 59);
+            this.groupBoxTranscodingActionsSettings.TabIndex = 4;
+            this.groupBoxTranscodingActionsSettings.TabStop = false;
+            this.groupBoxTranscodingActionsSettings.Text = "Transcoding Actions Settings";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 27);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(247, 17);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Maximum parallel transcoding actions:";
+            // 
+            // numericUpDownMaxParalelTranscodings
+            // 
+            this.numericUpDownMaxParalelTranscodings.Location = new System.Drawing.Point(263, 25);
+            this.numericUpDownMaxParalelTranscodings.Maximum = new decimal(new int[] {
+            64,
+            0,
+            0,
+            0});
+            this.numericUpDownMaxParalelTranscodings.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownMaxParalelTranscodings.Name = "numericUpDownMaxParalelTranscodings";
+            this.numericUpDownMaxParalelTranscodings.Size = new System.Drawing.Size(48, 22);
+            this.numericUpDownMaxParalelTranscodings.TabIndex = 0;
+            this.numericUpDownMaxParalelTranscodings.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
             // FormAppSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.buttonCancel;
             this.ClientSize = new System.Drawing.Size(1377, 563);
+            this.Controls.Add(this.groupBoxTranscodingActionsSettings);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.groupBoxVideoUrlPatterns);
             this.Controls.Add(this.groupBoxTranscodingProfiles);
             this.Controls.Add(this.groupBoxFTPCredentials);
+            this.MinimumSize = new System.Drawing.Size(800, 600);
             this.Name = "FormAppSettings";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Settings";
             this.Load += new System.EventHandler(this.FormAppSettings_Load);
+            this.SizeChanged += new System.EventHandler(this.FormAppSettings_SizeChanged);
             this.groupBoxFTPCredentials.ResumeLayout(false);
             this.groupBoxFTPCredentials.PerformLayout();
             this.groupBoxTranscodingProfiles.ResumeLayout(false);
             this.groupBoxTranscodingProfiles.PerformLayout();
             this.groupBoxVideoUrlPatterns.ResumeLayout(false);
             this.groupBoxVideoUrlPatterns.PerformLayout();
+            this.groupBoxTranscodingActionsSettings.ResumeLayout(false);
+            this.groupBoxTranscodingActionsSettings.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxParalelTranscodings)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -176,5 +228,8 @@ namespace CDN_Video_Uploader.Forms
         private System.Windows.Forms.GroupBox groupBoxVideoUrlPatterns;
         private System.Windows.Forms.Button buttonSave;
         private System.Windows.Forms.Button buttonCancel;
+        private System.Windows.Forms.GroupBox groupBoxTranscodingActionsSettings;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.NumericUpDown numericUpDownMaxParalelTranscodings;
     }
 }
