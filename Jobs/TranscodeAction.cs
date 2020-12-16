@@ -1,8 +1,8 @@
-﻿using System;
+﻿using CDN_Video_Uploader.Properties;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
-using System.Threading;
 
 namespace CDN_Video_Uploader.Jobs
 {
@@ -15,6 +15,14 @@ namespace CDN_Video_Uploader.Jobs
 
         private static object ActiveTranscodingActionsLock = new object();
         public static int ActiveTranscodingActions { get; private set; }
+
+        public override bool CanStart()
+        {
+            bool canStart =
+                this.ExecutionState == ExecutionState.NotStarted &&
+                ActiveTranscodingActions < AppSettings.Default.MaxParallelTranscodings;
+            return canStart;
+        }
 
         public override void Start()
         {
@@ -143,16 +151,17 @@ namespace CDN_Video_Uploader.Jobs
 
         public override void Cancel()
         {
-            this.ExecutionState = ExecutionState.Canceled;
             try
             {
-                this.transcodeProcess.Kill();
+                if (! this.transcodeProcess.HasExited)
+                    this.transcodeProcess.Kill();
             }
             catch (Exception ex)
             {
                 OnErrorOccurred(new InvalidOperationException(
                     $"Failed to stop process #{this.transcodeProcess.Id}: {ex}"));
             }
+            this.ExecutionState = ExecutionState.Canceled;
         }
 
         protected override void OnExecutionStateChanged(

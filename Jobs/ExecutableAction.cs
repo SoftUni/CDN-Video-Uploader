@@ -45,6 +45,7 @@ namespace CDN_Video_Uploader.Jobs
         }
 
         public string ExecutionLog { get; protected set; } = "";
+
         protected void AppendToLog(string text)
         {
             if (String.IsNullOrEmpty(text))
@@ -64,6 +65,7 @@ namespace CDN_Video_Uploader.Jobs
             }
         }
 
+        public abstract bool CanStart();
         public abstract void Start();
         public abstract void UpdateState();
         public abstract void Cancel();

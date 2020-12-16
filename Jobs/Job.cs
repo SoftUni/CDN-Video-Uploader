@@ -16,7 +16,14 @@ namespace CDN_Video_Uploader.Jobs
                 if (this.ExecutionState == ExecutionState.NotStarted)
                     return "Waiting to start";
                 if (this.ExecutionState == ExecutionState.Running)
-                    return this.ActiveAction.Description;
+                {
+                    ExecutableAction firstRunningAction = 
+                        this.Actions.FirstOrDefault(a => a.ExecutionState == ExecutionState.Running);
+                    if (firstRunningAction != null)
+                        return firstRunningAction.Description;
+                    else
+                        return "Running";
+                }
                 if (this.ExecutionState == ExecutionState.CompletedSuccessfully)
                     return "Completed successfully";
                 if (this.ExecutionState == ExecutionState.Failed)
@@ -30,17 +37,6 @@ namespace CDN_Video_Uploader.Jobs
         public string ProgressAsText
         {
             get => "" + Math.Round(this.PercentsDone, 1) + "% done";
-        }
-
-        public ExecutableAction ActiveAction
-        {
-            get
-            {
-                if (this.Actions.Count == 0)
-                    throw new InvalidOperationException("Please first define actions in the job");
-
-                return this.Actions[this.ActiveActionIndex];
-            }
         }
 
         private string videoURL;
@@ -59,49 +55,78 @@ namespace CDN_Video_Uploader.Jobs
             }
         }
 
+        public override bool CanStart()
+        {
+            if (this.ExecutionState != ExecutionState.NotStarted)
+                return false;
+            foreach (ExecutableAction action in this.Actions)
+                if (action.CanStart())
+                    return true;
+            return false;
+        }
+
         public override void Start()
         {
-            // Begin from the first action in the actions list
-            this.ActiveActionIndex = 0;
+            this.ExecutionState = ExecutionState.Running;
+            foreach (ExecutableAction action in this.Actions)
+                if (action.CanStart())
+                    action.Start();
+        }
 
-            // Start the first action
-            this.ActiveAction.Start();
+        public override void UpdateState()
+        {
+            if (this.ExecutionState != ExecutionState.Running)
+                return;
+
+            foreach (ExecutableAction action in this.Actions)
+            {
+                if (action.ExecutionState == ExecutionState.Running)
+                    action.UpdateState();
+                if (action.ExecutionState == ExecutionState.NotStarted)
+                    if (action.CanStart())
+                        Start();
+            }
+
+            this.UpdateJobExecutionState();
+
+            this.PercentsDone = this.Actions.Average(a => a.PercentsDone);
+        }
+
+        private void UpdateJobExecutionState()
+        {
+            if (this.Actions.All(a => a.ExecutionState == ExecutionState.NotStarted))
+            {
+                this.ExecutionState = ExecutionState.NotStarted;
+                return;
+            }
+            if (this.Actions.All(a => a.ExecutionState == ExecutionState.CompletedSuccessfully))
+            {
+                this.ExecutionState = ExecutionState.CompletedSuccessfully;
+                return;
+            }
+            if (this.Actions.Any(a => a.ExecutionState == ExecutionState.Failed))
+            {
+                this.ExecutionState = ExecutionState.Failed;
+                return;
+            }
+            if (this.Actions.Any(a => a.ExecutionState == ExecutionState.Canceled))
+            {
+                this.ExecutionState = ExecutionState.Canceled;
+                return;
+            }
+            if (this.Actions.Any(a => a.ExecutionState == ExecutionState.Running))
+            {
+                this.ExecutionState = ExecutionState.Running;
+                return;
+            }
         }
 
         public override void Cancel()
         {
             foreach (var action in this.Actions)
-            {
                 if (action.ExecutionState == ExecutionState.Running)
-                {
                     action.Cancel();
-                }
-            }
-            this.ExecutionState = ExecutionState.Canceled;
-        }
-
-        public override void UpdateState()
-        {
-            if (this.IsFinished)
-                return;
-
-            var currentAction = this.ActiveAction;
-            currentAction.UpdateState();
-            this.ExecutionState = currentAction.ExecutionState;
-            
-            if (currentAction.IsFinished)
-            {
-                // Proceed to the next action (when the current action is successful)
-                bool hasNextAction = this.ActiveActionIndex < this.Actions.Count - 1;
-                if (hasNextAction && currentAction.ExecutionState == ExecutionState.CompletedSuccessfully)
-                {
-                    this.ActiveActionIndex++;
-                    ActiveAction.Start();
-                    this.ExecutionState = ExecutionState.Running;
-                }
-            }
-
-            this.PercentsDone = this.Actions.Average(a => a.PercentsDone);
+            this.UpdateJobExecutionState();
         }
     }
 }

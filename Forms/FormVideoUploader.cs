@@ -33,12 +33,20 @@ namespace CDN_Video_Uploader
 
         private void FormVideoUploader_Load(object sender, EventArgs e)
         {
-            ClearLog();
-            CreateWorkingDirectory();
-            AppDomain.CurrentDomain.ProcessExit += new EventHandler(Application_ProcessExit);
+            this.ClearLog();
             this.webBrowserLogs.ObjectForScripting = this;
-            StartJobProcessor();
+
+            this.CreateWorkingDirectory();
+            AppDomain.CurrentDomain.ProcessExit += new EventHandler(Application_ProcessExit);
+
+            this.dataGridViewActiveJobs.DataSource = new List<Job>();
+            this.dataGridViewCompletedJobs.DataSource = new List<Job>();
+            this.dataGridViewFTPFolders.DataSource = new List<FtpListItem>();
+            this.dataGridViewFTPFiles.DataSource = new List<FtpListItem>();
+
             this.ActiveControl = this.dataGridViewFTPFolders;
+            
+            this.StartJobProcessor();
         }
 
         private void CreateWorkingDirectory()
@@ -66,7 +74,7 @@ namespace CDN_Video_Uploader
         private void StartJobProcessor()
         {
             this.activeJobsProcessor = new System.Windows.Forms.Timer();
-            this.activeJobsProcessor.Interval = 1000;
+            this.activeJobsProcessor.Interval = 500;
             this.activeJobsProcessor.Tick += (sender, args) => 
             {
                 ProcessJobsQueue();
@@ -85,13 +93,15 @@ namespace CDN_Video_Uploader
             this.buttonFTPConnect.PerformClick();
         }
 
-        private void buttonFTPConnect_Click(object sender, EventArgs e)
+        private async void buttonFTPConnect_Click(object sender, EventArgs e)
         {
             try
             {
                 var ftpConnectForm = new FormConnectToFTP();
                 if (ftpConnectForm.ShowDialog() != DialogResult.OK)
                     return;
+                if (this.ftpClient != null)
+                    this.ftpClient.Dispose();
                 this.ftpClient = new FtpClient(
                     host: ftpConnectForm.Hostname,
                     user: ftpConnectForm.Username,
@@ -99,9 +109,10 @@ namespace CDN_Video_Uploader
                 );
                 ftpClient.SocketKeepAlive = true;
                 ftpClient.DataConnectionType = FtpDataConnectionType.PASV;
-                this.ftpClient.Connect();
+                Log($"<i>Connecting to FTP server: <b>{this.ftpClient.Host}</b> ...</i>");
+                await this.ftpClient.ConnectAsync();
+                Log($"Connected to FTP server: <b>{this.ftpClient.Host}</b>.");
                 this.textBoxFTPPath.Text = "/";
-                Log($"Connected to FTP server: <b>{this.ftpClient.Host}</b>");
 
                 LoadFilesAndFoldersFromFTP();
             }
@@ -249,7 +260,7 @@ namespace CDN_Video_Uploader
 
             List<ExecutableAction> actions = CreateActionsForFile(fileInfo);
             string fileSizeAsText = GetFileSizeAsText(fileInfo);
-            var task = new Job()
+            var job = new Job()
             {
                 Description = ftpPath + fileInfo.Name + " (" + fileSizeAsText + ")",
                 PercentsDone = 0,
@@ -257,7 +268,9 @@ namespace CDN_Video_Uploader
                 ActiveActionIndex = 0,
                 VideoURL = hlsVideoURL
             };
-            this.activeJobsQueue.Add(task);
+            job.ExecutionStateChanged += Job_ExecutionStateChanged;
+            job.ErrorOccurred += Job_ErrorOccurred;
+            this.activeJobsQueue.Add(job);
 
             RefreshActiveJobsUI();
         }
@@ -319,7 +332,10 @@ namespace CDN_Video_Uploader
                 {
                     Description = $"Uploading {outputFileNameShort} to FTP folder {ftpPath}",
                     InputFile = outputFileNameFull,
-                    FtpClient = this.ftpClient,
+                    FtpClient = new FtpClient(
+                        this.ftpClient.Host,
+                        this.ftpClient.Credentials
+                    ),
                     PathAtFTP = ftpPath + outputFileNameShort,
                     DependsOnAction = transcodeAction
                 };
@@ -331,6 +347,27 @@ namespace CDN_Video_Uploader
             return actions;
         }
 
+        private void Job_ExecutionStateChanged(object sender, EventArgs e)
+        {
+            Job job = sender as Job;
+            if (job.ExecutionState == ExecutionState.Running)
+                this.Log($"Job <b>started</b>: <code>{job.Description}</code>");
+            else if (job.ExecutionState == ExecutionState.CompletedSuccessfully)
+                this.Log($"Job <b>completed successfully</b>: <code>{job.Description}</code>");
+            else if (job.ExecutionState == ExecutionState.Failed)
+                this.Log($"Job <b>failed</b>: <code>{job.Description}</code>");
+            else if (job.ExecutionState == ExecutionState.Canceled)
+                this.Log($"Job <b>canceled</b>: <code>{job.Description}</code>");
+        }
+
+        private void Job_ErrorOccurred(object sender, UnhandledExceptionEventArgs e)
+        {
+            Job job = sender as Job;
+            this.LogError($"Job <b>failed</b>: <code>{job.Description}</code>");
+            string errorMsg = CollectErrorsFromException(e);
+            this.LogError(errTitle: "Job failed", errMsg: errorMsg, indentTabs: 1);
+        }
+
         private void TranscodeAction_ExecutionStateChanged(object sender, EventArgs e)
         {
             TranscodeAction action = sender as TranscodeAction;
@@ -340,6 +377,8 @@ namespace CDN_Video_Uploader
                 this.Log($"Transcoding <b>successful</b>: <code>{action.Description}</code>", indentTabs: 1);
             else if (action.ExecutionState == ExecutionState.Failed)
                 this.Log($"Transcoding <b>failed</b>: <code>{action.Description}</code>", indentTabs: 1);
+            else if (action.ExecutionState == ExecutionState.Canceled)
+                this.Log($"Transcoding <b>canceled</b>: <code>{action.Description}</code>", indentTabs: 1);
         }
 
         private void TranscodeAction_ErrorOccurred(object sender, UnhandledExceptionEventArgs e)
@@ -357,6 +396,8 @@ namespace CDN_Video_Uploader
                 this.Log($"FTP upload <b>successful</b>: <code>{action.Description}</code>", indentTabs: 1);
             else if (action.ExecutionState == ExecutionState.Failed)
                 this.Log($"FTP upload <b>failed</b>: <code>{action.Description}</code>", indentTabs: 1);
+            else if (action.ExecutionState == ExecutionState.Canceled)
+                this.Log($"FTP upload <b>canceled</b>: <code>{action.Description}</code>", indentTabs: 1);
         }
 
         private void UploadAction_ErrorOccurred(object sender, UnhandledExceptionEventArgs e)
@@ -442,45 +483,28 @@ namespace CDN_Video_Uploader
 
         private void ProcessJobsQueue()
         {
-            if (this.activeJobsQueue.Count > 0)
+            for (int jobIndex = 0; jobIndex < this.activeJobsQueue.Count; jobIndex++)
             {
-                Job activeJob = this.activeJobsQueue[0];
-                if (activeJob.ExecutionState == ExecutionState.NotStarted)
-                {
-                    try
-                    {
-                        this.Log($"Job <b>started</b>: <code>{activeJob.Description}</code>");
-                        activeJob.Start();
-                    }
-                    catch (Exception ex)
-                    {
-                        this.LogError($"failed to start job <code>{activeJob.Description}</code>");
-                        this.LogError(ex.Message);
-                    }
-                }
+                Job job = this.activeJobsQueue[jobIndex];
 
-                try
-                {
-                    activeJob.UpdateState();
-                }
-                catch (Exception ex)
-                {
-                    this.LogError($"failed to start job <code>{activeJob.Description}</code>");
-                    this.LogError(ex.Message);
-                }
+                if (job.CanStart())
+                    job.Start();
 
-                if (activeJob.IsFinished)
+                if (job.ExecutionState == ExecutionState.Running)
+                    job.UpdateState();
+
+                if (job.IsFinished)
                 {
+                    // Terminate any job actions, which still run on the background
+                    job.Cancel();
 
                     // Move the current job to the "completed jobs" list
-                    this.activeJobsQueue.RemoveAt(0);
-                    
-                    this.completedJobs.Add(activeJob);
+                    this.activeJobsQueue.RemoveAt(jobIndex);
+                    this.completedJobs.Add(job);
                     this.RefreshCompletedJobsUI();
-                    this.Log($"Job <code>{activeJob.Description}</code> finished: <b>{activeJob.StateAsText.ToLower()}</b>");
 
-                    // Start immediately the next job
-                    ProcessJobsQueue(); 
+                    // Continue correctly to the next job (after the current job, which is deleted)
+                    jobIndex--;
                 }
 
                 this.RefreshActiveJobsUI();
@@ -516,7 +540,7 @@ namespace CDN_Video_Uploader
 
         private void dataGridViewCompletedJobs_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0)
+            if (e.RowIndex >= 0 && e.RowIndex < this.completedJobs.Count)
             {
                 string hlsVideoURL = this.completedJobs[e.RowIndex].VideoURL;
                 if (hlsVideoURL != null)

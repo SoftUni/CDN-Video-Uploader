@@ -16,18 +16,27 @@ namespace CDN_Video_Uploader.Jobs
         private Task uploadTask;
         private CancellationTokenSource uploadTaskCancelationTokenSource;
 
+        public override bool CanStart()
+        {
+            bool canStart = this.ExecutionState == ExecutionState.NotStarted;
+            if (this.DependsOnAction != null && 
+                this.DependsOnAction.ExecutionState != ExecutionState.CompletedSuccessfully)
+                canStart = false;
+            return canStart;
+        }
+
         public override void Start()
         {
             if (this.FtpClient == null)
             {
                 this.ExecutionState = ExecutionState.Failed;
-                this.OnErrorOccurred(new InvalidOperationException(
-                    $"not connected to the FTP server"));
+                this.OnErrorOccurred(new InvalidOperationException($"not connected to the FTP server"));
                 return;
             }
 
             try
             {
+                this.ExecutionState = ExecutionState.Running;
                 IProgress<FtpProgress> progressIndicator =
                     new Progress<FtpProgress>(this.UploadProgressChanged);
                 this.inputFileStream = new FileStream(this.InputFile, FileMode.Open);
@@ -38,7 +47,6 @@ namespace CDN_Video_Uploader.Jobs
                     token: uploadTaskCancelationTokenSource.Token,
                     progress: progressIndicator
                 );
-                this.ExecutionState = ExecutionState.Running;
             }
             catch (Exception ex)
             {
@@ -71,14 +79,6 @@ namespace CDN_Video_Uploader.Jobs
             {
                 this.ExecutionState = ExecutionState.Canceled;
             }
-            else
-            {
-                // TODO: update the progress (PercentsDone)
-                this.PercentsDone += 0.1f;
-            }
-
-            if (this.IsFinished)
-                this.CloseInputStream();
         }
 
         public override void Cancel()
@@ -86,11 +86,32 @@ namespace CDN_Video_Uploader.Jobs
             // Ask the FTP file upload component to cancel its work
             this.uploadTaskCancelationTokenSource.Cancel();
 
-            this.CloseInputStream();
-
             this.ExecutionState = ExecutionState.Canceled;
         }
 
+        protected override void OnExecutionStateChanged(ExecutionState previousExecutionState)
+        {
+            if (previousExecutionState == ExecutionState.Running && this.IsFinished)
+            {
+                this.CloseInputStream();
+                this.DisconnectFromFTP();
+            }
+            base.OnExecutionStateChanged(previousExecutionState);
+        }
+
+        private void DisconnectFromFTP()
+        {
+            try
+            {
+                // Try to disconnect from the FTP server and realease the resources used
+                this.FtpClient.Dispose();
+            }
+            catch
+            {
+                // The FTP is not connected --> ignore this error
+            }
+        }
+         
         /// <summary>
         /// Close (forcefully) the input stream, associated with the FTP file upload
         /// </summary>
@@ -103,7 +124,7 @@ namespace CDN_Video_Uploader.Jobs
             } 
             catch 
             {
-                // The file is already closed or can't close --> ignore it
+                // The file is already closed or can't close --> ignore this error
             }
         }
     }
