@@ -37,6 +37,11 @@ namespace CDN_Video_Uploader.Jobs
         [Range(0.0, 100.0)]
         public double PercentsDone { get; set; }
 
+        public bool IsRunning
+        {
+            get => this.ExecutionState == ExecutionState.Running;
+        }
+
         public bool IsFinished
         {
             get => this.ExecutionState == ExecutionState.CompletedSuccessfully ||

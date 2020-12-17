@@ -85,7 +85,6 @@ namespace CDN_Video_Uploader.Jobs
         {
             // Ask the FTP file upload component to cancel its work
             this.uploadTaskCancelationTokenSource.Cancel();
-
             this.ExecutionState = ExecutionState.Canceled;
         }
 
