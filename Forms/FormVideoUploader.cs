@@ -364,6 +364,7 @@ namespace CDN_Video_Uploader
                     PathAtFTP = ftpPath + outputFileNameShort,
                     DependsOnAction = transcodeAction
                 };
+                uploadAction.FtpClient.DataConnectionType = this.ftpClient.DataConnectionType;
                 uploadAction.ExecutionStateChanged += UploadAction_ExecutionStateChanged;
                 uploadAction.ErrorOccurred += UploadAction_ErrorOccurred;
                 actions.Add(uploadAction);
