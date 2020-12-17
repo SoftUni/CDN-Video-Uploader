@@ -63,6 +63,7 @@ ffmpeg.exe  -hwaccel cuvid -hwaccel_output_format cuda -c:v h264_cuvid -resize 4
 ```
 
 Notes:
+  - Multipass for 1080p is intentionally swiched off, because it slows down the transcoding speed by 45%, with almost no visible improvement
   - These commands are designed to run in Windows machine, with NVidia graphics card, which supports video encode / decode
   - Require the latest NVidia drivers
   - Require the latest `ffmpeg` for Windows (from Nov 2020 or later)
@@ -74,6 +75,15 @@ Links:
   - https://developer.nvidia.com/blog/nvidia-ffmpeg-transcoding-guide/
   - https://docs.nvidia.com/video-technologies/video-codec-sdk/ffmpeg-with-nvidia-gpu/
   - https://gist.github.com/nakov/63375816c9d3201c499b15b110ca6136
+
+### Video Cards for Hardware Transcoding
+This list describes the **performance of NVidea video cards for video encoding** (NVENC / NVDEC):
+ - https://www.elpamsoft.com/?p=Plex-Hardware-Transcoding
+ 
+### The Max NVENC Sessions Limit
+NVidia drivers apply an internal software **limitation on the maximum number of NVENC video encoding sessions** (how many files can be encoded in simultaneously with `ffmpeg`).
+
+To remove the NVENC sessions restriction, you can use the **NVENC patch** tool for the NVidia video drivers (on your own risk): https://github.com/keylase/nvidia-patch/tree/master/win.
 
 ## HLS Stream on UCDN
 
