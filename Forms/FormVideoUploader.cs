@@ -365,6 +365,7 @@ namespace CDN_Video_Uploader
                     DependsOnAction = transcodeAction
                 };
                 uploadAction.FtpClient.DataConnectionType = this.ftpClient.DataConnectionType;
+                uploadAction.FtpClient.SocketKeepAlive = this.ftpClient.SocketKeepAlive;
                 uploadAction.ExecutionStateChanged += UploadAction_ExecutionStateChanged;
                 uploadAction.ErrorOccurred += UploadAction_ErrorOccurred;
                 actions.Add(uploadAction);
