@@ -84,8 +84,18 @@ namespace CDN_Video_Uploader
 
         private void Application_ProcessExit(object sender, EventArgs e)
         {
-            // Delete all temp files on app exit
-            Directory.Delete(this.workDir, true);
+            // Cancel all running jobs and delete all temp files on app exit
+            this.activeJobsQueue.ForEach(job => job.Cancel());
+            try
+            {
+                Directory.Delete(this.workDir, true);
+            }
+            catch
+            {
+                // Wait a bit for processes to terminate and try removing the temp files again
+                System.Threading.Thread.Sleep(500);
+                Directory.Delete(this.workDir, true);
+            }
         }
 
         private void FormVideoUploader_Shown(object sender, EventArgs e)
@@ -513,6 +523,9 @@ namespace CDN_Video_Uploader
 
         private void Log(string msg, int indentTabs = 0)
         {
+            if (this.IsDisposed)
+                return;
+
             if (indentTabs > 0) 
                 msg = $"<span style='padding-left:{indentTabs * 10}px'>{msg}</span>";
 
