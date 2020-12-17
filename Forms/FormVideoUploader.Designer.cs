@@ -57,13 +57,13 @@
             this.ColumnState = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnProgress = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewCompletedJobs = new System.Windows.Forms.DataGridView();
+            this.ColumnCompletedJob = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnResult = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnVideoURL = new System.Windows.Forms.DataGridViewLinkColumn();
             this.buttonSettings = new System.Windows.Forms.Button();
             this.buttonFTPGo = new System.Windows.Forms.Button();
             this.buttonFTPUp = new System.Windows.Forms.Button();
             this.buttonFTPConnect = new System.Windows.Forms.Button();
-            this.ColumnCompletedJob = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnResult = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnVideoURL = new System.Windows.Forms.DataGridViewLinkColumn();
             labelDragAndDropFiles = new System.Windows.Forms.Label();
             labelOr = new System.Windows.Forms.Label();
             pictureBoxUploadImage = new System.Windows.Forms.PictureBox();
@@ -412,6 +412,34 @@
             this.dataGridViewCompletedJobs.Text = "dataGridView1";
             this.dataGridViewCompletedJobs.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewCompletedJobs_CellClick);
             // 
+            // ColumnCompletedJob
+            // 
+            this.ColumnCompletedJob.DataPropertyName = "Description";
+            this.ColumnCompletedJob.FillWeight = 191.2675F;
+            this.ColumnCompletedJob.HeaderText = "Completed Job";
+            this.ColumnCompletedJob.MinimumWidth = 6;
+            this.ColumnCompletedJob.Name = "ColumnCompletedJob";
+            this.ColumnCompletedJob.ReadOnly = true;
+            // 
+            // ColumnResult
+            // 
+            this.ColumnResult.DataPropertyName = "StateAsText";
+            this.ColumnResult.HeaderText = "Result";
+            this.ColumnResult.MinimumWidth = 6;
+            this.ColumnResult.Name = "ColumnResult";
+            this.ColumnResult.ReadOnly = true;
+            // 
+            // ColumnVideoURL
+            // 
+            this.ColumnVideoURL.DataPropertyName = "VideoURL";
+            this.ColumnVideoURL.FillWeight = 58.81188F;
+            this.ColumnVideoURL.HeaderText = "Video URL";
+            this.ColumnVideoURL.MinimumWidth = 6;
+            this.ColumnVideoURL.Name = "ColumnVideoURL";
+            this.ColumnVideoURL.ReadOnly = true;
+            this.ColumnVideoURL.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.ColumnVideoURL.TrackVisitedState = false;
+            // 
             // buttonSettings
             // 
             this.buttonSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -469,34 +497,6 @@
             this.buttonFTPConnect.UseVisualStyleBackColor = true;
             this.buttonFTPConnect.Click += new System.EventHandler(this.buttonFTPConnect_Click);
             // 
-            // ColumnCompletedJob
-            // 
-            this.ColumnCompletedJob.DataPropertyName = "Description";
-            this.ColumnCompletedJob.FillWeight = 191.2675F;
-            this.ColumnCompletedJob.HeaderText = "Completed Job";
-            this.ColumnCompletedJob.MinimumWidth = 6;
-            this.ColumnCompletedJob.Name = "ColumnCompletedJob";
-            this.ColumnCompletedJob.ReadOnly = true;
-            // 
-            // ColumnResult
-            // 
-            this.ColumnResult.DataPropertyName = "StateAsText";
-            this.ColumnResult.HeaderText = "Result";
-            this.ColumnResult.MinimumWidth = 6;
-            this.ColumnResult.Name = "ColumnResult";
-            this.ColumnResult.ReadOnly = true;
-            // 
-            // ColumnVideoURL
-            // 
-            this.ColumnVideoURL.DataPropertyName = "VideoURL";
-            this.ColumnVideoURL.FillWeight = 58.81188F;
-            this.ColumnVideoURL.HeaderText = "Video URL";
-            this.ColumnVideoURL.MinimumWidth = 6;
-            this.ColumnVideoURL.Name = "ColumnVideoURL";
-            this.ColumnVideoURL.ReadOnly = true;
-            this.ColumnVideoURL.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.ColumnVideoURL.TrackVisitedState = false;
-            // 
             // FormVideoUploader
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -519,6 +519,7 @@
             this.Name = "FormVideoUploader";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "CDN Video Uploader & Transcoder";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormVideoUploader_FormClosing);
             this.Load += new System.EventHandler(this.FormVideoUploader_Load);
             this.Shown += new System.EventHandler(this.FormVideoUploader_Shown);
             ((System.ComponentModel.ISupportInitialize)(pictureBoxUploadImage)).EndInit();

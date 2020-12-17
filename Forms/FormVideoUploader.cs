@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using FluentFTP;
 using System.Diagnostics;
 using CDN_Video_Uploader.Forms;
+using System.ComponentModel;
 
 namespace CDN_Video_Uploader
 {
@@ -20,8 +21,8 @@ namespace CDN_Video_Uploader
             Path.GetTempPath() + "CDN-Video-Uploader";
 
         private FtpClient ftpClient;
-        private List<Job> activeJobsQueue = new List<Job>();
-        private List<Job> completedJobs = new List<Job>();
+        private BindingList<Job> activeJobsQueue;
+        private BindingList<Job> completedJobs;
         private Timer activeJobsProcessor;
 
         public FormVideoUploader()
@@ -39,8 +40,18 @@ namespace CDN_Video_Uploader
             this.CreateWorkingDirectory();
             AppDomain.CurrentDomain.ProcessExit += new EventHandler(Application_ProcessExit);
 
-            this.dataGridViewActiveJobs.DataSource = new List<Job>();
-            this.dataGridViewCompletedJobs.DataSource = new List<Job>();
+            this.activeJobsQueue = new BindingList<Job>()
+            {
+                AllowNew = false
+            };
+            this.dataGridViewActiveJobs.DataSource = this.activeJobsQueue;
+
+            this.completedJobs = new BindingList<Job>()
+            {
+                AllowNew = false
+            };
+            this.dataGridViewCompletedJobs.DataSource = this.completedJobs;
+
             this.dataGridViewFTPFolders.DataSource = new List<FtpListItem>();
             this.dataGridViewFTPFiles.DataSource = new List<FtpListItem>();
 
@@ -82,10 +93,16 @@ namespace CDN_Video_Uploader
             this.activeJobsProcessor.Start();
         }
 
+        private void FormVideoUploader_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // Cancel all running jobs on app exit
+            foreach (var job in this.activeJobsQueue)
+                job.Cancel();
+        }
+
         private void Application_ProcessExit(object sender, EventArgs e)
         {
-            // Cancel all running jobs and delete all temp files on app exit
-            this.activeJobsQueue.ForEach(job => job.Cancel());
+            // Delete all temp files and folders on app exit
             try
             {
                 Directory.Delete(this.workDir, true);
@@ -281,8 +298,6 @@ namespace CDN_Video_Uploader
             job.ExecutionStateChanged += Job_ExecutionStateChanged;
             job.ErrorOccurred += Job_ErrorOccurred;
             this.activeJobsQueue.Add(job);
-
-            RefreshActiveJobsUI();
         }
 
         private string GetVideoUrl(string ftpPath, string shortFileName)
@@ -433,8 +448,9 @@ namespace CDN_Video_Uploader
         /// </summary>
         private void RefreshActiveJobsUI()
         {
-            this.dataGridViewActiveJobs.DataSource = null;
-            this.dataGridViewActiveJobs.DataSource = this.activeJobsQueue;
+            for (int index = 0; index < this.activeJobsQueue.Count; index++)
+                if (this.activeJobsQueue[index].IsRunning)
+                    this.activeJobsQueue.ResetItem(index);
         }
 
         /// <summary>
@@ -442,8 +458,8 @@ namespace CDN_Video_Uploader
         /// </summary>
         private void RefreshCompletedJobsUI()
         {
-            this.dataGridViewCompletedJobs.DataSource = null;
-            this.dataGridViewCompletedJobs.DataSource = this.completedJobs;
+            for (int index = 0; index < this.completedJobs.Count; index++)
+                this.completedJobs.ResetItem(index);
         }
 
         private static string CollectErrorsFromException(UnhandledExceptionEventArgs e)
@@ -500,7 +516,7 @@ namespace CDN_Video_Uploader
                 if (job.CanStart())
                     job.Start();
 
-                if (job.ExecutionState == ExecutionState.Running)
+                if (job.IsRunning)
                     job.UpdateState();
 
                 if (job.IsFinished)
@@ -511,7 +527,6 @@ namespace CDN_Video_Uploader
                     // Move the current job to the "completed jobs" list
                     this.activeJobsQueue.RemoveAt(jobIndex);
                     this.completedJobs.Add(job);
-                    this.RefreshCompletedJobsUI();
 
                     // Continue correctly to the next job (after the current job, which is deleted)
                     jobIndex--;
@@ -523,14 +538,14 @@ namespace CDN_Video_Uploader
 
         private void Log(string msg, int indentTabs = 0)
         {
-            if (this.IsDisposed)
+            if (this.Disposing || this.IsDisposed)
                 return;
 
             if (indentTabs > 0) 
                 msg = $"<span style='padding-left:{indentTabs * 10}px'>{msg}</span>";
 
             // Update the UI through the main UI thread (thread safe)
-            this.webBrowserLogs.Invoke((MethodInvoker)delegate {
+            this.Invoke((MethodInvoker)delegate {
                 // Append the dateand time to the logs
                 string date = DateTime.Now.ToString("d-MMM-yyyy HH:mm:ss");
                 this.webBrowserLogs.Document.Write($"<span style='color:#999'>[{date}]</span> ");
