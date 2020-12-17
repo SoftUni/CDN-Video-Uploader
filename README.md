@@ -10,7 +10,7 @@ A tool for **transcoding** and **uploading** videos to a CDN network for **HLS v
     - MP4 @ `240p` (~ 150 kbps bitrate)
   - **Upload**: the files are uploaded through to FTP to the target CDN network
 
-![CDN-Video-Uploader-screenshot](https://user-images.githubusercontent.com/1689586/99668721-c5ebbb00-2a76-11eb-8cd9-dfbfbd7ef9c4.png)
+![CDN-Video-Uploader-screenshot](https://user-images.githubusercontent.com/1689586/102526644-a317eb00-40a4-11eb-8d46-129c390ab845.png)
 
 ## Video Transcoding 
 
