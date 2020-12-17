@@ -80,7 +80,9 @@ This list describes the **performance of NVidea video cards for video encoding**
  - https://www.elpamsoft.com/?p=Plex-Hardware-Transcoding
  
 ### The Max NVENC Sessions Limit
-NVidia drivers apply an internal software **limitation on the maximum number of NVENC video encoding sessions** (how many files can be encoded in simultaneously with `ffmpeg`). To remove this restriction, you can use the **NVENC patch** tool (on your own risk): https://github.com/keylase/nvidia-patch/tree/master/win.
+NVidia drivers apply an internal software **limitation on the maximum number of NVENC video encoding sessions** (how many files can be encoded in simultaneously with `ffmpeg`).
+
+To remove the NVENC sessions restriction, you can use the **NVENC patch** tool (on your own risk): https://github.com/keylase/nvidia-patch/tree/master/win.
 
 ## HLS Stream on UCDN
 
