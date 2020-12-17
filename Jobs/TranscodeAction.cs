@@ -131,7 +131,8 @@ namespace CDN_Video_Uploader.Jobs
             else
             {
                 // TODO: update the progress (PercentsDone)
-                this.PercentsDone += 0.1f;
+                double step = 0.1 * (100 - this.PercentsDone) / 100;
+                this.PercentsDone += step;
             }
         }
 
