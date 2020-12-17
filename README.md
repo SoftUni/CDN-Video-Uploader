@@ -63,6 +63,7 @@ ffmpeg.exe  -hwaccel cuvid -hwaccel_output_format cuda -c:v h264_cuvid -resize 4
 ```
 
 Notes:
+  - Multipass for 1080p is intentionally swiched off, because it slows down the transcoding speed by 45%, with almost no visible improvements
   - These commands are designed to run in Windows machine, with NVidia graphics card, which supports video encode / decode
   - Require the latest NVidia drivers
   - Require the latest `ffmpeg` for Windows (from Nov 2020 or later)
