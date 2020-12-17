@@ -75,6 +75,13 @@ Links:
   - https://docs.nvidia.com/video-technologies/video-codec-sdk/ffmpeg-with-nvidia-gpu/
   - https://gist.github.com/nakov/63375816c9d3201c499b15b110ca6136
 
+### Video Cards for Hardware Transcoding
+This list describes the **performance of NVidea video cards for video encoding** (NVENC / NVDEC):
+ - https://www.elpamsoft.com/?p=Plex-Hardware-Transcoding
+ 
+### The Max NVENC Sessions Limit
+NVidia drivers apply an internal software **limitation on the maximum number of NVENC video encoding sessions** (how many files can be encoded in simultaneously with `ffmpeg`). To remove this restriction, you can use the **NVENC patch** tool (on your own risk): https://github.com/keylase/nvidia-patch/tree/master/win.
+
 ## HLS Stream on UCDN
 
 The tool generates **HLS adaptable bitrate stream**, using the standard API from UCDN.
