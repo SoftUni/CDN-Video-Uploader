@@ -82,7 +82,7 @@ This list describes the **performance of NVidea video cards for video encoding**
 ### The Max NVENC Sessions Limit
 NVidia drivers apply an internal software **limitation on the maximum number of NVENC video encoding sessions** (how many files can be encoded in simultaneously with `ffmpeg`).
 
-To remove the NVENC sessions restriction, you can use the **NVENC patch** tool (on your own risk): https://github.com/keylase/nvidia-patch/tree/master/win.
+To remove the NVENC sessions restriction, you can use the **NVENC patch** tool for the NVidia video drivers (on your own risk): https://github.com/keylase/nvidia-patch/tree/master/win.
 
 ## HLS Stream on UCDN
 
