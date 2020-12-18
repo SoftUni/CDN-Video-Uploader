@@ -42,8 +42,6 @@ namespace CDN_Video_Uploader.Forms
             this.textBoxJobProgress = new System.Windows.Forms.TextBox();
             this.textBoxJobDescription = new System.Windows.Forms.TextBox();
             this.dataGridViewActions = new System.Windows.Forms.DataGridView();
-            this.textBoxLogs = new System.Windows.Forms.TextBox();
-            this.timerRefreshUI = new System.Windows.Forms.Timer(this.components);
             this.ColumnAction = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnActionType = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnState = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -51,6 +49,8 @@ namespace CDN_Video_Uploader.Forms
             this.ColumnFinished = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.ColumnTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnLogs = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.textBoxLogs = new System.Windows.Forms.TextBox();
+            this.timerRefreshUI = new System.Windows.Forms.Timer(this.components);
             groupBoxJobDetails = new System.Windows.Forms.GroupBox();
             labelState = new System.Windows.Forms.Label();
             labelProgress = new System.Windows.Forms.Label();
@@ -213,37 +213,6 @@ namespace CDN_Video_Uploader.Forms
             this.dataGridViewActions.Text = "dataGridView1";
             this.dataGridViewActions.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewActions_CellClick);
             // 
-            // groupBoxLogs
-            // 
-            groupBoxLogs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            groupBoxLogs.Controls.Add(this.textBoxLogs);
-            groupBoxLogs.Location = new System.Drawing.Point(12, 377);
-            groupBoxLogs.Name = "groupBoxLogs";
-            groupBoxLogs.Size = new System.Drawing.Size(1372, 284);
-            groupBoxLogs.TabIndex = 2;
-            groupBoxLogs.TabStop = false;
-            groupBoxLogs.Text = "Logs";
-            // 
-            // textBoxLogs
-            // 
-            this.textBoxLogs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxLogs.Location = new System.Drawing.Point(16, 26);
-            this.textBoxLogs.Multiline = true;
-            this.textBoxLogs.Name = "textBoxLogs";
-            this.textBoxLogs.ReadOnly = true;
-            this.textBoxLogs.Size = new System.Drawing.Size(1340, 241);
-            this.textBoxLogs.TabIndex = 0;
-            // 
-            // timerRefreshUI
-            // 
-            this.timerRefreshUI.Enabled = true;
-            this.timerRefreshUI.Interval = 500;
-            this.timerRefreshUI.Tick += new System.EventHandler(this.timerRefreshUI_Tick);
-            // 
             // ColumnAction
             // 
             this.ColumnAction.DataPropertyName = "Description";
@@ -308,6 +277,38 @@ namespace CDN_Video_Uploader.Forms
             this.ColumnLogs.MinimumWidth = 6;
             this.ColumnLogs.Name = "ColumnLogs";
             this.ColumnLogs.ReadOnly = true;
+            // 
+            // groupBoxLogs
+            // 
+            groupBoxLogs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            groupBoxLogs.Controls.Add(this.textBoxLogs);
+            groupBoxLogs.Location = new System.Drawing.Point(12, 377);
+            groupBoxLogs.Name = "groupBoxLogs";
+            groupBoxLogs.Size = new System.Drawing.Size(1372, 284);
+            groupBoxLogs.TabIndex = 2;
+            groupBoxLogs.TabStop = false;
+            groupBoxLogs.Text = "Logs";
+            // 
+            // textBoxLogs
+            // 
+            this.textBoxLogs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxLogs.Location = new System.Drawing.Point(16, 26);
+            this.textBoxLogs.Multiline = true;
+            this.textBoxLogs.Name = "textBoxLogs";
+            this.textBoxLogs.ReadOnly = true;
+            this.textBoxLogs.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxLogs.Size = new System.Drawing.Size(1340, 241);
+            this.textBoxLogs.TabIndex = 0;
+            // 
+            // timerRefreshUI
+            // 
+            this.timerRefreshUI.Enabled = true;
+            this.timerRefreshUI.Interval = 500;
+            this.timerRefreshUI.Tick += new System.EventHandler(this.timerRefreshUI_Tick);
             // 
             // FormViewJob
             // 

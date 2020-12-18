@@ -1,4 +1,5 @@
 ﻿using CDN_Video_Uploader.Properties;
+using CDN_Video_Uploader.Utils;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -13,7 +14,7 @@ namespace CDN_Video_Uploader.Jobs
         public string TranscodingCommand { get; set; }
         public string OutputFile { get; set; }
 
-        private Process transcodeProcess;
+        private BackgroundProcess transcodeProcess;
 
         private static object ActiveTranscodingActionsLock = new object();
         public static int ActiveTranscodingActions { get; private set; }
@@ -62,7 +63,7 @@ namespace CDN_Video_Uploader.Jobs
                 return;
             }
 
-            this.transcodeProcess = new Process
+            this.transcodeProcess = new BackgroundProcess
             {
                 StartInfo =
                 {
@@ -81,7 +82,7 @@ namespace CDN_Video_Uploader.Jobs
             this.AppendToLog($"{cmdExecutable} {cmdParams}");
             try
             {
-                this.transcodeProcess.Start();
+                this.transcodeProcess.StartMinimizedNoFocus();
                 this.ExecutionState = ExecutionState.Running;
             }
             catch (Exception ex)

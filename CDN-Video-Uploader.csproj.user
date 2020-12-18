@@ -14,5 +14,8 @@
     <Compile Update="Forms\FormViewJob.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Utils\BackgroundProcess.cs">
+      <SubType>Component</SubType>
+    </Compile>
   </ItemGroup>
 </Project>
