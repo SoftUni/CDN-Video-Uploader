@@ -31,7 +31,7 @@ namespace CDN_Video_Uploader.Jobs
                         // The execution has just finished (completed / failed / canceled)
                         this.DateTimeFinished = DateTime.Now;
                         this.ExecutionTime = this.DateTimeFinished - this.DateTimeStarted;
-                        this.AppendToLog($"Execution time: {this.ExecutionTime}");
+                        this.AppendToLog($"Execution time: {this.ExecutionTimeAsText}");
                     }
                     OnExecutionStateChanged(previousExecutionState);
                 }
@@ -90,7 +90,30 @@ namespace CDN_Video_Uploader.Jobs
         public DateTime? DateTimeFinished { get; private set; }
         public TimeSpan? ExecutionTime { get; private set; }
 
+        public string ExecutionTimeAsText
+        { 
+            get
+            {
+                if (this.ExecutionTime == null)
+                    return "-";
+
+                var time = this.ExecutionTime.Value;
+                string timeAsText = $"{time:h\\:mm\\:ss}";
+                return timeAsText;
+            }
+        }
+
         public string ExecutionLog { get; protected set; } = "";
+
+        public string ExecutionLogForDisplay
+        {
+            get
+            {
+                if (this.ExecutionLog == "")
+                    return "Action not yet started." + Environment.NewLine;
+                return this.ExecutionLog;
+            }
+        }
 
         protected void AppendToLog(string text)
         {

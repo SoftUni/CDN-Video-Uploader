@@ -57,8 +57,8 @@ namespace CDN_Video_Uploader.Forms
         private void RefreshActionLogs(int actionIndex)
         {
             ExecutableAction selectedAction = this.job.Actions[actionIndex];
-            if (this.textBoxLogs.Text != selectedAction.ExecutionLog)
-                this.textBoxLogs.Text = selectedAction.ExecutionLog;
+            if (this.textBoxLogs.Text != selectedAction.ExecutionLogForDisplay)
+                this.textBoxLogs.Text = selectedAction.ExecutionLogForDisplay;
         }
 
         private void FormViewJob_KeyDown(object sender, KeyEventArgs e)

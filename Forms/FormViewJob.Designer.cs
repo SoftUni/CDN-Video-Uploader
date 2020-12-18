@@ -49,6 +49,7 @@ namespace CDN_Video_Uploader.Forms
             this.ColumnState = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnProgress = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnFinished = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.ColumnTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnLogs = new System.Windows.Forms.DataGridViewTextBoxColumn();
             groupBoxJobDetails = new System.Windows.Forms.GroupBox();
             labelState = new System.Windows.Forms.Label();
@@ -75,7 +76,7 @@ namespace CDN_Video_Uploader.Forms
             groupBoxJobDetails.Controls.Add(labelJob);
             groupBoxJobDetails.Location = new System.Drawing.Point(12, 12);
             groupBoxJobDetails.Name = "groupBoxJobDetails";
-            groupBoxJobDetails.Size = new System.Drawing.Size(1372, 129);
+            groupBoxJobDetails.Size = new System.Drawing.Size(1372, 113);
             groupBoxJobDetails.TabIndex = 0;
             groupBoxJobDetails.TabStop = false;
             groupBoxJobDetails.Text = "Job Details";
@@ -85,9 +86,9 @@ namespace CDN_Video_Uploader.Forms
             this.buttonCancelJob.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCancelJob.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.buttonCancelJob.Image = global::CDN_Video_Uploader.Properties.Resources.cancel_button_icon;
-            this.buttonCancelJob.Location = new System.Drawing.Point(1193, 71);
+            this.buttonCancelJob.Location = new System.Drawing.Point(1193, 63);
             this.buttonCancelJob.Name = "buttonCancelJob";
-            this.buttonCancelJob.Size = new System.Drawing.Size(163, 40);
+            this.buttonCancelJob.Size = new System.Drawing.Size(163, 34);
             this.buttonCancelJob.TabIndex = 8;
             this.buttonCancelJob.Text = " Cancel Job";
             this.buttonCancelJob.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -100,17 +101,17 @@ namespace CDN_Video_Uploader.Forms
             this.textBoxJobState.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxJobState.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBoxJobState.Location = new System.Drawing.Point(52, 78);
+            this.textBoxJobState.Location = new System.Drawing.Point(54, 67);
             this.textBoxJobState.Name = "textBoxJobState";
             this.textBoxJobState.ReadOnly = true;
-            this.textBoxJobState.Size = new System.Drawing.Size(1122, 27);
+            this.textBoxJobState.Size = new System.Drawing.Size(1120, 27);
             this.textBoxJobState.TabIndex = 5;
             // 
             // labelState
             // 
             labelState.AutoSize = true;
             labelState.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            labelState.Location = new System.Drawing.Point(7, 82);
+            labelState.Location = new System.Drawing.Point(7, 71);
             labelState.Name = "labelState";
             labelState.Size = new System.Drawing.Size(46, 18);
             labelState.TabIndex = 4;
@@ -119,11 +120,11 @@ namespace CDN_Video_Uploader.Forms
             // textBoxJobProgress
             // 
             this.textBoxJobProgress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxJobProgress.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBoxJobProgress.Location = new System.Drawing.Point(1261, 28);
+            this.textBoxJobProgress.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textBoxJobProgress.Location = new System.Drawing.Point(1261, 24);
             this.textBoxJobProgress.Name = "textBoxJobProgress";
             this.textBoxJobProgress.ReadOnly = true;
-            this.textBoxJobProgress.Size = new System.Drawing.Size(95, 30);
+            this.textBoxJobProgress.Size = new System.Drawing.Size(95, 27);
             this.textBoxJobProgress.TabIndex = 3;
             // 
             // labelProgress
@@ -131,7 +132,7 @@ namespace CDN_Video_Uploader.Forms
             labelProgress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             labelProgress.AutoSize = true;
             labelProgress.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            labelProgress.Location = new System.Drawing.Point(1190, 34);
+            labelProgress.Location = new System.Drawing.Point(1190, 28);
             labelProgress.Name = "labelProgress";
             labelProgress.Size = new System.Drawing.Size(73, 18);
             labelProgress.TabIndex = 2;
@@ -141,18 +142,18 @@ namespace CDN_Video_Uploader.Forms
             // 
             this.textBoxJobDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxJobDescription.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBoxJobDescription.Location = new System.Drawing.Point(52, 28);
+            this.textBoxJobDescription.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textBoxJobDescription.Location = new System.Drawing.Point(54, 24);
             this.textBoxJobDescription.Name = "textBoxJobDescription";
             this.textBoxJobDescription.ReadOnly = true;
-            this.textBoxJobDescription.Size = new System.Drawing.Size(1122, 30);
+            this.textBoxJobDescription.Size = new System.Drawing.Size(1120, 27);
             this.textBoxJobDescription.TabIndex = 1;
             // 
             // labelJob
             // 
             labelJob.AutoSize = true;
             labelJob.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            labelJob.Location = new System.Drawing.Point(7, 34);
+            labelJob.Location = new System.Drawing.Point(7, 28);
             labelJob.Name = "labelJob";
             labelJob.Size = new System.Drawing.Size(37, 18);
             labelJob.TabIndex = 0;
@@ -163,9 +164,9 @@ namespace CDN_Video_Uploader.Forms
             groupBoxActions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             groupBoxActions.Controls.Add(this.dataGridViewActions);
-            groupBoxActions.Location = new System.Drawing.Point(12, 149);
+            groupBoxActions.Location = new System.Drawing.Point(12, 131);
             groupBoxActions.Name = "groupBoxActions";
-            groupBoxActions.Size = new System.Drawing.Size(1372, 224);
+            groupBoxActions.Size = new System.Drawing.Size(1372, 240);
             groupBoxActions.TabIndex = 1;
             groupBoxActions.TabStop = false;
             groupBoxActions.Text = "Actions";
@@ -176,7 +177,8 @@ namespace CDN_Video_Uploader.Forms
             this.dataGridViewActions.AllowUserToDeleteRows = false;
             this.dataGridViewActions.AllowUserToOrderColumns = true;
             this.dataGridViewActions.AllowUserToResizeRows = false;
-            this.dataGridViewActions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.dataGridViewActions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewActions.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridViewActions.BackgroundColor = System.Drawing.SystemColors.Control;
@@ -195,6 +197,7 @@ namespace CDN_Video_Uploader.Forms
             this.ColumnState,
             this.ColumnProgress,
             this.ColumnFinished,
+            this.ColumnTime,
             this.ColumnLogs});
             this.dataGridViewActions.EnableHeadersVisualStyles = false;
             this.dataGridViewActions.Location = new System.Drawing.Point(16, 26);
@@ -205,7 +208,7 @@ namespace CDN_Video_Uploader.Forms
             this.dataGridViewActions.RowHeadersVisible = false;
             this.dataGridViewActions.RowHeadersWidth = 51;
             this.dataGridViewActions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewActions.Size = new System.Drawing.Size(1340, 180);
+            this.dataGridViewActions.Size = new System.Drawing.Size(1340, 196);
             this.dataGridViewActions.TabIndex = 13;
             this.dataGridViewActions.Text = "dataGridView1";
             this.dataGridViewActions.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewActions_CellClick);
@@ -216,9 +219,9 @@ namespace CDN_Video_Uploader.Forms
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             groupBoxLogs.Controls.Add(this.textBoxLogs);
-            groupBoxLogs.Location = new System.Drawing.Point(12, 381);
+            groupBoxLogs.Location = new System.Drawing.Point(12, 377);
             groupBoxLogs.Name = "groupBoxLogs";
-            groupBoxLogs.Size = new System.Drawing.Size(1372, 280);
+            groupBoxLogs.Size = new System.Drawing.Size(1372, 284);
             groupBoxLogs.TabIndex = 2;
             groupBoxLogs.TabStop = false;
             groupBoxLogs.Text = "Logs";
@@ -232,7 +235,7 @@ namespace CDN_Video_Uploader.Forms
             this.textBoxLogs.Multiline = true;
             this.textBoxLogs.Name = "textBoxLogs";
             this.textBoxLogs.ReadOnly = true;
-            this.textBoxLogs.Size = new System.Drawing.Size(1340, 237);
+            this.textBoxLogs.Size = new System.Drawing.Size(1340, 241);
             this.textBoxLogs.TabIndex = 0;
             // 
             // timerRefreshUI
@@ -243,55 +246,44 @@ namespace CDN_Video_Uploader.Forms
             // 
             // ColumnAction
             // 
-            this.ColumnAction.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.ColumnAction.DataPropertyName = "Description";
-            this.ColumnAction.FillWeight = 200F;
-            this.ColumnAction.Frozen = true;
+            this.ColumnAction.FillWeight = 300F;
             this.ColumnAction.HeaderText = "Action";
             this.ColumnAction.MinimumWidth = 6;
             this.ColumnAction.Name = "ColumnAction";
             this.ColumnAction.ReadOnly = true;
-            this.ColumnAction.Width = 622;
             // 
             // ColumnActionType
             // 
-            this.ColumnActionType.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.ColumnActionType.DataPropertyName = "ActionType";
-            this.ColumnActionType.FillWeight = 30F;
-            this.ColumnActionType.Frozen = true;
+            this.ColumnActionType.FillWeight = 50F;
             this.ColumnActionType.HeaderText = "Type";
             this.ColumnActionType.MinimumWidth = 6;
             this.ColumnActionType.Name = "ColumnActionType";
             this.ColumnActionType.ReadOnly = true;
-            this.ColumnActionType.Width = 124;
             // 
             // ColumnState
             // 
-            this.ColumnState.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.ColumnState.DataPropertyName = "StateAsText";
-            this.ColumnState.FillWeight = 30F;
-            this.ColumnState.Frozen = true;
+            this.ColumnState.FillWeight = 80F;
             this.ColumnState.HeaderText = "State";
             this.ColumnState.MinimumWidth = 6;
             this.ColumnState.Name = "ColumnState";
             this.ColumnState.ReadOnly = true;
-            this.ColumnState.Width = 249;
             // 
             // ColumnProgress
             // 
-            this.ColumnProgress.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.ColumnProgress.DataPropertyName = "ProgressAsText";
-            this.ColumnProgress.FillWeight = 25F;
+            this.ColumnProgress.FillWeight = 50F;
             this.ColumnProgress.HeaderText = "Progress";
             this.ColumnProgress.MinimumWidth = 6;
             this.ColumnProgress.Name = "ColumnProgress";
             this.ColumnProgress.ReadOnly = true;
-            this.ColumnProgress.Width = 124;
             // 
             // ColumnFinished
             // 
             this.ColumnFinished.DataPropertyName = "IsFinished";
-            this.ColumnFinished.FillWeight = 25F;
+            this.ColumnFinished.FillWeight = 40F;
             this.ColumnFinished.HeaderText = "Finished";
             this.ColumnFinished.MinimumWidth = 6;
             this.ColumnFinished.Name = "ColumnFinished";
@@ -299,10 +291,19 @@ namespace CDN_Video_Uploader.Forms
             this.ColumnFinished.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.ColumnFinished.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
+            // ColumnTime
+            // 
+            this.ColumnTime.DataPropertyName = "ExecutionTimeAsText";
+            this.ColumnTime.FillWeight = 40F;
+            this.ColumnTime.HeaderText = "Time";
+            this.ColumnTime.MinimumWidth = 6;
+            this.ColumnTime.Name = "ColumnTime";
+            this.ColumnTime.ReadOnly = true;
+            // 
             // ColumnLogs
             // 
-            this.ColumnLogs.DataPropertyName = "ExecutionLog";
-            this.ColumnLogs.FillWeight = 50F;
+            this.ColumnLogs.DataPropertyName = "ExecutionLogForDisplay";
+            this.ColumnLogs.FillWeight = 163.8594F;
             this.ColumnLogs.HeaderText = "Logs";
             this.ColumnLogs.MinimumWidth = 6;
             this.ColumnLogs.Name = "ColumnLogs";
@@ -315,6 +316,7 @@ namespace CDN_Video_Uploader.Forms
             this.Controls.Add(groupBoxActions);
             this.Controls.Add(groupBoxJobDetails);
             this.KeyPreview = true;
+            this.MinimumSize = new System.Drawing.Size(800, 600);
             this.Name = "FormViewJob";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -346,6 +348,7 @@ namespace CDN_Video_Uploader.Forms
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnState;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnProgress;
         private System.Windows.Forms.DataGridViewCheckBoxColumn ColumnFinished;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnTime;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnLogs;
     }
 }

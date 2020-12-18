@@ -61,6 +61,7 @@
             this.buttonFTPConnect = new System.Windows.Forms.Button();
             this.ColumnCompletedJob = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnResult = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnExecutionTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnVideoURL = new System.Windows.Forms.DataGridViewLinkColumn();
             this.ColumnCompletedJobDetails = new System.Windows.Forms.DataGridViewButtonColumn();
             labelDragAndDropFiles = new System.Windows.Forms.Label();
@@ -396,6 +397,7 @@
             this.dataGridViewCompletedJobs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnCompletedJob,
             this.ColumnResult,
+            this.ColumnExecutionTime,
             this.ColumnVideoURL,
             this.ColumnCompletedJobDetails});
             this.dataGridViewCompletedJobs.EnableHeadersVisualStyles = false;
@@ -486,6 +488,14 @@
             this.ColumnResult.Name = "ColumnResult";
             this.ColumnResult.ReadOnly = true;
             // 
+            // ColumnExecutionTime
+            // 
+            this.ColumnExecutionTime.DataPropertyName = "ExecutionTimeAsText";
+            this.ColumnExecutionTime.FillWeight = 35F;
+            this.ColumnExecutionTime.HeaderText = "Time";
+            this.ColumnExecutionTime.MinimumWidth = 6;
+            this.ColumnExecutionTime.Name = "ColumnExecutionTime";
+            // 
             // ColumnVideoURL
             // 
             this.ColumnVideoURL.DataPropertyName = "VideoURL";
@@ -572,6 +582,7 @@
         private System.Windows.Forms.DataGridViewButtonColumn ColumnDetails;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnCompletedJob;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnResult;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnExecutionTime;
         private System.Windows.Forms.DataGridViewLinkColumn ColumnVideoURL;
         private System.Windows.Forms.DataGridViewButtonColumn ColumnCompletedJobDetails;
     }
