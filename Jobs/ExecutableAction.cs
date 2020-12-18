@@ -3,9 +3,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CDN_Video_Uploader.Jobs
 {
-    abstract class ExecutableAction
+    public abstract class ExecutableAction
     {
         public string Description { get; set; }
+
+        public abstract string ActionType { get; }
 
         private ExecutionState executionState = ExecutionState.NotStarted;
 
@@ -18,6 +20,19 @@ namespace CDN_Video_Uploader.Jobs
                 {
                     ExecutionState previousExecutionState = this.executionState;
                     this.executionState = value;
+                    this.AppendToLog($"Action state changed: {this.StateAsText}");
+                    if (this.IsRunning)
+                    {
+                        // The execution has just started
+                        this.DateTimeStarted = DateTime.Now;
+                    }
+                    if (this.IsFinished && this.DateTimeFinished == null)
+                    {
+                        // The execution has just finished (completed / failed / canceled)
+                        this.DateTimeFinished = DateTime.Now;
+                        this.ExecutionTime = this.DateTimeFinished - this.DateTimeStarted;
+                        this.AppendToLog($"Execution time: {this.ExecutionTime}");
+                    }
                     OnExecutionStateChanged(previousExecutionState);
                 }
             }
@@ -29,13 +44,34 @@ namespace CDN_Video_Uploader.Jobs
             ExecutionState previousExecutionState)
         {
             if (this.ExecutionStateChanged != null)
-            {
                 ExecutionStateChanged(this, null);
-            }
         }
 
         [Range(0.0, 100.0)]
         public double PercentsDone { get; set; }
+
+        public virtual string StateAsText
+        {
+            get
+            {
+                if (this.ExecutionState == ExecutionState.NotStarted)
+                    return "Waiting to start";
+                if (this.ExecutionState == ExecutionState.Running)
+                    return "Running";
+                if (this.ExecutionState == ExecutionState.CompletedSuccessfully)
+                    return "Completed successfully";
+                if (this.ExecutionState == ExecutionState.Failed)
+                    return "Failed to execute";
+                if (this.ExecutionState == ExecutionState.Canceled)
+                    return "Canceled by user";
+                return "Unknown";
+            }
+        }
+
+        public string ProgressAsText
+        {
+            get => "" + Math.Round(this.PercentsDone, 1) + "% done";
+        }
 
         public bool IsRunning
         {
@@ -49,13 +85,22 @@ namespace CDN_Video_Uploader.Jobs
                 this.ExecutionState == ExecutionState.Canceled;
         }
 
+        public DateTime DateTimeCreated { get; private set; } = DateTime.Now;
+        public DateTime? DateTimeStarted { get; private set; }
+        public DateTime? DateTimeFinished { get; private set; }
+        public TimeSpan? ExecutionTime { get; private set; }
+
         public string ExecutionLog { get; protected set; } = "";
 
         protected void AppendToLog(string text)
         {
             if (String.IsNullOrEmpty(text))
                 return;
-            this.ExecutionLog += Environment.NewLine + text + Environment.NewLine;
+            if (this.ExecutionLog.Length > 0)
+                text = Environment.NewLine + text + Environment.NewLine;
+            else
+                text = text + Environment.NewLine;
+            this.ExecutionLog += text;
         }
 
         public event UnhandledExceptionEventHandler ErrorOccurred;

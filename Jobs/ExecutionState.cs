@@ -3,7 +3,7 @@
     /// <summary>
     /// Execution state for Jobs and Actions
     /// </summary>
-    enum ExecutionState
+    public enum ExecutionState
     {
         NotStarted,
         Running,

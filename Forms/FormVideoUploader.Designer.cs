@@ -37,9 +37,6 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.labelFTP = new System.Windows.Forms.Label();
             this.textBoxFTPPath = new System.Windows.Forms.TextBox();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.labelQueue = new System.Windows.Forms.Label();
             this.panelUploadBox = new System.Windows.Forms.Panel();
             this.buttonChooseFilesToUpload = new System.Windows.Forms.Button();
@@ -56,14 +53,16 @@
             this.ColumnJob = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnState = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnProgress = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnDetails = new System.Windows.Forms.DataGridViewButtonColumn();
             this.dataGridViewCompletedJobs = new System.Windows.Forms.DataGridView();
-            this.ColumnCompletedJob = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnResult = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnVideoURL = new System.Windows.Forms.DataGridViewLinkColumn();
             this.buttonSettings = new System.Windows.Forms.Button();
             this.buttonFTPGo = new System.Windows.Forms.Button();
             this.buttonFTPUp = new System.Windows.Forms.Button();
             this.buttonFTPConnect = new System.Windows.Forms.Button();
+            this.ColumnCompletedJob = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnResult = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnVideoURL = new System.Windows.Forms.DataGridViewLinkColumn();
+            this.ColumnCompletedJobDetails = new System.Windows.Forms.DataGridViewButtonColumn();
             labelDragAndDropFiles = new System.Windows.Forms.Label();
             labelOr = new System.Windows.Forms.Label();
             pictureBoxUploadImage = new System.Windows.Forms.PictureBox();
@@ -128,18 +127,6 @@
             this.textBoxFTPPath.Size = new System.Drawing.Size(650, 25);
             this.textBoxFTPPath.TabIndex = 1;
             this.textBoxFTPPath.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxFTPPath_KeyPress);
-            // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Text = "File Name";
-            // 
-            // columnHeader2
-            // 
-            this.columnHeader2.Text = "Size";
-            // 
-            // columnHeader3
-            // 
-            this.columnHeader3.Text = "Last Modified";
             // 
             // labelQueue
             // 
@@ -337,7 +324,8 @@
             this.dataGridViewActiveJobs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnJob,
             this.ColumnState,
-            this.ColumnProgress});
+            this.ColumnProgress,
+            this.ColumnDetails});
             this.dataGridViewActiveJobs.EnableHeadersVisualStyles = false;
             this.dataGridViewActiveJobs.Location = new System.Drawing.Point(738, 136);
             this.dataGridViewActiveJobs.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -349,11 +337,12 @@
             this.dataGridViewActiveJobs.Size = new System.Drawing.Size(626, 170);
             this.dataGridViewActiveJobs.TabIndex = 12;
             this.dataGridViewActiveJobs.Text = "dataGridView1";
+            this.dataGridViewActiveJobs.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewActiveJobs_CellContentClick);
             // 
             // ColumnJob
             // 
             this.ColumnJob.DataPropertyName = "Description";
-            this.ColumnJob.FillWeight = 191.2675F;
+            this.ColumnJob.FillWeight = 132.8415F;
             this.ColumnJob.HeaderText = "Job";
             this.ColumnJob.MinimumWidth = 6;
             this.ColumnJob.Name = "ColumnJob";
@@ -362,7 +351,7 @@
             // ColumnState
             // 
             this.ColumnState.DataPropertyName = "StateAsText";
-            this.ColumnState.FillWeight = 191.2675F;
+            this.ColumnState.FillWeight = 132.8415F;
             this.ColumnState.HeaderText = "State";
             this.ColumnState.MinimumWidth = 6;
             this.ColumnState.Name = "ColumnState";
@@ -371,11 +360,20 @@
             // ColumnProgress
             // 
             this.ColumnProgress.DataPropertyName = "ProgressAsText";
-            this.ColumnProgress.FillWeight = 58.81188F;
+            this.ColumnProgress.FillWeight = 40.84675F;
             this.ColumnProgress.HeaderText = "Progress";
             this.ColumnProgress.MinimumWidth = 6;
             this.ColumnProgress.Name = "ColumnProgress";
             this.ColumnProgress.ReadOnly = true;
+            // 
+            // ColumnDetails
+            // 
+            this.ColumnDetails.FillWeight = 30F;
+            this.ColumnDetails.HeaderText = "Details";
+            this.ColumnDetails.MinimumWidth = 6;
+            this.ColumnDetails.Name = "ColumnDetails";
+            this.ColumnDetails.Text = "View";
+            this.ColumnDetails.UseColumnTextForButtonValue = true;
             // 
             // dataGridViewCompletedJobs
             // 
@@ -398,7 +396,8 @@
             this.dataGridViewCompletedJobs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnCompletedJob,
             this.ColumnResult,
-            this.ColumnVideoURL});
+            this.ColumnVideoURL,
+            this.ColumnCompletedJobDetails});
             this.dataGridViewCompletedJobs.EnableHeadersVisualStyles = false;
             this.dataGridViewCompletedJobs.Location = new System.Drawing.Point(739, 310);
             this.dataGridViewCompletedJobs.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -411,34 +410,6 @@
             this.dataGridViewCompletedJobs.TabIndex = 13;
             this.dataGridViewCompletedJobs.Text = "dataGridView1";
             this.dataGridViewCompletedJobs.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewCompletedJobs_CellClick);
-            // 
-            // ColumnCompletedJob
-            // 
-            this.ColumnCompletedJob.DataPropertyName = "Description";
-            this.ColumnCompletedJob.FillWeight = 191.2675F;
-            this.ColumnCompletedJob.HeaderText = "Completed Job";
-            this.ColumnCompletedJob.MinimumWidth = 6;
-            this.ColumnCompletedJob.Name = "ColumnCompletedJob";
-            this.ColumnCompletedJob.ReadOnly = true;
-            // 
-            // ColumnResult
-            // 
-            this.ColumnResult.DataPropertyName = "StateAsText";
-            this.ColumnResult.HeaderText = "Result";
-            this.ColumnResult.MinimumWidth = 6;
-            this.ColumnResult.Name = "ColumnResult";
-            this.ColumnResult.ReadOnly = true;
-            // 
-            // ColumnVideoURL
-            // 
-            this.ColumnVideoURL.DataPropertyName = "VideoURL";
-            this.ColumnVideoURL.FillWeight = 58.81188F;
-            this.ColumnVideoURL.HeaderText = "Video URL";
-            this.ColumnVideoURL.MinimumWidth = 6;
-            this.ColumnVideoURL.Name = "ColumnVideoURL";
-            this.ColumnVideoURL.ReadOnly = true;
-            this.ColumnVideoURL.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.ColumnVideoURL.TrackVisitedState = false;
             // 
             // buttonSettings
             // 
@@ -497,6 +468,46 @@
             this.buttonFTPConnect.UseVisualStyleBackColor = true;
             this.buttonFTPConnect.Click += new System.EventHandler(this.buttonFTPConnect_Click);
             // 
+            // ColumnCompletedJob
+            // 
+            this.ColumnCompletedJob.DataPropertyName = "Description";
+            this.ColumnCompletedJob.FillWeight = 191.2675F;
+            this.ColumnCompletedJob.HeaderText = "Completed Job";
+            this.ColumnCompletedJob.MinimumWidth = 6;
+            this.ColumnCompletedJob.Name = "ColumnCompletedJob";
+            this.ColumnCompletedJob.ReadOnly = true;
+            // 
+            // ColumnResult
+            // 
+            this.ColumnResult.DataPropertyName = "StateAsText";
+            this.ColumnResult.FillWeight = 80F;
+            this.ColumnResult.HeaderText = "Result";
+            this.ColumnResult.MinimumWidth = 6;
+            this.ColumnResult.Name = "ColumnResult";
+            this.ColumnResult.ReadOnly = true;
+            // 
+            // ColumnVideoURL
+            // 
+            this.ColumnVideoURL.DataPropertyName = "VideoURL";
+            this.ColumnVideoURL.FillWeight = 110F;
+            this.ColumnVideoURL.HeaderText = "Video URL";
+            this.ColumnVideoURL.MinimumWidth = 6;
+            this.ColumnVideoURL.Name = "ColumnVideoURL";
+            this.ColumnVideoURL.ReadOnly = true;
+            this.ColumnVideoURL.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.ColumnVideoURL.TrackVisitedState = false;
+            // 
+            // ColumnCompletedJobDetails
+            // 
+            this.ColumnCompletedJobDetails.FillWeight = 40F;
+            this.ColumnCompletedJobDetails.HeaderText = "Details";
+            this.ColumnCompletedJobDetails.MinimumWidth = 6;
+            this.ColumnCompletedJobDetails.Name = "ColumnCompletedJobDetails";
+            this.ColumnCompletedJobDetails.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.ColumnCompletedJobDetails.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.ColumnCompletedJobDetails.Text = "View";
+            this.ColumnCompletedJobDetails.UseColumnTextForButtonValue = true;
+            // 
             // FormVideoUploader
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -539,9 +550,6 @@
         private System.Windows.Forms.TextBox textBoxFTPPath;
         private System.Windows.Forms.Button buttonFTPConnect;
         private System.Windows.Forms.Button buttonFTPUp;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
-        private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.Label labelQueue;
         private System.Windows.Forms.Panel panelUploadBox;
         private System.Windows.Forms.DataGridView dataGridViewFTPFiles;
@@ -552,18 +560,20 @@
         private System.Windows.Forms.Button buttonChooseFilesToUpload;
         private System.Windows.Forms.DataGridView dataGridViewActiveJobs;
         private System.Windows.Forms.DataGridView dataGridViewCompletedJobs;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnJob;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnState;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnProgress;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnFolderName;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnFolderDate;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnFileName;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnFileSize;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnFileDate;
         private System.Windows.Forms.Button buttonSettings;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnJob;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnState;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnProgress;
+        private System.Windows.Forms.DataGridViewButtonColumn ColumnDetails;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnCompletedJob;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnResult;
         private System.Windows.Forms.DataGridViewLinkColumn ColumnVideoURL;
+        private System.Windows.Forms.DataGridViewButtonColumn ColumnCompletedJobDetails;
     }
 }
 

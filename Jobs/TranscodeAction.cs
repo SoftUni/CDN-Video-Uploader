@@ -6,11 +6,13 @@ using System.Text.RegularExpressions;
 
 namespace CDN_Video_Uploader.Jobs
 {
-    class TranscodeAction : ExecutableAction
+    public class TranscodeAction : ExecutableAction
     {
+        public override string ActionType => "Transcode";
         public string InputFile { get; set; }
         public string TranscodingCommand { get; set; }
         public string OutputFile { get; set; }
+
         private Process transcodeProcess;
 
         private static object ActiveTranscodingActionsLock = new object();
@@ -75,8 +77,8 @@ namespace CDN_Video_Uploader.Jobs
             };
             this.transcodeProcess.OutputDataReceived += TranscodeProcess_OutputDataReceived;
             this.transcodeProcess.ErrorDataReceived += TranscodeProcess_ErrorDataReceived;
-            this.AppendToLog(
-                cmdExecutable + " " + cmdParams + Environment.NewLine + Environment.NewLine);
+            this.AppendToLog($"{this.Description} started. Executing command:");
+            this.AppendToLog($"{cmdExecutable} {cmdParams}");
             try
             {
                 this.transcodeProcess.Start();

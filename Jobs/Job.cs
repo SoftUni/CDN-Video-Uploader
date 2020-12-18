@@ -4,43 +4,29 @@ using System.Linq;
 
 namespace CDN_Video_Uploader.Jobs
 {
-    class Job : ExecutableAction
+    public class Job : ExecutableAction
     {
+        public override string ActionType => "Job";
         public List<ExecutableAction> Actions { get; set; }
-        public int ActiveActionIndex { get; set; }
 
-        public string StateAsText
+        public override string StateAsText
         {
             get
             {
-                if (this.ExecutionState == ExecutionState.NotStarted)
-                    return "Waiting to start";
                 if (this.ExecutionState == ExecutionState.Running)
                 {
                     ExecutableAction firstRunningAction = 
-                        this.Actions.FirstOrDefault(a => a.ExecutionState == ExecutionState.Running);
+                        this.Actions.FirstOrDefault(a => a.IsRunning);
                     if (firstRunningAction != null)
                         return firstRunningAction.Description;
                     else
                         return "Running";
                 }
-                if (this.ExecutionState == ExecutionState.CompletedSuccessfully)
-                    return "Completed successfully";
-                if (this.ExecutionState == ExecutionState.Failed)
-                    return "Failed to execute";
-                if (this.ExecutionState == ExecutionState.Canceled)
-                    return "Canceled by user";
-                return "Unknown";
+                return base.StateAsText;
             }
         }
 
-        public string ProgressAsText
-        {
-            get => "" + Math.Round(this.PercentsDone, 1) + "% done";
-        }
-
         private string videoURL;
-
         public string VideoURL
         {
             get
@@ -126,7 +112,11 @@ namespace CDN_Video_Uploader.Jobs
             foreach (var action in this.Actions)
                 if (action.ExecutionState == ExecutionState.Running)
                     action.Cancel();
-            this.UpdateJobExecutionState();
+            if (this.ExecutionState == ExecutionState.NotStarted ||
+                this.ExecutionState == ExecutionState.Running)
+            {
+                this.ExecutionState = ExecutionState.Canceled;
+            }
         }
     }
 }

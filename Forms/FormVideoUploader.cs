@@ -292,7 +292,6 @@ namespace CDN_Video_Uploader
                 Description = ftpPath + fileInfo.Name + " (" + fileSizeAsText + ")",
                 PercentsDone = 0,
                 Actions = actions,
-                ActiveActionIndex = 0,
                 VideoURL = hlsVideoURL
             };
             job.ExecutionStateChanged += Job_ExecutionStateChanged;
@@ -570,6 +569,14 @@ namespace CDN_Video_Uploader
 
         private void dataGridViewCompletedJobs_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            var senderGrid = (DataGridView)sender;
+            if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
+            {
+                Job job = this.completedJobs[e.RowIndex];
+                ViewJobDetails(job);
+                return;
+            }
+
             if (e.RowIndex >= 0 && e.RowIndex < this.completedJobs.Count)
             {
                 string hlsVideoURL = this.completedJobs[e.RowIndex].VideoURL;
@@ -585,6 +592,23 @@ namespace CDN_Video_Uploader
         {
             FormAppSettings formSettings = new FormAppSettings();
             formSettings.ShowDialog();
+        }
+
+        private void dataGridViewActiveJobs_CellContentClick(
+            object sender, DataGridViewCellEventArgs e)
+        {
+            var senderGrid = (DataGridView)sender;
+            if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
+            {
+                Job job = this.activeJobsQueue[e.RowIndex];
+                ViewJobDetails(job);
+            }
+        }
+
+        private void ViewJobDetails(Job job)
+        {
+            FormViewJob formViewJob = new FormViewJob(job);
+            formViewJob.ShowDialog();
         }
     }
 }

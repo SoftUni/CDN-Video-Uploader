@@ -6,12 +6,14 @@ using FluentFTP;
 
 namespace CDN_Video_Uploader.Jobs
 {
-    class UploadAction : ExecutableAction
+    public class UploadAction : ExecutableAction
     {
+        public override string ActionType => "Upload";
         public string InputFile { get; set; }
         public string PathAtFTP { get; set; }
         public FtpClient FtpClient { get; set; }
         public ExecutableAction DependsOnAction { get; set; }
+
         private FileStream inputFileStream;
         private Task uploadTask;
         private CancellationTokenSource uploadTaskCancelationTokenSource;
@@ -36,6 +38,7 @@ namespace CDN_Video_Uploader.Jobs
 
             try
             {
+                this.AppendToLog($"FTP upload started: {this.InputFile} --> ftp://{this.FtpClient.Host}{this.PathAtFTP}");
                 this.ExecutionState = ExecutionState.Running;
                 IProgress<FtpProgress> progressIndicator =
                     new Progress<FtpProgress>(this.UploadProgressChanged);
