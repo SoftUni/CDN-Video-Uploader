@@ -200,8 +200,10 @@ namespace CDN_Video_Uploader.Forms
             this.Controls.Add(this.groupBoxVideoUrlPatterns);
             this.Controls.Add(this.groupBoxTranscodingProfiles);
             this.Controls.Add(this.groupBoxFTPCredentials);
+            this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(800, 600);
             this.Name = "FormAppSettings";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Settings";
             this.Load += new System.EventHandler(this.FormAppSettings_Load);
