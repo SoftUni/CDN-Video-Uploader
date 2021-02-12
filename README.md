@@ -136,7 +136,7 @@ Behind the Windows Forms based UI the project uses a queue of **jobs**, which ho
   - **Jobs** hold a sequence of actions (like "transcode to 720p", "FTP upload transcoded file" and others).
     - Jobs wait in the **"active jobs" queue**, then execute and when they finish (succeed, fail or cancel), they are moved to another **queue "completed jobs"**.
   - **Actions** hold a single task to be executed, such as "transcode an input file to certain profile (e.g. 720p)" or "upload video file to FTP".
-    - Actions supported: `TranscodeAction` and `UploadActiion`
+    - Actions supported: `TranscodeAction` and `UploadAction`
 
 The **jobs scheduler** runs asynchronously and activates **once per second** to do the following:
   - **Update the state of each job**. This causes the jobs to internally update the states of their actions.
