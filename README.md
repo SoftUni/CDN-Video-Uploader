@@ -12,7 +12,7 @@ A tool for **transcoding** and **uploading** videos to a CDN network for **HLS v
 
 ![CDN-Video-Uploader-screenshot](https://user-images.githubusercontent.com/1689586/102526744-cfcc0280-40a4-11eb-8a0c-0d3777e1b5a4.png)
 
-## Video Transcoding 
+## Video Transcoding (Software, CPU-based, using libx264)
 
 The tool uses internally [`ffmpeg`](https://ffmpeg.org) with the following default parameters for VoD streaming:
 ```
@@ -33,33 +33,33 @@ ffmpeg.exe  -i input.mp4  -c:v libx264 -s 426x240 -r 15 -g 30 -crf 25 -maxrate 2
 ```
 
 Notes:
-  - The above commands use CPU-based transcoding --> it is slow
-  - 30 fps with 2 secs for hi-res streams (15-25 fps for low-res streams)
-  - The audio is also resampled: 128-192 kbps for his-res streams (48-96 kbps for low-res streams)
+  - The above commands use CPU-based transcoding (using the `libx264` CPU encoder) --> it is slow
+  - Frames per second (fps): 30 fps for hi-res streams; 15-25 fps for low-res streams
+  - The audio is also resampled: 128-192 kbps for his-res streams; 48-96 kbps for low-res streams
 
 Links:
  - https://slhck.info/video/2017/03/01/rate-control.html
  - https://developers.google.com/media/vp9/settings/vod
 
-## Hardware Accelerated Video Transcoding (NVidia)
+## Hardware Accelerated Video Transcoding (NVidia NVENC)
 
-These are the `ffmpeg` settings to achieve similar results (for less encoding time), using the **hardware acccelerated video encoding**:
+These are the `ffmpeg` settings to achieve similar results (for less encoding time), using the **NVENC hardware acccelerated video encoding** (NVidia GPU):
 
 ```
 1080p (1000-1200kbps)
-ffmpeg.exe  -hwaccel cuvid -hwaccel_output_format cuda -c:v h264_cuvid -resize 1920x1080 -i input.mp4  -c:v h264_nvenc -r 30 -g 60 -rc vbr -cq 34  -c:a aac -b:a 192k  -y sample-1080p.mp4
+ffmpeg.exe  -c:v h264_cuvid -resize 1920x1080 -i input.mp4  -c:v h264_nvenc -r 30 -g 60 -rc vbr -cq 34  -c:a aac -b:a 192k  -y sample-1080p.mp4
 
 720p (600-800 kbps)
-ffmpeg.exe  -hwaccel cuvid -hwaccel_output_format cuda -c:v h264_cuvid -resize 1280x720 -i input.mp4  -c:v h264_nvenc -r 30 -g 60 -rc vbr -multipass fullres -cq 34  -c:a aac -b:a 128k  -y sample-720p.mp4
+ffmpeg.exe  -c:v h264_cuvid -resize 1280x720 -i input.mp4  -c:v h264_nvenc -r 30 -g 60 -rc vbr -multipass fullres -cq 34  -c:a aac -b:a 128k  -y sample-720p.mp4
 
 480p (350-450 kbps)
-ffmpeg.exe  -hwaccel cuvid -hwaccel_output_format cuda -c:v h264_cuvid -resize 854x480 -i input.mp4  -c:v h264_nvenc -r 25 -g 50 -rc vbr -multipass fullres -cq 32  -c:a aac -b:a 96k  -y sample-480p.mp4
+ffmpeg.exe  -c:v h264_cuvid -resize 854x480 -i input.mp4  -c:v h264_nvenc -r 25 -g 50 -rc vbr -multipass fullres -cq 32  -c:a aac -b:a 96k  -y sample-480p.mp4
 
 360p (200-300 kbps)
-ffmpeg.exe  -hwaccel cuvid -hwaccel_output_format cuda -c:v h264_cuvid -resize 854x480 -i input.mp4  -c:v h264_nvenc -r 24 -g 48 -rc vbr -multipass fullres -cq 37   -c:a aac -b:a 64k  -y sample-360p.mp4
+ffmpeg.exe  -c:v h264_cuvid -resize 854x480 -i input.mp4  -c:v h264_nvenc -r 24 -g 48 -rc vbr -multipass fullres -cq 37   -c:a aac -b:a 64k  -y sample-360p.mp4
 
 240p (100-200 kbps)
-ffmpeg.exe  -hwaccel cuvid -hwaccel_output_format cuda -c:v h264_cuvid -resize 426x240 -i input.mp4  -c:v h264_nvenc -r 15 -g 30 -rc vbr -multipass fullres -cq 32  -c:a aac -b:a 48k  -y sample-240p.mp4
+ffmpeg.exe  -c:v h264_cuvid -resize 426x240 -i input.mp4  -c:v h264_nvenc -r 15 -g 30 -rc vbr -multipass fullres -cq 32  -c:a aac -b:a 48k  -y sample-240p.mp4
 ```
 
 Notes:
@@ -67,7 +67,8 @@ Notes:
   - These commands are designed to run in Windows machine, with NVidia graphics card, which supports video encode / decode
   - Require the latest NVidia drivers
   - Require the latest `ffmpeg` for Windows (from Nov 2020 or later)
-
+  - Choose the encoder / decoder GPU by: `-gpu 0` / `-gpu 1` / `-gpu 2` (if you have multiple GPU)
+  
 Tested with `ffmpeg version 2020-11-29-git-f194cedfe6-full_build-www.gyan.dev`:
  - https://www.gyan.dev/ffmpeg/builds/packages/ffmpeg-2020-11-29-git-f194cedfe6-full_build.7z
 
@@ -81,9 +82,36 @@ This list describes the **performance of NVidea video cards for video encoding**
  - https://www.elpamsoft.com/?p=Plex-Hardware-Transcoding
  
 ### The Max NVENC Sessions Limit
-NVidia drivers apply an internal software **limitation on the maximum number of NVENC video encoding sessions** (how many files can be encoded in simultaneously with `ffmpeg`).
+NVidia drivers apply an internal software-based **limitation on the maximum number of NVENC video encoding sessions** (how many files can be encoded in simultaneously with `ffmpeg`).
 
 To remove the NVENC sessions restriction, you can use the **NVENC patch** tool for the NVidia video drivers (on your own risk): https://github.com/keylase/nvidia-patch/tree/master/win.
+
+## Hardware Accelerated Video Transcoding for Intel Quick Sync (QVC) GPU
+
+If you have **Intel video card (GPU)**, which is usually built in most Intel processors, you can use it for hardware-accelerated video transcoding (with Intel Quick Sync). Example of using Intel GPU transcoder, with variable bitrate, limited by quality (recommended):
+```
+ffmpeg.exe  -c:v h264_qsv -i input.mp4   -c:v h264_qsv -s 426x240 -r 24 -global_quality 28 -look_ahead 1   -c:a aac -b:a 48k  -y output-240p.mp4
+```
+
+CPU-based decoder + Intel GPU-based encoder:
+```
+ffmpeg.exe  -i input.mp4   -c:v h264_qsv -s 426x240 -r 24 -global_quality 28 -look_ahead 1   -c:a aac -b:a 48k  -y output-240p.mp4
+```
+
+Intel GPU encoder + decoder, limited by bitrate:
+```
+ffmpeg.exe -c:v h264_qsv -i input.mp4  -c:v h264_qsv -s 426x240 -r 24 -g 48 -b:v 200k -maxrate 250k -bufsize 500k  -c:a aac -b:a 48k  -y output-240p.mp4
+```
+
+## Combining Multiple GPU + CPU for faster Transcoding
+
+This example demonstrates how to **combine 2 NVidia GPUs + 1 Intel GPU + 1 Intel CPU**, which are available on a single machine with Intel CPU + built-in Intel GPU + 2 additional NVidia video cards. These are the transcoding seettings for the CDN Video Uploader for 1080p, 720p, 480p and 240p:
+```
+1080p | ffmpeg.exe  -c:v h264_cuvid -gpu 0 -resize 1920x1080 -i {input} -c:v h264_nvenc -gpu 0 -r 30 -g 60 -rc vbr -cq 34  -c:a aac -b:a 192k  -y {output}
+720p | ffmpeg.exe  -c:v h264_cuvid -gpu 1 -resize 1280x720 -i {input}  -c:v h264_nvenc -gpu 1 -r 30 -g 60 -rc vbr -multipass fullres -cq 34  -c:a aac -b:a 128k  -y {output}
+480p | ffmpeg.exe  -c:v h264_cuvid -gpu 0 -resize 854x480 -i {input}  -c:v h264_nvenc -gpu 0 -r 25 -g 50 -rc vbr -multipass fullres -cq 32  -c:a aac -b:a 96k  -y {output}
+240p | ffmpeg.exe  -i {input}   -c:v h264_qsv -s 426x240 -r 15 -global_quality 28 -look_ahead 1   -c:a aac -b:a 48k   -y {output}
+```
 
 ## HLS Stream on UCDN
 
