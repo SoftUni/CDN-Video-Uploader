@@ -113,6 +113,16 @@ namespace CDN_Video_Uploader.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap http_icon_23px {
+            get {
+                object obj = ResourceManager.GetObject("http_icon_23px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap refresh_icon_14px {
             get {
                 object obj = ResourceManager.GetObject("refresh_icon_14px", resourceCulture);

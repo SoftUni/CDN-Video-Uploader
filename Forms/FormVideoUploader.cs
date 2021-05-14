@@ -9,6 +9,7 @@ using FluentFTP;
 using System.Diagnostics;
 using CDN_Video_Uploader.Forms;
 using System.ComponentModel;
+using System.Text.RegularExpressions;
 
 namespace CDN_Video_Uploader
 {
@@ -278,7 +279,7 @@ namespace CDN_Video_Uploader
             }
 
             string ftpPath = this.textBoxFTPPath.Text;
-            string hlsVideoURL = GetVideoUrl(ftpPath, fileInfo.Name);
+            string hlsVideoURL = GetHlsVideoUrl(ftpPath, fileInfo.Name);
             if (hlsVideoURL == null)
             {
                 LogError($"Cannot find video URL pattern at the CDN for the current FTP path <code>{ftpPath}</code>. Choose an FTP folder first.");
@@ -299,7 +300,15 @@ namespace CDN_Video_Uploader
             this.activeJobsQueue.Add(job);
         }
 
-        private string GetVideoUrl(string ftpPath, string shortFileName)
+        private string GetHlsVideoUrl(string ftpPath, string shortFileName)
+        {
+            string profilesList = "," + GetVideoProfileNames().Join(",") + ",";
+            string fileNameWithoutExt = Path.GetFileNameWithoutExtension(shortFileName);
+            return GetHlsVideoUrl(ftpPath, fileNameWithoutExt, profilesList);
+        }
+
+        private string GetHlsVideoUrl(
+            string ftpPath, string videoFilePrefix, string profilesList)
         {
             if (!ftpPath.EndsWith("/"))
                 ftpPath += "/";
@@ -311,12 +320,32 @@ namespace CDN_Video_Uploader
                 if (ftpPath.StartsWith(ftpRootFolder))
                 {
                     string ftpPathWithoutRoot = ftpPath.Remove(0, ftpRootFolder.Length);
-                    string fileNameWithoutExt = Path.GetFileNameWithoutExtension(shortFileName);
-                    string profilesList = "," + GetVideoProfileNames().Join(",") + ",";
+                    
                     string hlsVideoURL = videoUrlPattern
-                        .Replace("{input}", ftpPathWithoutRoot + fileNameWithoutExt)
+                        .Replace("{input}", ftpPathWithoutRoot + videoFilePrefix)
                         .Replace("{profiles}", profilesList);
                     return hlsVideoURL;
+                }
+            }
+            return null;
+        }
+
+        private string GetCDNFileUrl(string ftpPath, string shortFileName)
+        {
+            if (!ftpPath.EndsWith("/"))
+                ftpPath += "/";
+            foreach (string pattern in AppSettings.Default.VideoUrlPatternsAtCDN)
+            {
+                var patternParts = pattern.Split('|');
+                string ftpRootFolder = patternParts[0].Trim();
+                string videoUrlPattern = patternParts[1].Trim();
+                string ftpPathWithoutRoot = ftpPath.Remove(0, ftpRootFolder.Length);
+                if (ftpPath.StartsWith(ftpRootFolder))
+                {
+                    string cdnHost = videoUrlPattern.Split(
+                        new string[] { "/hls/" }, StringSplitOptions.None)[0];
+                    string cdnUrl = cdnHost + "/" + ftpPathWithoutRoot + shortFileName;
+                    return cdnUrl;
                 }
             }
             return null;
@@ -609,6 +638,87 @@ namespace CDN_Video_Uploader
         {
             FormViewJob formViewJob = new FormViewJob(job);
             formViewJob.ShowDialog();
+        }
+
+        private void buttonShowCDNUrls_Click(object sender, EventArgs e)
+        {
+            if (this.ftpClient == null || (!this.ftpClient.IsConnected))
+            {
+                LogError("not connected to the FTP server");
+                return;
+            }
+
+            try
+            {
+                var ftpPath = this.textBoxFTPPath.Text;
+                FtpListItem[] ftpItems = this.ftpClient.GetListing(ftpPath);
+
+                var fileNames = ftpItems
+                    .Where(item => item.Type == FtpFileSystemObjectType.File)
+                    .Select(item => item.Name)
+                    .ToList();
+
+                if (fileNames.Count == 0)
+                {
+                    LogError("no files found in the currrent folder at the FTP server.");
+                    return;
+                }
+
+                Log($"Loaded the file list from the FTP: {String.Join(", ", fileNames)}");
+
+                var urls = new SortedSet<string>();
+                foreach (var fileName in fileNames)
+                {
+                    string fileExtension = Path.GetExtension(fileName);
+                    if (fileExtension.ToLower() == ".mp4")
+                    {
+                        var videoProfiles = ExtractVideoProfiles(fileName, fileNames);
+                        string profilesList = "," + videoProfiles.Join(",") + ",";
+                        if (videoProfiles != null)
+                        {
+                            string fileNameWithoutProfile = 
+                                fileName.Substring(0, fileName.LastIndexOf("-"));
+                            var url = GetHlsVideoUrl(
+                                ftpPath, fileNameWithoutProfile, profilesList);
+                            urls.Add(url);
+                        }
+                        else
+                        {
+                            var url = GetCDNFileUrl(ftpPath, fileName);
+                            urls.Add(url);
+                        }
+                    }
+                    else
+                    {
+                        var url = GetCDNFileUrl(ftpPath, fileName);
+                        urls.Add(url);
+                    }
+                }
+
+                var formShowUrls = new FormShowUrls(urls);
+                formShowUrls.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                this.LogError($"retrieving CDN URLs from FTP failed. {ex.Message}");
+            }
+        }
+
+        private List<string> ExtractVideoProfiles(
+            string fileName, List<string> allFileNames)
+        {
+            int lastHyphenIndex = fileName.LastIndexOf('-');
+            if (lastHyphenIndex == -1)
+                return null;
+
+            string videoFilePrefix = fileName.Substring(0, lastHyphenIndex);
+            var profiles = allFileNames
+                .Where(f => f.StartsWith(videoFilePrefix))
+                .Select(f => f.Substring(videoFilePrefix.Length + 1))
+                .Select(f => Path.GetFileNameWithoutExtension(f))
+                .OrderByDescending(f => f.Length).ThenByDescending(f => f)
+                .ToList();
+            return profiles;
         }
     }
 }

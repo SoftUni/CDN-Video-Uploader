@@ -30,16 +30,15 @@
         {
             System.Windows.Forms.Label labelDragAndDropFiles;
             System.Windows.Forms.Label labelOr;
-            System.Windows.Forms.PictureBox pictureBoxUploadImage;
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.PictureBox pictureBoxUploadImage;
             this.labelFTP = new System.Windows.Forms.Label();
             this.textBoxFTPPath = new System.Windows.Forms.TextBox();
             this.labelQueue = new System.Windows.Forms.Label();
             this.panelUploadBox = new System.Windows.Forms.Panel();
-            this.buttonChooseFilesToUpload = new System.Windows.Forms.Button();
             this.dataGridViewFTPFolders = new System.Windows.Forms.DataGridView();
             this.ColumnFolderName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnFolderDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -55,24 +54,26 @@
             this.ColumnProgress = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnDetails = new System.Windows.Forms.DataGridViewButtonColumn();
             this.dataGridViewCompletedJobs = new System.Windows.Forms.DataGridView();
-            this.buttonSettings = new System.Windows.Forms.Button();
-            this.buttonFTPGo = new System.Windows.Forms.Button();
-            this.buttonFTPUp = new System.Windows.Forms.Button();
-            this.buttonFTPConnect = new System.Windows.Forms.Button();
             this.ColumnCompletedJob = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnResult = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnExecutionTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnVideoURL = new System.Windows.Forms.DataGridViewLinkColumn();
             this.ColumnCompletedJobDetails = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.buttonShowCDNUrls = new System.Windows.Forms.Button();
+            this.buttonSettings = new System.Windows.Forms.Button();
+            this.buttonFTPGo = new System.Windows.Forms.Button();
+            this.buttonChooseFilesToUpload = new System.Windows.Forms.Button();
+            this.buttonFTPUp = new System.Windows.Forms.Button();
+            this.buttonFTPConnect = new System.Windows.Forms.Button();
             labelDragAndDropFiles = new System.Windows.Forms.Label();
             labelOr = new System.Windows.Forms.Label();
             pictureBoxUploadImage = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(pictureBoxUploadImage)).BeginInit();
             this.panelUploadBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFTPFolders)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFTPFiles)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewActiveJobs)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCompletedJobs)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(pictureBoxUploadImage)).BeginInit();
             this.SuspendLayout();
             // 
             // labelDragAndDropFiles
@@ -94,19 +95,6 @@
             labelOr.TabIndex = 3;
             labelOr.Text = "or";
             labelOr.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // pictureBoxUploadImage
-            // 
-            pictureBoxUploadImage.ErrorImage = null;
-            pictureBoxUploadImage.Image = global::CDN_Video_Uploader.Properties.Resources.upload_icon;
-            pictureBoxUploadImage.InitialImage = null;
-            pictureBoxUploadImage.Location = new System.Drawing.Point(12, 12);
-            pictureBoxUploadImage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            pictureBoxUploadImage.Name = "pictureBoxUploadImage";
-            pictureBoxUploadImage.Size = new System.Drawing.Size(77, 72);
-            pictureBoxUploadImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            pictureBoxUploadImage.TabIndex = 1;
-            pictureBoxUploadImage.TabStop = false;
             // 
             // labelFTP
             // 
@@ -156,20 +144,6 @@
             this.panelUploadBox.TabIndex = 6;
             this.panelUploadBox.DragDrop += new System.Windows.Forms.DragEventHandler(this.panelUploadBox_DragDrop);
             this.panelUploadBox.DragEnter += new System.Windows.Forms.DragEventHandler(this.panelUploadBox_DragEnter);
-            // 
-            // buttonChooseFilesToUpload
-            // 
-            this.buttonChooseFilesToUpload.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonChooseFilesToUpload.Image = global::CDN_Video_Uploader.Properties.Resources.browse_icon_20px;
-            this.buttonChooseFilesToUpload.Location = new System.Drawing.Point(253, 43);
-            this.buttonChooseFilesToUpload.Name = "buttonChooseFilesToUpload";
-            this.buttonChooseFilesToUpload.Size = new System.Drawing.Size(220, 40);
-            this.buttonChooseFilesToUpload.TabIndex = 2;
-            this.buttonChooseFilesToUpload.Text = " Choose Files to Upload ...";
-            this.buttonChooseFilesToUpload.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.buttonChooseFilesToUpload.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.buttonChooseFilesToUpload.UseVisualStyleBackColor = true;
-            this.buttonChooseFilesToUpload.Click += new System.EventHandler(this.buttonChooseFilesToUpload_Click);
             // 
             // dataGridViewFTPFolders
             // 
@@ -413,63 +387,6 @@
             this.dataGridViewCompletedJobs.Text = "dataGridView1";
             this.dataGridViewCompletedJobs.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewCompletedJobs_CellClick);
             // 
-            // buttonSettings
-            // 
-            this.buttonSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonSettings.Image = global::CDN_Video_Uploader.Properties.Resources.settings_icon_16px;
-            this.buttonSettings.Location = new System.Drawing.Point(1267, 4);
-            this.buttonSettings.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.buttonSettings.Name = "buttonSettings";
-            this.buttonSettings.Size = new System.Drawing.Size(98, 26);
-            this.buttonSettings.TabIndex = 14;
-            this.buttonSettings.Text = " Settings";
-            this.buttonSettings.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.buttonSettings.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.buttonSettings.UseVisualStyleBackColor = true;
-            this.buttonSettings.Click += new System.EventHandler(this.buttonSettings_Click);
-            // 
-            // buttonFTPGo
-            // 
-            this.buttonFTPGo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonFTPGo.Image = global::CDN_Video_Uploader.Properties.Resources.refresh_icon_14px;
-            this.buttonFTPGo.Location = new System.Drawing.Point(662, 33);
-            this.buttonFTPGo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.buttonFTPGo.Name = "buttonFTPGo";
-            this.buttonFTPGo.Size = new System.Drawing.Size(33, 27);
-            this.buttonFTPGo.TabIndex = 4;
-            this.buttonFTPGo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.buttonFTPGo.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.buttonFTPGo.UseVisualStyleBackColor = true;
-            this.buttonFTPGo.Click += new System.EventHandler(this.buttonFTPGo_Click);
-            // 
-            // buttonFTPUp
-            // 
-            this.buttonFTPUp.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonFTPUp.Image = global::CDN_Video_Uploader.Properties.Resources.arrow_up_icon_14px;
-            this.buttonFTPUp.Location = new System.Drawing.Point(701, 33);
-            this.buttonFTPUp.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.buttonFTPUp.Name = "buttonFTPUp";
-            this.buttonFTPUp.Size = new System.Drawing.Size(31, 27);
-            this.buttonFTPUp.TabIndex = 4;
-            this.buttonFTPUp.UseVisualStyleBackColor = true;
-            this.buttonFTPUp.Click += new System.EventHandler(this.buttonFTPUp_Click);
-            // 
-            // buttonFTPConnect
-            // 
-            this.buttonFTPConnect.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonFTPConnect.Image = global::CDN_Video_Uploader.Properties.Resources.connect_icon_16px;
-            this.buttonFTPConnect.Location = new System.Drawing.Point(210, 4);
-            this.buttonFTPConnect.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.buttonFTPConnect.Name = "buttonFTPConnect";
-            this.buttonFTPConnect.Size = new System.Drawing.Size(133, 26);
-            this.buttonFTPConnect.TabIndex = 3;
-            this.buttonFTPConnect.Text = " FTP Connect";
-            this.buttonFTPConnect.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.buttonFTPConnect.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.buttonFTPConnect.UseVisualStyleBackColor = true;
-            this.buttonFTPConnect.Click += new System.EventHandler(this.buttonFTPConnect_Click);
-            // 
             // ColumnCompletedJob
             // 
             this.ColumnCompletedJob.DataPropertyName = "Description";
@@ -518,10 +435,110 @@
             this.ColumnCompletedJobDetails.Text = "View";
             this.ColumnCompletedJobDetails.UseColumnTextForButtonValue = true;
             // 
+            // buttonShowCDNUrls
+            // 
+            this.buttonShowCDNUrls.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonShowCDNUrls.Image = global::CDN_Video_Uploader.Properties.Resources.http_icon_23px;
+            this.buttonShowCDNUrls.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonShowCDNUrls.Location = new System.Drawing.Point(355, 4);
+            this.buttonShowCDNUrls.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.buttonShowCDNUrls.Name = "buttonShowCDNUrls";
+            this.buttonShowCDNUrls.Size = new System.Drawing.Size(161, 26);
+            this.buttonShowCDNUrls.TabIndex = 15;
+            this.buttonShowCDNUrls.Text = " CDN URLs";
+            this.buttonShowCDNUrls.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
+            this.buttonShowCDNUrls.UseVisualStyleBackColor = true;
+            this.buttonShowCDNUrls.Click += new System.EventHandler(this.buttonShowCDNUrls_Click);
+            // 
+            // buttonSettings
+            // 
+            this.buttonSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonSettings.Image = global::CDN_Video_Uploader.Properties.Resources.settings_icon_16px;
+            this.buttonSettings.Location = new System.Drawing.Point(1267, 4);
+            this.buttonSettings.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.buttonSettings.Name = "buttonSettings";
+            this.buttonSettings.Size = new System.Drawing.Size(98, 26);
+            this.buttonSettings.TabIndex = 14;
+            this.buttonSettings.Text = " Settings";
+            this.buttonSettings.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.buttonSettings.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.buttonSettings.UseVisualStyleBackColor = true;
+            this.buttonSettings.Click += new System.EventHandler(this.buttonSettings_Click);
+            // 
+            // buttonFTPGo
+            // 
+            this.buttonFTPGo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonFTPGo.Image = global::CDN_Video_Uploader.Properties.Resources.refresh_icon_14px;
+            this.buttonFTPGo.Location = new System.Drawing.Point(662, 33);
+            this.buttonFTPGo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.buttonFTPGo.Name = "buttonFTPGo";
+            this.buttonFTPGo.Size = new System.Drawing.Size(33, 27);
+            this.buttonFTPGo.TabIndex = 4;
+            this.buttonFTPGo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.buttonFTPGo.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.buttonFTPGo.UseVisualStyleBackColor = true;
+            this.buttonFTPGo.Click += new System.EventHandler(this.buttonFTPGo_Click);
+            // 
+            // buttonChooseFilesToUpload
+            // 
+            this.buttonChooseFilesToUpload.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonChooseFilesToUpload.Image = global::CDN_Video_Uploader.Properties.Resources.browse_icon_20px;
+            this.buttonChooseFilesToUpload.Location = new System.Drawing.Point(253, 43);
+            this.buttonChooseFilesToUpload.Name = "buttonChooseFilesToUpload";
+            this.buttonChooseFilesToUpload.Size = new System.Drawing.Size(220, 40);
+            this.buttonChooseFilesToUpload.TabIndex = 2;
+            this.buttonChooseFilesToUpload.Text = " Choose Files to Upload ...";
+            this.buttonChooseFilesToUpload.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.buttonChooseFilesToUpload.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.buttonChooseFilesToUpload.UseVisualStyleBackColor = true;
+            this.buttonChooseFilesToUpload.Click += new System.EventHandler(this.buttonChooseFilesToUpload_Click);
+            // 
+            // pictureBoxUploadImage
+            // 
+            pictureBoxUploadImage.ErrorImage = null;
+            pictureBoxUploadImage.Image = global::CDN_Video_Uploader.Properties.Resources.upload_icon;
+            pictureBoxUploadImage.InitialImage = null;
+            pictureBoxUploadImage.Location = new System.Drawing.Point(12, 12);
+            pictureBoxUploadImage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            pictureBoxUploadImage.Name = "pictureBoxUploadImage";
+            pictureBoxUploadImage.Size = new System.Drawing.Size(77, 72);
+            pictureBoxUploadImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            pictureBoxUploadImage.TabIndex = 1;
+            pictureBoxUploadImage.TabStop = false;
+            // 
+            // buttonFTPUp
+            // 
+            this.buttonFTPUp.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonFTPUp.Image = global::CDN_Video_Uploader.Properties.Resources.arrow_up_icon_14px;
+            this.buttonFTPUp.Location = new System.Drawing.Point(701, 33);
+            this.buttonFTPUp.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.buttonFTPUp.Name = "buttonFTPUp";
+            this.buttonFTPUp.Size = new System.Drawing.Size(31, 27);
+            this.buttonFTPUp.TabIndex = 4;
+            this.buttonFTPUp.UseVisualStyleBackColor = true;
+            this.buttonFTPUp.Click += new System.EventHandler(this.buttonFTPUp_Click);
+            // 
+            // buttonFTPConnect
+            // 
+            this.buttonFTPConnect.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonFTPConnect.Image = global::CDN_Video_Uploader.Properties.Resources.connect_icon_16px;
+            this.buttonFTPConnect.Location = new System.Drawing.Point(210, 4);
+            this.buttonFTPConnect.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.buttonFTPConnect.Name = "buttonFTPConnect";
+            this.buttonFTPConnect.Size = new System.Drawing.Size(133, 26);
+            this.buttonFTPConnect.TabIndex = 3;
+            this.buttonFTPConnect.Text = " FTP Connect";
+            this.buttonFTPConnect.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.buttonFTPConnect.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.buttonFTPConnect.UseVisualStyleBackColor = true;
+            this.buttonFTPConnect.Click += new System.EventHandler(this.buttonFTPConnect_Click);
+            // 
             // FormVideoUploader
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(1370, 754);
+            this.Controls.Add(this.buttonShowCDNUrls);
             this.Controls.Add(this.buttonSettings);
             this.Controls.Add(this.dataGridViewCompletedJobs);
             this.Controls.Add(this.dataGridViewActiveJobs);
@@ -543,12 +560,12 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormVideoUploader_FormClosing);
             this.Load += new System.EventHandler(this.FormVideoUploader_Load);
             this.Shown += new System.EventHandler(this.FormVideoUploader_Shown);
-            ((System.ComponentModel.ISupportInitialize)(pictureBoxUploadImage)).EndInit();
             this.panelUploadBox.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFTPFolders)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFTPFiles)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewActiveJobs)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCompletedJobs)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(pictureBoxUploadImage)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -585,6 +602,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnExecutionTime;
         private System.Windows.Forms.DataGridViewLinkColumn ColumnVideoURL;
         private System.Windows.Forms.DataGridViewButtonColumn ColumnCompletedJobDetails;
+        private System.Windows.Forms.Button buttonShowCDNUrls;
     }
 }
 

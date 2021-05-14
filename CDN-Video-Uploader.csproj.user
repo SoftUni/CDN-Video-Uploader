@@ -8,6 +8,9 @@
     <Compile Update="Forms\FormConnectToFTP.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Forms\FormShowUrls.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Forms\FormVideoUploader.cs">
       <SubType>Form</SubType>
     </Compile>
