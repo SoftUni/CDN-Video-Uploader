@@ -3,8 +3,8 @@
 A tool for **transcoding** and **uploading** videos to a CDN network for **HLS video streaming**.
   - **Input**: video file (AVI, MKV, MP4, WMV) @ 1080p (or higher) resolution
   - **Output**: video file converted to streamable MP4 video at several bitrates: 
-    - MP4 @ `1080p` (~ 1100 mbps bitrate)
-    - MP4 @ `720p` (~ 650 mbps bitrate)
+    - MP4 @ `1080p` (~ 1100 kbps bitrate)
+    - MP4 @ `720p` (~ 650 kbps bitrate)
     - MP4 @ `480p` (~ 400 kbps bitrate)
     - MP4 @ `360p` (~ 250 kbps bitrate)
     - MP4 @ `240p` (~ 150 kbps bitrate)
