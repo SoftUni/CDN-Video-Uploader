@@ -43,7 +43,7 @@ Links:
 
 ## Hardware Accelerated Video Transcoding (NVidia NVENC)
 
-These are the `ffmpeg` settings to achieve similar results (for less encoding time), using the **NVENC hardware acccelerated video encoding** (NVidia GPU):
+These are the `ffmpeg` settings to achieve similar results (for less encoding time), using the **NVENC hardware accelerated video encoding** (NVidia GPU):
 
 ```
 1080p (1000-1200kbps)
